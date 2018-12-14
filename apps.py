@@ -9,5 +9,9 @@ class SuitConfig(DjangoSuitConfig):
             ChildItem('Usuários', model='account.user'),
             ChildItem('Grupos', model='auth.group'),
         ]),
+        # ParentItem('Funcionario', children=[
+        #     ChildItem(model='funcionario.funcionario'),
+        #     ChildItem(model='funcionario.funcao'),
+        # ]),
     )
 

@@ -1,0 +1,25 @@
+{% load static %}
+      <div class="be-left-sidebar">
+        <div class="left-sidebar-wrapper"><a class="left-sidebar-toggle" href="#">Menu</a>
+          <div class="left-sidebar-spacer">
+            <div class="left-sidebar-scroll">
+              <div class="left-sidebar-content">
+                <ul class="sidebar-elements">
+                  <li class="divider">Clínica</li>
+                  <li class="active"><a href="#"><i class="icon mdi mdi-calendar-alt"></i><span>Agenda</span></a></li>
+                  <li class="parent"><a href="#"><i class="icon mdi mdi-face"></i><span>Paciente</span></a>
+                    <ul class="sub-menu">
+                      <li><a href="#">Meus Pacientes</a></li>
+                    </ul>
+                  </li>
+                  <li class="parent"><a href="#"><i class="icon mdi mdi-chart-donut"></i><span>Usuário</span></a>
+                    <ul class="sub-menu">
+                      <li><a href="{% url 'usuarios' %}">Usuários</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
