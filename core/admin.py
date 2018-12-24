@@ -1,10 +1,5 @@
 from django.contrib import admin
-from .models import HistoricoAcesso, UsuarioLogado
-
-
-class UsuarioLogadoAdmin(admin.ModelAdmin):
-    readonly_fields = ['user','session_key']
-
+from .models import HistoricoAcesso
 
 class HistoricoAcessoAdmin(admin.ModelAdmin):
     list_display = ['idUser', 'user', 'dataLogon']
@@ -13,5 +8,4 @@ class HistoricoAcessoAdmin(admin.ModelAdmin):
         'usuarioDado',
     )
 
-admin.site.register(UsuarioLogado, UsuarioLogadoAdmin)
 admin.site.register(HistoricoAcesso, HistoricoAcessoAdmin)

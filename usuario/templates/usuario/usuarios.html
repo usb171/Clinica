@@ -103,8 +103,8 @@
 							<input class="form-control" type="text" id="id_nomeCompleto" name="nomeCompleto" placeholder="NILTON NONATO GARCIA JÚNIOR" required>
 						</div>
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-							<label for="id_email">Email address</label>
-							<input class="form-control" type="email" id="id_email" name="email" placeholder="meuemail@gmail.com" required>
+							<label for="id_email">Email</label>
+							<input class="form-control form-control-success is-invalid" type="email" id="id_email" name="email" placeholder="meuemail@gmail.com" required>
 						</div>
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_titulo">Título</label>
@@ -131,57 +131,30 @@
 						</div>
 					</div>
 
-					<div class="form-group row pt-0 pb-0">
-						<div class="col-sm-4 col-lg-4 mb-6 mb-sm-4">
-							<label class="col-12 col-sm-3 col-form-label ">Ativar Usuário ?</label>
-							<div class="col-12 col-sm-8 col-lg-6 mt-1">
-								<div class="form-group">
-									<label class="custom-control custom-radio custom-control-inline">
-										<input class="custom-control-input is-valid" type="radio" checked name="flagAtivarUsuario"><span
-											class="custom-control-label custom-control-color">Ativar</span>
-									</label>
-									<label class="custom-control custom-radio custom-control-inline">
-										<input class="custom-control-input is-invalid" type="radio" name="flagAtivarUsuario"><span
-											class="custom-control-label custom-control-color">Desativar</span>
-									</label>
-								</div>
-							</div>
+					<div class="form-group row pt-0 pb-5">
+
+						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
+							<label for="id_selectAtivarUsuario">Ativar Usuário ?</label>
+							<select id="id_selectAtivarUsuario" name="ativo" class="form-control">
+								<option value="ON" selected>ON</option>
+								<option value="OFF">OFF</option>
+							</select>
 						</div>
 
-						<div class="col-sm-4 col-lg-4 mb-6 mb-sm-4">
-							<label class="col-12 col-sm-3 col-form-label ">Ativar Administrador ?</label>
-							<div class="col-12 col-sm-8 col-lg-6 mt-1">
-								<div class="form-group">
-									<label class="custom-control custom-radio custom-control-inline">
-										<input class="custom-control-input is-valid" type="radio" checked
-											   name="flagAtivarAdministrador"><span
-											class="custom-control-label custom-control-color">Ativar</span>
-									</label>
-									<label class="custom-control custom-radio custom-control-inline">
-										<input class="custom-control-input is-invalid" type="radio"
-											   name="flagAtivarAdministrador"><span
-											class="custom-control-label custom-control-color">Desativar</span>
-									</label>
-								</div>
-							</div>
+						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
+							<label for="id_selectAtivarAdministrador">Ativar Administrador ?</label>
+							<select id="id_selectAtivarAdministrador" name="admin" class="form-control">
+								<option value="ON">ON</option>
+								<option value="OFF" selected>OFF</option>
+							</select>
 						</div>
 
-						<div class="col-sm-4 col-lg-4 mb-6 mb-sm-4">
-							<label class="col-12 col-sm-3 col-form-label ">Ativar Agenda Própria ?</label>
-							<div class="col-12 col-sm-8 col-lg-6 mt-1">
-								<div class="form-group">
-									<label class="custom-control custom-radio custom-control-inline">
-										<input class="custom-control-input is-valid" type="radio" checked
-											   name="flagAtivarAgendaPropria"><span
-											class="custom-control-label custom-control-color">Ativar</span>
-									</label>
-									<label class="custom-control custom-radio custom-control-inline">
-										<input class="custom-control-input is-invalid" type="radio"
-											   name="flagAtivarAgendaPropria"><span
-											class="custom-control-label custom-control-color">Desativar</span>
-									</label>
-								</div>
-							</div>
+						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
+							<label for="id_selectAtivarAgendaPropira">Ativar Agenda Própria ?</label>
+							<select id="id_selectAtivarAgendaPropira" name="agendaPropria" class="form-control">
+								<option value="ON">ON</option>
+								<option value="OFF" selected>OFF</option>
+							</select>
 						</div>
 					</div>
 
@@ -191,8 +164,8 @@
 					<div class="form-group row pt-0">
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_selectEstoque">Controle do Estoque</label>
-							<select id="id_selectEstoque" name="selectEstoque" class="form-control">
-								<option value="VIZUALIZAR">VIZUALIZAR</option>
+							<select id="id_selectEstoque" name="controleEstoque" class="form-control">
+								<option value="VISUALIZAR">VISUALIZAR</option>
 								<option value="NAO_VISUALIZAR" selected>NÃO VISUALIZAR</option>
 								<option value="MOVIMENTAR" >MOVIMENTAR</option>
 								<option value="CONTROLE_TOTAL">CONTROLE TOTAL</option>
@@ -200,8 +173,8 @@
 						</div>
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_selectProntuario">Controle do Prontuário</label>
-							<select id="id_selectProntuario" name="selectPronturario" class="form-control">
-								<option value="VIZUALIZAR">VIZUALIZAR</option>
+							<select id="id_selectProntuario" name="controleProntuario" class="form-control">
+								<option value="VISUALIZAR">VISUALIZAR</option>
 								<option value="NAO_VISUALIZAR" selected>NÃO VISUALIZAR</option>
 								<option value="CONTROLE_TOTAL">CONTROLE TOTAL</option>
 							</select>
@@ -227,24 +200,27 @@
 										<tr class="odd gradeX center">
 											<td class="center">{{ usuario.nomeCompleto }}</td>
 											<td class="center">
-												<select id="id_select_acesso_agenda_table_modal_{{ usuario.pk }}" class="form-control">
+												<select id="id_select_acesso_agenda_table_modal_{{ usuario.pk }}"
+														name="{'pk':'{{usuario.pk}}', 'select':'acesso_agenda'}" class="form-control">
 													<option value="NAO_VISUALIZAR" selected>NÃO VISUALIZAR</option>
-													<option value="VIZUALIZAR">VIZUALIZAR</option>
+													<option value="VISUALIZAR">VISUALIZAR</option>
 													<option value="EDITAR">EDITAR</option>
 												</select>
 											</td>
 											<td class="center">
-												<select id="id_select_acesso_financeiro_table_modal_{{ usuario.pk }}" class="form-control">
+												<select id="id_select_acesso_financeiro_table_modal_{{ usuario.pk }}"
+														name="{'pk':'{{usuario.pk}}', 'select':'acesso_financeiro'}" class="form-control">
 													<option value="NAO_VISUALIZAR" selected>NÃO VISUALIZAR</option>
-													<option value="VIZUALIZAR_DIARIO">VIZUALIZAR DIÁRIO</option>
+													<option value="VISUALIZAR_DIARIO">VISUALIZAR DIÁRIO</option>
 													<option value="VISUALIZAR_TOTAL">VISUALIZAR TOTAL</option>
 													<option value="EDITAR_TOTAL">EDITAR TOTAL</option>
 												</select>
 											</td>
 											<td class="center">
-												<select id="id_select_acesso_prontuario_table_modal_{{ usuario.pk }}" class="form-control">
+												<select id="id_select_acesso_prontuario_table_modal_{{ usuario.pk }}"
+														name="{'pk':'{{usuario.pk}}', 'select':'acesso_prontuario'}" class="form-control">
 													<option value="NAO_VISUALIZAR" selected>NÃO VISUALIZAR</option>
-													<option value="VIZUALIZAR">VIZUALIZAR</option>
+													<option value="VISUALIZAR">VISUALIZAR</option>
 												</select>
 											</td>
 										</tr>
@@ -264,7 +240,7 @@
 					<hr class="style-one">
 
 					<div class="form-group row text-right">
-						<div class="col col-sm-12 col-lg-12 offset-sm-1 offset-lg-0">
+						<div class="col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">
 							<button class="btn btn-space btn-primary btn-big" type="submit"><i class="icon mdi mdi-save"></i> Slavar</button>
 							<!--<button class="btn btn-space btn-secondary btn-lg">Cancelar</button>-->
 						</div>
@@ -276,6 +252,7 @@
 		</div>
 	</div>
 </div>
+
 
 {% endblock %}
 
@@ -300,13 +277,13 @@
 	<script src="{% static '/assets/js/app-tables-datatables.js' %}" type="text/javascript"></script>
 	<script src="{% static '/assets/js/jquery.validate.min.js' %}" type="text/javascript"></script>
 	<script src="{% static '/assets/js/jquery.validate.msg.pt-br.js' %}" type="text/javascript"></script>
+	<script src="{% static '/assets/lib/jquery.gritter/js/jquery.gritter.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 
 {% block jquery %}
 
 	App.dataTables();
-	//App.masks();
 
 	$("#id_telefone").mask("+ 55 (99) 9999-9999");
 	$("#id_celular").mask("+ 55 (99) 99999-9999");
@@ -315,9 +292,29 @@
 		$("#id_nomeCompleto").val(($(this).val()).toUpperCase());
 	});
 
+
+
 	$("#id_email").keyup(function( event ) {
 		$("#id_email").val(($(this).val()).toLowerCase());
+		$.ajax({
+        url: "{% url 'buscarEmailAjax' %}",
+        data: {'email': $(this).val()},
+        dataType: 'json',
+        success: function (data) {
+          if (data.email){
+			console.log("Email Inválido!!");
+			$("#id_email").removeClass("is-valid").addClass("is-invalid");
+			$("#id_email")[0].setCustomValidity("Email já Existe");
+          }
+          else{
+			console.log("Email OK");
+			$("#id_email").removeClass("is-invalid").addClass("is-valid");
+			$("#id_email")[0].setCustomValidity('');
+          }
+        }
+      });
 	});
+
 
 	$("#id_enderecoCompleto").keyup(function( event ) {
 		$("#id_enderecoCompleto").val(($(this).val()).toUpperCase());
@@ -332,21 +329,15 @@
 		  console.log("Novo Usuário Salvo Com Sucesso!");
           $('#id_form_novo_usuario').trigger("reset"); // Reseta o formulário
 	      $("button").prop("disabled",false);
-		  $('#id_modal_form_novo_usuario').modal('hide');
+          window.location.reload()
 		}else{
 		  console.log("Erro ao Salvar um Novo Usuário");
 	      $("button").prop("disabled",false);
+          alert(data.erros.email);
 		}
 	  }, 'json');
 	});
 	// ##########################################################################
-
-	function toggleDisabled(elem){
-	  elem.disabled = !elem.disabled;
-	}
-
-
-
 
 
 {% endblock %}

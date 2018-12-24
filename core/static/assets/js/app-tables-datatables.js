@@ -69,7 +69,7 @@ var App = (function () {
 
         "bSearch": true,
         "bLengthChange": false,
-        "pageLength": 10,
+        "pageLength": 5,
         "paging":   true,
         "responsive": true,
         "ordering": true,
