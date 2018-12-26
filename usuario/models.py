@@ -60,6 +60,7 @@ class Usuario(models.Model):
     admin = models.CharField('Usuário Administrador ?', max_length=25, choices=_FLAG_CHOICES, default="ON", null=True, blank=True)
     agendaPropria = models.CharField('Usuário com Agenda Própria ?', max_length=25, choices=_FLAG_CHOICES, default="ON", null=True, blank=True)
 
+    funcionalidadeUsuario = models.TextField("Funcionalidades", null=True, blank=True)
 
     # imagemPerfil = models.FileField(null=True, blank=True)
 

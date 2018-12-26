@@ -46,12 +46,14 @@ def novoUsuario(request):
             admin = dados['admin']
             agendaPropria = dados['agendaPropria']
 
+            funcionalidadeUsuario = dados['funcionalidadeUsuario']
+
             try:
                 user = User.objects.create_user(username=email, email=email, password="123")
                 user.save()
                 Usuario.objects.create(user=user, celular=celular, telefone=telefone, nomeCompleto=nomeCompleto, email=email,
                                                  titulo=titulo, controleEstoque=controleEstoque, controleProntuario=controleProntuario,
-                                                 ativo=ativo, admin=admin, agendaPropria=agendaPropria).save()
+                                                 ativo=ativo, admin=admin, agendaPropria=agendaPropria, funcionalidadeUsuario=funcionalidadeUsuario).save()
             except:
                 print("Ocorreu um Erro ao Criar um Novo Usuário")
                 return HttpResponse(json.dumps({'ok': False, 'msg': "Ocorreu um Erro ao Criar um Novo Usuário!", 'erros': {}}), content_type="application/json")

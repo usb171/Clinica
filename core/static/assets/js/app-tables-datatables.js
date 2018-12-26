@@ -19,39 +19,39 @@ var App = (function () {
         "<'row be-datatable-footer'<'col-sm-5'i><'col-sm-7'p>>"
     } );
 
-    $("#id_table_novoUsuario").dataTable({
-
-        "bSearch": true,
-        "bLengthChange": false,
-        "pageLength": 10,
-        "paging":   true,
-        "responsive": true,
-        "ordering": true,
-        "info":     true,
-
-        "language": {
-        "sEmptyTable": "Nenhum registro encontrado",
-        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-        "sInfoPostFix": "",
-        "sInfoThousands": ".",
-        "sLengthMenu": "_MENU_ resultados por página",
-        "sLoadingRecords": "Carregando...",
-        "sProcessing": "Processando...",
-        "sZeroRecords": "Nenhum registro encontrado",
-        "sSearch": "Pesquisar",
-        "oPaginate": {
-            "sNext": "Próximo",
-            "sPrevious": "Anterior",
-            "sFirst": "Primeiro",
-            "sLast": "Último"
-        },
-        "oAria": {
-            "sSortAscending": ": Ordenar colunas de forma ascendente",
-            "sSortDescending": ": Ordenar colunas de forma descendente"
-        }
-        },
+//    $("#id_table_novoUsuario").dataTable({
+//
+//        "bSearch": true,
+//        "bLengthChange": false,
+//        "pageLength": 10,
+//        "paging":   true,
+//        "responsive": true,
+//        "ordering": true,
+//        "info":     true,
+//
+//        "language": {
+//        "sEmptyTable": "Nenhum registro encontrado",
+//        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+//        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+//        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+//        "sInfoPostFix": "",
+//        "sInfoThousands": ".",
+//        "sLengthMenu": "_MENU_ resultados por página",
+//        "sLoadingRecords": "Carregando...",
+//        "sProcessing": "Processando...",
+//        "sZeroRecords": "Nenhum registro encontrado",
+//        "sSearch": "Pesquisar",
+//        "oPaginate": {
+//            "sNext": "Próximo",
+//            "sPrevious": "Anterior",
+//            "sFirst": "Primeiro",
+//            "sLast": "Último"
+//        },
+//        "oAria": {
+//            "sSortAscending": ": Ordenar colunas de forma ascendente",
+//            "sSortDescending": ": Ordenar colunas de forma descendente"
+//        }
+//        },
 
 //        buttons: [
 //            {
@@ -61,46 +61,48 @@ var App = (function () {
 //                }
 //            }
 //        ]
+//
+//
+//    });
 
-
-    });
-
-    $("#id_table_modal_novoUsuario").dataTable({
-
-        "bSearch": true,
-        "bLengthChange": false,
-        "pageLength": 5,
-        "paging":   true,
-        "responsive": true,
-        "ordering": true,
-        "info":     true,
-
-        "language": {
-        "sEmptyTable": "Nenhum registro encontrado",
-        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-        "sInfoPostFix": "",
-        "sInfoThousands": ".",
-        "sLengthMenu": "_MENU_ resultados por página",
-        "sLoadingRecords": "Carregando...",
-        "sProcessing": "Processando...",
-        "sZeroRecords": "Nenhum registro encontrado",
-        "sSearch": "Pesquisar",
-        "oPaginate": {
-            "sNext": "Próximo",
-            "sPrevious": "Anterior",
-            "sFirst": "Primeiro",
-            "sLast": "Último"
-        },
-        "oAria": {
-            "sSortAscending": ": Ordenar colunas de forma ascendente",
-            "sSortDescending": ": Ordenar colunas de forma descendente"
-        }
-        },
-
-
-    });
+//    $("#id_table_modal_novoUsuario").dataTable({
+//
+//        "bSearch": true,
+//        "bLengthChange": false,
+//        "pageLength": 5,
+//        "paging":   true,
+//        "responsive": true,
+//        "ordering": true,
+//        "info":     true,
+//
+//        "language": {
+//        "sEmptyTable": "Nenhum registro encontrado",
+//        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+//        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+//        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+//        "sInfoPostFix": "",
+//        "sInfoThousands": ".",
+//        "sLengthMenu": "_MENU_ resultados por página",
+//        "sLoadingRecords": "Carregando...",
+//        "sProcessing": "Processando...",
+//        "sZeroRecords": "Nenhum registro encontrado",
+//        "sSearch": "Pesquisar",
+//        "oPaginate": {
+//            "sNext": "Próximo",
+//            "sPrevious": "Anterior",
+//            "sFirst": "Primeiro",
+//            "sLast": "Último"
+//        },
+//        "oAria": {
+//            "sSortAscending": ": Ordenar colunas de forma ascendente",
+//            "sSortDescending": ": Ordenar colunas de forma descendente"
+//        }
+//        },
+//
+//
+//
+//
+//    });
 
     //Remove search & paging dropdown
     $("#table2").dataTable({

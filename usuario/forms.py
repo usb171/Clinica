@@ -20,6 +20,8 @@ class UsuarioForm(forms.Form):
     admin = forms.CharField(required=True)
     agendaPropria = forms.CharField(required=True)
 
+    funcionalidadeUsuario = forms.CharField(widget=forms.Textarea)
+
     def is_valid_from_form(self):
         return super(UsuarioForm, self).is_valid()
 
