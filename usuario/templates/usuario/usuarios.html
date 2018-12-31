@@ -33,7 +33,7 @@
 		<div class="row">
 			<div class="col-sm-8 col-md-8 col-lg-8 col-xl-8">
 				<div class="card-body">
-					<button class="btn btn-space btn-primary" data-toggle="modal" data-target="#id_modal_form_novo_usuario" type="button">Novo Usuário</button>
+					<button class="btn btn-space btn-primary" data-toggle="modal" id="id_button_modal_novoUsuario" type="button">Novo Usuário</button>
 				</div>
 			</div>
 		</div>
@@ -63,7 +63,7 @@
 								<td class="center">{{ usuario.admin }}</td>
 								<td class="center">{{ usuario.agendaPropria }}</td>
 								<td class="row">
-									<button class="btn btn-space btn-primary" data-toggle="id_modal_form_editar_usuario" type="button">Editar Usuário</button>
+									<button class="btn btn-space btn-primary" value="{{ usuario.pk }}" type="button">Editar Usuário</button>
 								</td>
 							</tr>
 							{% empty %}
@@ -82,25 +82,24 @@
 	</div>
 </div>
 
-<!--Modais Novo-->
-<div class="modal fade colored-header colored-header-primary " id="id_modal_form_novo_usuario" role="dialog">
+<!--Modal Usuário-->
+<div class="modal fade colored-header colored-header-primary " id="id_modal_form_usuario" role="dialog">
 	<div class="modal-dialog full-width">
 		<div class="modal-content">
 			<div class="modal-header modal-header-colored">
-				<h3 class="modal-title">Novo Usuário</h3>
+				<h3 class="modal-title" id="id_title" >Novo Usuário</h3>
 				<button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
 			</div>
 			<div class="modal-body">
 				<form  method="POST" id="id_form_novo_usuario">
 					{% csrf_token %}
-
 					<hr class="style-one">
 					<h2 class="pt-0 pb-5">Dados Gerais</h2>
 
 					<div class="form-group row pt-0">
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_nomeCompleto">Nome Completo</label>
-							<input class="form-control" type="text" id="id_nomeCompleto" name="nomeCompleto" placeholder="NILTON NONATO GARCIA JÚNIOR" required>
+							<input class="form-control" type="text" id="id_nomeCompleto" name="nomeCompleto" placeholder="Seu nome completo" required>
 						</div>
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_email">Email</label>
@@ -186,9 +185,10 @@
 							<h2>Acesso às Funcionalidades de Usuário</h2>
 							<div class="card  card-table">
 								<div class="card-body">
-									<table class="table table-striped table-hover table-fw-widget" id="id_table_modal_novoUsuario">
+									<table class="table table-striped table-hover table-fw-widget" id="id_table_funcionalidades">
 										<thead>
 										<tr>
+											<th style="width:2%;" class="center" hidden>Código</th>
 											<th style="width:40%;" class="center">Usuário</th>
 											<th style="width:20%;" class="center">Acesso a Agenda</th>
 											<th style="width:20%;" class="center">Acesso ao Financeiro</th>
@@ -197,7 +197,8 @@
 										</thead>
 										<tbody>
 										{% for usuario in usuarios %}
-										<tr class="odd gradeX center">
+										<tr class="odd gradeX center" id="{{usuario.pk}}">
+											<td hidden>{{usuario.pk}}</td>
 											<td class="center">{{ usuario.nomeCompleto }}</td>
 											<td class="center">
 												<select id="id_select_acesso_agenda_table_modal_{{ usuario.pk }}"
@@ -230,11 +231,22 @@
 												<h2>Você ainda não cadastrou nenhum médico</h2>
 											<td>
 										</tr>
+
 										{% endfor %}
 										</tbody>
 										<!--Campo invisível por guardar a configuração dos selects da tabela para o novo usuário-->
 										<input type="text" id="id_funcionalidadeUsuario" name="funcionalidadeUsuario" hidden>
 										<!--Campo invisível por guardar a configuração dos selects da tabela para o novo usuário-->
+
+										<!--&lt;!&ndash;Campo invisível que guarda se o tipo do formulário se é NOVO_USUARIO ou EDITAR_USUARIO&ndash;&gt;-->
+										<!--<input type="text" id="id_tipo_formulario" name="tipo_formulario" hidden>-->
+										<!--&lt;!&ndash;Campo invisível que guarda se o tipo do formulário se é NOVO_USUARIO ou EDITAR_USUARIO&ndash;&gt;-->
+
+										<!--Campo contendo o ID do usuário a ser editado-->
+										<input type="text" id="id_user" name="id_user" value="-1" hidden>
+										<!--Campo contendo o ID do usuário a ser editado-->
+
+										<input type="text" id="id_email_original" name="email_original" hidden>
 
 									</table>
 								</div>
@@ -245,17 +257,16 @@
 
 					<div class="form-group row text-right">
 						<div class="col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">
-							<button class="btn btn-space btn-primary btn-big" type="submit"><i class="icon mdi mdi-save"></i> Slavar</button>
-							<!--<button class="btn btn-space btn-secondary btn-lg">Cancelar</button>-->
+							<button class="btn btn-space btn-primary btn-big" type="submit" id="id_button_modal"><i class="icon mdi mdi-save"></i> Slavar Usuário</button>
 						</div>
 					</div>
 
 				</form>
 			</div>
-
 		</div>
 	</div>
 </div>
+
 
 
 {% endblock %}

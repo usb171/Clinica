@@ -7,58 +7,128 @@ from .forms import UsuarioForm
 import json
 
 
-def usuarios(request):
-    if request.method == 'GET' and request.user.is_authenticated:
-        contexto = {'usuarios': Usuario.objects.all()}
-        print(contexto)
-        return render(request, 'usuario/usuarios.html', contexto)
-    else:
-        return redirect('login')
+# def usuarios(request):
+#     if request.user.is_authenticated:
+#         contexto = {'usuarios': Usuario.objects.all()}
+#         return render(request, 'usuario/usuarios.html', contexto)
+#     else:
+#         return redirect('login')
+
 
 
 def buscarEmailAjax(request):
     if request.user.is_authenticated:
-        data = {'email': User.objects.filter(email=request.GET.get('email', None)).exists()}
+        email = request.GET.get('email', None)
+        email_original = request.GET.get('email_original', None)
+        if email_original == email:
+            data = {'email': False}
+        else:
+            data = {'email': User.objects.filter(email=request.GET.get('email', None)).exists()}
+
+        #print(email, " ", email_original, " flag: ", data['email'])
         return JsonResponse(data)
     else:
         return redirect('login')
 
-def novoUsuario(request):
-    if request.method == 'POST' and request.user.is_authenticated:
-        for key in request.POST.keys():
-            print(key, " ", request.POST[key])
+def buscarDadosUsuarioAjax(request):
+    if request.user.is_authenticated:
+        try:
+            usuario = Usuario.objects.get(id=request.GET.get('id_user', None))
+        except:
+            return redirect('login')
 
-        form = UsuarioForm(request.POST)
+        data = {
+                'id_user': usuario.pk,
+                'nomeCompleto': usuario.nomeCompleto,
+                'email': usuario.email,
+                'titulo': usuario.titulo,
+                'telefone': usuario.telefone,
+                'celular': usuario.celular,
+                'enderecoCompleto': usuario.enderecoCompleto,
+                'ativo': usuario.ativo,
+                'admin': usuario.admin,
+                'agendaPropria': usuario.agendaPropria,
+                'controleEstoque': usuario.controleEstoque,
+                'controleProntuario': usuario.controleProntuario,
+                'funcionalidadeUsuario': usuario.funcionalidadeUsuario,
+               }
+        return JsonResponse(data)
+    else:
+        return redirect('login')
 
-        if form.is_valid():
-            dados = form.cleaned_data
+def usuario(request):
 
-            email = dados['email']
-            celular = dados['celular']
-            telefone = dados['telefone']
-            nomeCompleto = dados['nomeCompleto']
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            contexto = {'usuarios': Usuario.objects.all()}
+            return render(request, 'usuario/usuarios.html', contexto)
+        elif request.method == 'POST':
+            # for key in request.POST.keys():
+            #     print(key, " ", request.POST[key])
 
-            titulo = dados['titulo']
-            controleEstoque = dados['controleEstoque']
-            controleProntuario = dados['controleProntuario']
+            form = UsuarioForm(request.POST)
 
-            ativo = dados['ativo']
-            admin = dados['admin']
-            agendaPropria = dados['agendaPropria']
+            if form.is_valid():
+                dados = form.cleaned_data
 
-            funcionalidadeUsuario = dados['funcionalidadeUsuario']
+                email = dados['email']
+                celular = dados['celular']
+                enderecoCompleto = dados['enderecoCompleto']
+                telefone = dados['telefone']
+                nomeCompleto = dados['nomeCompleto']
 
-            try:
-                user = User.objects.create_user(username=email, email=email, password="123")
-                user.save()
-                Usuario.objects.create(user=user, celular=celular, telefone=telefone, nomeCompleto=nomeCompleto, email=email,
-                                                 titulo=titulo, controleEstoque=controleEstoque, controleProntuario=controleProntuario,
-                                                 ativo=ativo, admin=admin, agendaPropria=agendaPropria, funcionalidadeUsuario=funcionalidadeUsuario).save()
-            except:
-                print("Ocorreu um Erro ao Criar um Novo Usuário")
-                return HttpResponse(json.dumps({'ok': False, 'msg': "Ocorreu um Erro ao Criar um Novo Usuário!", 'erros': {}}), content_type="application/json")
+                titulo = dados['titulo']
+                controleEstoque = dados['controleEstoque']
+                controleProntuario = dados['controleProntuario']
 
-            return HttpResponse(json.dumps({'ok': True, 'msg': "Usuário Salvo com Sucesso!", 'erros': {}}), content_type="application/json")
+                ativo = dados['ativo']
+                admin = dados['admin']
+                agendaPropria = dados['agendaPropria']
 
-        else:
-            return HttpResponse(json.dumps({'ok': False, 'msg':'Erro ao Tentar Concluír o Formulário', 'erros': {}}), content_type="application/json")
+                funcionalidadeUsuario = dados['funcionalidadeUsuario']
+
+                id_user = request.POST['id_user']
+
+                try:
+                    if Usuario.objects.filter(id=id_user).exists():# Caso exista o ID passado, edite esse Usuário
+                        usuario_obj = Usuario.objects.filter(id=id_user)
+                        usuario_obj.update(email=email,
+                                          ativo=ativo,
+                                          admin=admin,
+                                          titulo=titulo,
+                                          celular=celular,
+                                          telefone=telefone,
+                                          nomeCompleto=nomeCompleto,
+                                          agendaPropria=agendaPropria,
+                                          controleEstoque=controleEstoque,
+                                          enderecoCompleto=enderecoCompleto,
+                                          controleProntuario=controleProntuario,
+                                          funcionalidadeUsuario=funcionalidadeUsuario)
+                        User.objects.filter(id=usuario_obj[0].user.id).update(email=email, username=email)
+
+                    else:
+                        user = User.objects.create_user(username=email, email=email, password="123")
+                        user.save()
+                        Usuario.objects.create(user=user,
+                                               email=email,
+                                               ativo=ativo,
+                                               admin=admin,
+                                               titulo=titulo,
+                                               celular=celular,
+                                               telefone=telefone,
+                                               nomeCompleto=nomeCompleto,
+                                               agendaPropria=agendaPropria,
+                                               controleEstoque=controleEstoque,
+                                               enderecoCompleto=enderecoCompleto,
+                                               controleProntuario=controleProntuario,
+                                               funcionalidadeUsuario=funcionalidadeUsuario).save()
+                except:
+                    print("Aqui")
+                    return HttpResponse(json.dumps({'ok': False, 'msg': "Ocorreu um Erro ao Criar um Novo Usuário!", 'erros': {}}), content_type="application/json")
+                return HttpResponse(json.dumps({'ok': True, 'msg': "Usuário Salvo com Sucesso!", 'erros': {}}), content_type="application/json")
+            else:
+                return HttpResponse(json.dumps({'ok': False, 'msg':'Erro ao Tentar Concluír o Formulário', 'erros': {}}), content_type="application/json")
+
+
+    else:
+        return redirect('login')

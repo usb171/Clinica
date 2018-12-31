@@ -9,6 +9,7 @@ class UsuarioForm(forms.Form):
     email = forms.CharField(required=True)
     telefone = forms.CharField(required=False)
     celular = forms.CharField(required=True)
+    enderecoCompleto = forms.CharField(required=True)
 
     # Selects
     titulo = forms.CharField(required=True)
@@ -30,7 +31,7 @@ class UsuarioForm(forms.Form):
         if not valid:
             self.add_error(field=forms.ALL_FIELDS, error='Por favor, verifique os dados informados')
             return False
-        elif User.objects.filter(email=self.cleaned_data['email']).exists():
-            self.add_error(field='email', error='Email já cadastrado')
-            return False
+        # elif User.objects.filter(email=self.cleaned_data['email']).exists():
+        #     self.add_error(field='email', error='Email já cadastrado')
+        #     return False
         return valid

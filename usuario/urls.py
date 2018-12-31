@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import usuarios, novoUsuario, buscarEmailAjax
+from .views import usuario, buscarEmailAjax, buscarDadosUsuarioAjax
 
 
 urlpatterns = [
-    path('usuarios', usuarios, name='usuarios'),
-    path('novoUsuario', novoUsuario, name='novoUsuario'),
+    path('meusUsuarios', usuario, name='meusUsuarios'),
     path('buscarEmailAjax', buscarEmailAjax, name='buscarEmailAjax'),
+    path('buscarDadosUsuarioAjax', buscarDadosUsuarioAjax, name='buscarDadosUsuarioAjax'),
 ]

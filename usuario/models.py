@@ -49,6 +49,7 @@ class Usuario(models.Model):
     email = models.CharField('Email', max_length=120, null=True, blank=True, unique=True)
     telefone = models.CharField('Telefone', max_length=20, null=True, blank=True)
     celular = models.CharField('Celular', max_length=20, null=True, blank=True)
+    enderecoCompleto = models.CharField('Endereço Completo', max_length=220, null=True, blank=True)
 
     # Selects
     titulo = models.CharField('Título', max_length=25, choices=_TITULE_CHOICES, default="MÉDICO", null=True, blank=True)
