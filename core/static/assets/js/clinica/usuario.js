@@ -153,6 +153,14 @@ $('#id_table_novoUsuario tbody ').on('click', 'tr button', function () {
 
             setSelectTableNovoUsuario(tabela_funcionalidades, data.funcionalidadeUsuario); // Seta as funcionalidades na tabela
 
+            if(data.id_user == data.id_user_logado){
+                $('#id_modal_form_usuario form select[id="id_selectAtivarAdministrador"]').css('pointer-events','none');
+                $('#id_modal_form_usuario form select[id="id_selectAtivarAdministrador"]').css('border-color','#a9a211');
+            }else{
+                $('#id_modal_form_usuario form select[id="id_selectAtivarAdministrador"]').css('border-color','#d5d8de');
+                $('#id_modal_form_usuario form select[id="id_selectAtivarAdministrador"]').css('pointer-events','visible');
+            }
+
         }
     });
 });

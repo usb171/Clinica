@@ -47,7 +47,6 @@ def dashboard(request):
             return redirect('login')
 
 def logout(request):
-    print("Saindo")
     auth_logout(request)
     return redirect('login')
 

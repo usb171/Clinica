@@ -4,16 +4,29 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from .forms import UsuarioForm
+from django.contrib.auth.models import Permission
+
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 import json
 
 
-# def usuarios(request):
-#     if request.user.is_authenticated:
-#         contexto = {'usuarios': Usuario.objects.all()}
-#         return render(request, 'usuario/usuarios.html', contexto)
-#     else:
-#         return redirect('login')
+def conta(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = PasswordChangeForm(request.user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)  # Important!
+                return HttpResponse(json.dumps({'ok': True, 'msg': "Atualizado com sucesso", 'erros':{}}), content_type="application/json")
+            else:
+                return HttpResponse(json.dumps({'ok': False, 'msg': "Erro nos seguintes campos", 'erros': form.errors}), content_type="application/json")
 
+        else:
+            form = PasswordChangeForm(request.user)
+            return render(request, 'usuario/conta.html', {'form': form})
 
 
 def buscarEmailAjax(request):
@@ -24,8 +37,6 @@ def buscarEmailAjax(request):
             data = {'email': False}
         else:
             data = {'email': User.objects.filter(email=request.GET.get('email', None)).exists()}
-
-        #print(email, " ", email_original, " flag: ", data['email'])
         return JsonResponse(data)
     else:
         return redirect('login')
@@ -38,6 +49,7 @@ def buscarDadosUsuarioAjax(request):
             return redirect('login')
 
         data = {
+                'id_user_logado': Usuario.objects.get(user=request.user).id,
                 'id_user': usuario.pk,
                 'nomeCompleto': usuario.nomeCompleto,
                 'email': usuario.email,
@@ -61,6 +73,9 @@ def usuario(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
             contexto = {'usuarios': Usuario.objects.all()}
+            # print(request.user.has_perm("usuario.add_usuario"))
+            # print(request.user.user_permissions.all().values_list('codename', flat=True))
+            # print(list(map(lambda permissao: permissao.name, Permission.objects.filter(user=request.user))))
             return render(request, 'usuario/usuarios.html', contexto)
         elif request.method == 'POST':
             # for key in request.POST.keys():
@@ -104,7 +119,13 @@ def usuario(request):
                                           enderecoCompleto=enderecoCompleto,
                                           controleProntuario=controleProntuario,
                                           funcionalidadeUsuario=funcionalidadeUsuario)
-                        User.objects.filter(id=usuario_obj[0].user.id).update(email=email, username=email)
+
+                        user_obj = User.objects.filter(id=usuario_obj[0].user.id)
+                        if not user_obj[0].is_staff:
+                            user_obj.update(email=email, username=email, is_superuser=True if admin == "ON" else False, is_staff=False)
+                        else:
+                            user_obj.update(email=email, username=email, is_superuser=True if admin == "ON" else False, is_staff=True)
+
 
                     else:
                         user = User.objects.create_user(username=email, email=email, password="123")
@@ -128,7 +149,5 @@ def usuario(request):
                 return HttpResponse(json.dumps({'ok': True, 'msg': "Usuário Salvo com Sucesso!", 'erros': {}}), content_type="application/json")
             else:
                 return HttpResponse(json.dumps({'ok': False, 'msg':'Erro ao Tentar Concluír o Formulário', 'erros': {}}), content_type="application/json")
-
-
     else:
         return redirect('login')

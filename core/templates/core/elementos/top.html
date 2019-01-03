@@ -10,11 +10,11 @@
                   <div class="user-info">
                     <div class="user-name">{{request.session.nomeCompleto}}</div>
                     <div class="user-position online">Online</div>
-                  </div><a class="dropdown-item" href="#"><span class="icon mdi mdi-face"></span>Conta</a><a class="dropdown-item" href="#"><span class="icon mdi mdi-settings"></span>Configurações</a><a class="dropdown-item" href="{% url 'logout' %}"><span class="icon mdi mdi-power"></span>Sair</a>
+                  </div><a class="dropdown-item" href="{% url 'conta' %}"><span class="icon mdi mdi-face"></span>Conta</a><a class="dropdown-item" href="#"><span class="icon mdi mdi-settings"></span>Configurações</a><a class="dropdown-item" href="{% url 'logout' %}"><span class="icon mdi mdi-power"></span>Sair</a>
                 </div>
               </li>
             </ul>
-            <!--<div class="page-title"><span>Blank Page</span></div>-->
+            <div class="page-title"><span>{{user}}</span></div>
             <ul class="nav navbar-nav float-right be-icons-nav">
               <li class="nav-item dropdown"><a class="nav-link be-toggle-right-sidebar" href="#" role="button" aria-expanded="false"><span class="icon mdi mdi-settings"></span></a></li>
               <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="icon mdi mdi-notifications"></span><span class="indicator"></span></a>
