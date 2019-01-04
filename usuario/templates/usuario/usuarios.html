@@ -91,7 +91,11 @@
 	<div class="modal-dialog full-width">
 		<div class="modal-content">
 			<div class="modal-header modal-header-colored">
+				{% if not perms.usuario.change_usuario %}
+				<h3 class="modal-title">Visualizar Usuário</h3>
+				{% else %}
 				<h3 class="modal-title" id="id_title">Novo Usuário</h3>
+				{% endif %}
 				<button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
 			</div>
 			<div class="modal-body">

@@ -71,6 +71,7 @@ var tabela_novoUsuario = $("#id_table_novoUsuario").DataTable({
         }
     },
 });
+$('.button_novoUsuario').append($('#id_div_button')); // Posiciona o button novoUsuario no cabeçalho da tabela
 var tabela_funcionalidades =  $("#id_table_funcionalidades").DataTable({
 
         "bSearch": true,
@@ -106,7 +107,6 @@ var tabela_funcionalidades =  $("#id_table_funcionalidades").DataTable({
         },
     });
 //Tabelas/////////////////////////////////////////////////////////////////////
-
 
 
 // Button /////////////////////////////////////////
@@ -171,6 +171,7 @@ $('#id_table_novoUsuario tbody ').on('click', 'tr button', function () {
     });
 });
 // Button ////////////////////////////////////////
+
 /**
  * Busca os atributos json de cada Select;
  * Separa o ID do usuário e seus devidos campos de acesso;
@@ -215,7 +216,7 @@ function setSelectTableNovoUsuario(table, json){
 }
 
 
-// Formulários //////////////////////////////////
+// Formulários /////////////////////////////////////
 $('#id_form_novo_usuario').submit(function(e){
     $("#id_funcionalidadeUsuario").val(getSelectTableNovoUsuario(tabela_funcionalidades));
     $("button").prop("disabled",true);
@@ -231,7 +232,9 @@ $('#id_form_novo_usuario').submit(function(e){
         }
     }, 'json');
 });
-// Formulários //////////////////////////////////
+// Formulários ////////////////////////////////////
 
-
-$('.button_novoUsuario').append($('#id_div_button'));
+//Permissões //////////////////////////////////////
+if($("#id_button_modal").val() == undefined) $('form *').prop('disabled', true); // Desativa todos os campos do formulário para edição
+else $('form *').prop('disabled', false); // Reativa todos os campos do formulário para edição
+//Permissões //////////////////////////////////////
