@@ -34,6 +34,11 @@ $("#id_email").keyup(function( event ) {
 
 //Tabelas////////////////////////////////////////////////////////////////////
 var tabela_novoUsuario = $("#id_table_novoUsuario").DataTable({
+    dom:
+        "<'row be-datatable-header'<'col-sm-6 col-md-6 col-lg-6 col-xl-6' <'button_novoUsuario'>><'col-sm-6'f>>" +
+        "<'row be-datatable-body'<'col-sm-12'tr>>" +
+        "<'row be-datatable-footer'<'col-sm-5'i><'col-sm-7'p>>",
+
     "bSearch": true,
     "bLengthChange": false,
     "pageLength": 10,
@@ -67,6 +72,7 @@ var tabela_novoUsuario = $("#id_table_novoUsuario").DataTable({
     },
 });
 var tabela_funcionalidades =  $("#id_table_funcionalidades").DataTable({
+
         "bSearch": true,
         "bLengthChange": false,
         "pageLength": 5,
@@ -209,9 +215,6 @@ function setSelectTableNovoUsuario(table, json){
 }
 
 
-
-
-
 // Formulários //////////////////////////////////
 $('#id_form_novo_usuario').submit(function(e){
     $("#id_funcionalidadeUsuario").val(getSelectTableNovoUsuario(tabela_funcionalidades));
@@ -228,6 +231,7 @@ $('#id_form_novo_usuario').submit(function(e){
         }
     }, 'json');
 });
-
 // Formulários //////////////////////////////////
 
+
+$('.button_novoUsuario').append($('#id_div_button'));

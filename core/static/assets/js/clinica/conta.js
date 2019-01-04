@@ -6,7 +6,7 @@ $('#id_form_nova_senha').submit(function(e){
 
 		if(data.ok){
 			$('#id_modal').modal('show')
-			setTimeout(function(){location.href="{% url 'logout' %}"}, 3000);
+			setTimeout(function(){location.href="/logout"}, 3000);
 		}else{
 
 			$("#id_old_password").removeClass("is-invalid").addClass("is-valid");
