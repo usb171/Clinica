@@ -1,3 +1,8 @@
+// Seleciona o item de menu //////////////////
+$('#id_list_menu_usuario').addClass('active');
+$('#id_item_meusUsuarios').addClass('active');
+// Seleciona o item de menu //////////////////
+
 // Mascaras //////////////////////////////////
 $("#id_telefone").mask("+ 55 (99) 9999-9999");
 $("#id_celular").mask("+ 55 (99) 99999-9999");
@@ -72,6 +77,8 @@ var tabela_novoUsuario = $("#id_table_novoUsuario").DataTable({
     },
 });
 $('.button_novoUsuario').append($('#id_div_button')); // Posiciona o button novoUsuario no cabeçalho da tabela
+$('#id_div_button').removeAttr('hidden'); // Exibe o button novoPaciente no cabeçalho da tabela
+
 var tabela_funcionalidades =  $("#id_table_funcionalidades").DataTable({
 
         "bSearch": true,

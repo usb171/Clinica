@@ -28,7 +28,6 @@ def conta(request):
             form = PasswordChangeForm(request.user)
             return render(request, 'usuario/conta.html', {'form': form})
 
-
 def buscarEmailAjax(request):
     if request.user.is_authenticated:
         email = request.GET.get('email', None)
@@ -73,9 +72,6 @@ def usuario(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
             contexto = {'usuarios': Usuario.objects.all()}
-            # print(request.user.has_perm("usuario.add_usuario"))
-            # print(request.user.user_permissions.all().values_list('codename', flat=True))
-            # print(list(map(lambda permissao: permissao.name, Permission.objects.filter(user=request.user))))
             return render(request, 'usuario/usuarios.html', contexto)
         elif request.method == 'POST':
             # for key in request.POST.keys():
