@@ -25975,7 +25975,7 @@ fieldset[disabled] .full-calendar .fc-button.active {
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow b:after {
-  content: "\f2f9";
+  /*content: "\f2f9";*/
   font-family: "Material Icons";
   font-size: 1.923rem;
   font-weight: normal;
@@ -26027,7 +26027,7 @@ fieldset[disabled] .full-calendar .fc-button.active {
 }
 
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b:after {
-  content: "\f2f9";
+  /*content: "\f2f9";*/
 }
 
 .select2-container--default .select2-results__group {
@@ -26080,7 +26080,7 @@ fieldset[disabled] .full-calendar .fc-button.active {
 }
 
 .select2.select2-lg + .select2-container--default .select2-selection--single, .select2.input-lg + .select2-container--default .select2-selection--single {
-  height: 4.385rem;
+  height: 3.692rem;
   padding: 5px 0;
   font-weight: 300;
   border-radius: 2px;

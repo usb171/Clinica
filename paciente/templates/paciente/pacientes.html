@@ -18,6 +18,12 @@
 
 
 
+
+
+
+
+
+
 </style>
 {% endblock %}
 
@@ -97,16 +103,16 @@
 
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_nomeCompleto">Nome Completo</label>
+								<label for="id_nomeCompleto">Nome Completo *</label>
 								<input class="form-control" type="text" id="id_nomeCompleto" name="nomeCompleto" placeholder="Nome completo do paciente"
 									   required>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_cpf">CPF</label>
-								<input class="form-control" type="text" id="id_cpf" name="cpf" placeholder="000.000.000-00" required>
+								<label for="id_cpf">CPF *</label>
+								<input class="form-control is-invalid" type="text" id="id_cpf" name="cpf" placeholder="000.000.000-00" required>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_sexo">Sexo</label>
+								<label for="id_sexo">Sexo *</label>
 								<select id="id_sexo" name="sexo" class="form-control">
 									<option value="MASCULINO" selected>MASCULINO</option>
 									<option value="FEMENINO">FEMENINO</option>
@@ -121,7 +127,7 @@
 								<input class="form-control" type="text" id="id_dataNascimento" name="dataNascimento" placeholder="04/08/1993" required>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_estadoCivil">Estado Civil</label>
+								<label for="id_estadoCivil">Estado Civil *</label>
 								<select id="id_estadoCivil" name="estadoCivil" class="form-control">
 									<option value="SOLTEIRO selected">SOLTEIRO</option>
 									<option value="CASADO">CASADO</option>
@@ -968,7 +974,7 @@
 								<input class="form-control" type="text" id="id_telefone" name="telefone" placeholder="+ 55 (99) 9999-9999">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_celular">Celular</label>
+								<label for="id_celular">Celular *</label>
 								<input class="form-control" type="text" id="id_celular" name="celular" placeholder="+ 55 (99) 99999-9999" required>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
@@ -982,55 +988,120 @@
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_cep">CEP</label>
-								<input class="form-control" type="text" id="id_cep" name="cep" placeholder="64082-550" required>
+								<input class="form-control is-invalid" type="text" id="id_cep" name="cep" placeholder="64082-550" required>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_numero">Número</label>
-								<input class="form-control" type="text" id="id_numero" name="numero" placeholder="28" required>
+								<input class="form-control" type="text" id="id_numero" name="numero" placeholder="" required>
 							</div>
+							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
+								<label for="id_rua">Rua</label>
+								<input class="form-control" type="text" id="id_rua" name="rua" placeholder="" required>
+							</div>
+						</div>
+
+						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_quadra">Quadra</label>
-								<input class="form-control" type="text" id="id_quadra" name="quadra" placeholder="61" required>
+								<input class="form-control" type="text" id="id_quadra" name="quadra" placeholder="" required>
+							</div>
+							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
+								<label for="id_bairro">Bairro *</label>
+								<input class="form-control" type="text" id="id_bairro" name="cep" placeholder="" required>
+							</div>
+							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
+								<label for="id_cidade">Cidade *</label>
+								<input class="form-control" type="text" id="id_cidade" name="cep" placeholder="" required>
 							</div>
 						</div>
-
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_bairro">Bairro</label>
-								<input class="form-control" type="text" id="id_bairro" name="cep" placeholder="ILHOTAS" required>
-							</div>
-							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_cidade">Cidade</label>
-								<input class="form-control" type="text" id="id_cidade" name="cep" placeholder="TERESINA" required>
-							</div>
-							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_complemento">Complemento</label>
-								<input class="form-control" type="text" id="id_complemento" name="complemento" placeholder="Em frente à praça"
-									   required>
-							</div>
-						</div>
-
-						<hr class="style-one">
-						<h2 class="pt-0 pb-5">Convênio</h2>
-						<div class="form-group row pt-0">
-							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_convenio">Convênio</label>
-								<select id="id_convenio" name="convenio" class="form-control">
-									<option value="XYZ selected">XYZ</option>
-									<option value="XYZ selected">XYZ</option>
-									<option value="XYZ selected">XYZ</option>
-									<option value="XYZ selected">XYZ</option>
+								<label for="id_estado">Estado *</label>
+								<select id="id_estado" name="estado" class="form-control">
+									<option value=""></option>
+									<option value="AC">AC</option>
+									<option value="AL">AL</option>
+									<option value="AP">AP</option>
+									<option value="AM">AM</option>
+									<option value="BA">BA</option>
+									<option value="CE">CE</option>
+									<option value="DF">DF</option>
+									<option value="ES">ES</option>
+									<option value="GO">GO</option>
+									<option value="MA">MA</option>
+									<option value="MT">MT</option>
+									<option value="MS">MS</option>
+									<option value="MG">MG</option>
+									<option value="PA">PA</option>
+									<option value="PB">PB</option>
+									<option value="PR">PR</option>
+									<option value="PE">PE</option>
+									<option value="PI">PI</option>
+									<option value="RJ">RJ</option>
+									<option value="RN">RN</option>
+									<option value="RS">RS</option>
+									<option value="RO">RO</option>
+									<option value="RR">RR</option>
+									<option value="SC">SC</option>
+									<option value="SP">SP</option>
+									<option value="SE">SE</option>
+									<option value="TO">TO</option>
 								</select>
 							</div>
-							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_numeroCarteira">Número da Carteira</label>
-								<input class="form-control" type="text" id="id_numeroCarteira" name="numeroCarteira" placeholder="00000000" required>
-							</div>
-							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_validacaoConvenio">Validação do Convênio</label>
-								<input class="form-control" type="text" id="id_validacaoConvenio" name="validacaoConvenio" placeholder="00/00/00" required>
+							<div class="col-sm-8 col-lg-8 mb-3 mb-sm-0">
+								<label for="id_complemento">Complemento</label>
+								<input class="form-control" type="text" id="id_complemento" name="complemento" required>
 							</div>
 						</div>
+						<hr class="style-one">
+
+
+						<div class="row">
+							<div class="col-sm-6 col-lg-6"><h2 class="pt-0 pb-5">Convênio</h2></div>
+							<div class="col-sm-6 col-lg-6  icon-visible text-right">
+								<div class="icon-container">
+									<div class="icon"><span class="mdi mdi-plus-circle"></span></div>
+									<span class="icon-class">Convênio</span>
+								</div>
+							</div>
+						</div>
+
+						<table class="table table-striped table-hover table-fw-widget" id="id_table_convenio">
+							<thead>
+							<tr>
+								<th style="width:33%;" >Convênio</th>
+								<th style="width:33%;" >Número Carteira</th>
+								<th style="width:33%;" >Validação</th>
+								<th style="width:1%;">Ação</th>
+							</tr>
+							</thead>
+
+							<tbody>
+							<tr class="odd gradeX center">
+								<td>
+									<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">
+										<option value="PLANO A selected">PLANO A</option>
+										<option value="PLANO B">PLANO B</option>
+										<option value="PLANO C">PLANO C</option>
+										<option value="PLANO D">PLANO D</option>
+									</select>
+								</td>
+								<td><input class="form-control" type="text" id="id_numeroCarteira" name="numeroCarteira" placeholder="00000000" required>
+								</td>
+								<td><input class="form-control" type="text" id="id_validacaoConvenio" name="validacaoConvenio" placeholder="00/00/00" required>
+								</td>
+								<td>
+									<div class="icon-container">
+										<div class="icon"><span class="mdi mdi-minus-circle"></span></div>
+										<span class="icon-class">Convênio</span>
+
+									</div>
+								</td>
+							</tr>
+
+							</tbody>
+						</table>
+
 
 						<hr class="style-one">
 						<h2 class="pt-0 pb-5">Família</h2>
