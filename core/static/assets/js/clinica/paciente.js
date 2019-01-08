@@ -44,21 +44,11 @@ $("#id_enderecoCompleto").keyup(function(event){$("#id_enderecoCompleto").val(($
 
 
 //Tabelas////////////////////////////////////////////////////////////////////
-var tabela_convenio = $("#id_table_convenio").DataTable({
- dom:
-        "<'row be-datatable-header'<'col-sm-6 col-md-6 col-lg-6 col-xl-6' <'button_novoPaciente'>><'col-sm-6'f>>" +
-        "<'row be-datatable-body'<'col-sm-12'tr>>" +
-        "<'row be-datatable-footer'<'col-sm-5'i><'col-sm-7'p>>",
-    //dom:"<'row be-datatable-body'<'col-sm-12'tr>>",
-    "bSearch": false,
-    "bLengthChange": false,
-    "pageLength": 5,
-    "paging":   false,
-    "responsive": false,
-    "ordering": false,
-    "info":     false,
-
+$('#id_mais_um_convenio').on( 'click', function () {
+    $("#id_")
 });
+
+
 var tabela_novoPaciente = $("#id_table_novoPaciente").DataTable({
     dom:
         "<'row be-datatable-header'<'col-sm-6 col-md-6 col-lg-6 col-xl-6' <'button_novoPaciente'>><'col-sm-6'f>>" +
@@ -117,31 +107,56 @@ $(".tags").select2({tags: true, width: '100%'}); //Select2 tags
 
 
 
+function remove_linha_convenho(count){
+    $("#id_div_grupo_convenio").find("[count='" + count + "']").remove();
+    $("#id_grupo_convenio").val(get_json_convenho());
+}
+
+function get_json_convenho(){
+    var grupos_size  = $("#id_div_grupo_convenio .form-group.row").length;
+    var out = JSON.parse("{}");
+    for(var i = 0; i < grupos_size; i++){
+        var grupo = $($("#id_div_grupo_convenio .form-group.row")[i]);
+        out["'"+grupo.attr('count')+"'"] = "{ 'convenio': "+ grupo.find('select').val() + ", 'numero':" + $(grupo.find('input')[0]).val() + ", 'validade':" + $(grupo.find('input')[1]).val() + "}";
+    }
+    return JSON.stringify(out);
+}
 
 
 
 
-
-
-$("#id_link_mais_um_convenio").click(function(envent){
+$("#id_button_mais_um_convenio").click(function(envent){
     $("#id_div_grupo_convenio").append(
-    '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0" id='+"id_select_convenio_"+'>' +
-       '<label for="id_convenio">Convênio</label>' +
-       '<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">' +
-           '<option value="PLANO A selected">PLANO A</option>' +
-           '<option value="PLANO B">PLANO B</option>' +
-           '<option value="PLANO C">PLANO C</option>' +
-           '<option value="PLANO D">PLANO D</option>' +
-       '</select>' +
-    '</div>' +
-   '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">'+
-        '<label for="id_numeroCarteira">Número da Carteira</label>' +
-        '<input class="form-control" type="text" id="id_numeroCarteira" name="numeroCarteira" placeholder="00000000" required>' +
-    '</div>' +
-    '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
-        '<label for="id_validacaoConvenio">Validação do Convênio</label>' +
-        '<input class="form-control" type="text" id="id_validacaoConvenio" name="validacaoConvenio" placeholder="00/00/00" required>' +
-    '</div>'+
-    '<script>$(".select2").select2({ width: "100%"});$(".tags").select2({tags: true, width: "100%"});</script>'
+        '<div class="form-group row pt-0 pb-0" count='+$("#id_div_grupo_convenio .form-group.row").length+'>' +
+            '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
+                '<label for="id_convenio">Convênio *</label>' +
+                '<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">' +
+                    '<option value="PLANO A selected">PLANO A</option>' +
+                    '<option value="PLANO B">PLANO B</option>' +
+                    '<option value="PLANO C">PLANO C</option>' +
+                    '<option value="PLANO D">PLANO D</option>' +
+                '</select>' +
+            '</div>' +
+            '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
+                '<label for="id_convenioCarteira">Número Carteira *</label>' +
+                '<input class="form-control" type="text" id="id_convenioCarteira" name="numeroCarteira" required>' +
+            '</div>' +
+            '<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">' +
+                '<label for="id_convenioValidade">Validade *</label>' +
+                '<input class="form-control" type="text" id="id_convenioValidade" name="convenioValidade" required>' +
+            '</div>' +
+            '<div class="col-sm-1 col-lg-1 icon-container icon-visible text-right" id='+"id_button_menos_um_convenio_"+ $("#id_div_grupo_convenio .form-group.row").length +'>' +
+                '<div class="icon"><span class="mdi mdi-minus-circle" ></span></div>' +
+            '</div>' +
+        '</div>' +
+        '<script> $(".select2").select2({ width: "100%"}); $(".tags").select2({tags: true, width: "100%"});'+
+            '$('+"id_button_menos_um_convenio_"+ $("#id_div_grupo_convenio .form-group.row").length +').click(function(envent){'+
+                'var count = ' + $("#id_div_grupo_convenio .form-group.row").length + ';'+
+                'remove_linha_convenho(count);' +
+            '});'+
+        '</script>'
     );
 });
+
+
+
