@@ -1,10 +1,9 @@
 from django import forms
-from .models import Usuario
+from .models import Paciente
 from django.contrib.auth.models import User
 
-class UsuarioForm(forms.Form):
+class PacienteForm(forms.Form):
 
-    #user = forms.OneToOneField(required=True)
     nomeCompleto = forms.CharField(required=True)
     email = forms.CharField(required=True)
     telefone = forms.CharField(required=False)

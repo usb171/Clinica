@@ -16,18 +16,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 </style>
 {% endblock %}
 
@@ -127,21 +115,21 @@
 
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_cpf">Data Nascimento</label>
+								<label for="id_cpf">Data Nascimento *</label>
 								<input class="form-control" type="text" id="id_dataNascimento" name="dataNascimento" placeholder="04/08/1993" required>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_estadoCivil">Estado Civil *</label>
-								<select id="id_estadoCivil" name="estadoCivil" class="form-control">
-									<option value="SOLTEIRO selected">SOLTEIRO</option>
-									<option value="CASADO">CASADO</option>
-									<option value="DIVORCIADO">DIVORCIADO</option>
-									<option value="VIUVO">VIUVO</option>
+								<select id="id_estadoCivil" name="estadoCivil" class="form-control select2 select2-lg">
+									<option value="SOLTEIRO(A)" selected>SOLTEIRO(A)</option>
+									<option value="CASADO(A)">CASADO(A)</option>
+									<option value="DIVORCIADO(A)">DIVORCIADO(A)</option>
+									<option value="VIUVO(A)">VIUVO(A)</option>
 								</select>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_profissao">Profissão</label>
-								<select id="id_profissao" name="profissao" class="select2 select2-lg" multiple="">
+								<label for="id_profissao">Profissão *</label>
+								<select id="id_profissao" name="profissao" class="select2 select2-lg" multiple="" required>
 									<option></option>
 									<option value="">Selecione a Profissão</option>
 									<option value="Administrador(a)">Administrador(a)</option>
@@ -965,7 +953,7 @@
 						<div class="form-group row pt-0">
 							<div class="col-sm-12 col-lg-12 mb-3 mb-sm-0">
 								<label for="id_observacao">Observação</label>
-								<textarea class="form-control" id="id_observacao" name="observacao" required
+								<textarea class="form-control" id="id_observacao" name="observacao"
 										  style="margin-top: 0px; margin-bottom: 0px; height: 104px;"></textarea>
 							</div>
 						</div>
@@ -983,7 +971,7 @@
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_email">Email</label>
-								<input class="form-control" type="text" id="id_email" name="email" placeholder="paciente@gmail.com" required>
+								<input class="form-control" type="email" id="id_email" name="email" placeholder="paciente@gmail.com" required>
 							</div>
 						</div>
 
@@ -992,14 +980,14 @@
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_cep">CEP</label>
-								<input class="form-control is-invalid" type="text" id="id_cep" name="cep" placeholder="64082-550" required>
+								<input class="form-control is-invalid" type="text" id="id_cep" name="cep" placeholder="64082-550">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_numero">Número</label>
-								<input class="form-control" type="text" id="id_numero" name="numero" placeholder="" required>
+								<input class="form-control" type="text" id="id_numero" name="numero" placeholder="">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_rua">Rua</label>
+								<label for="id_rua">Rua *</label>
 								<input class="form-control" type="text" id="id_rua" name="rua" placeholder="" required>
 							</div>
 						</div>
@@ -1007,7 +995,7 @@
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_quadra">Quadra</label>
-								<input class="form-control" type="text" id="id_quadra" name="quadra" placeholder="" required>
+								<input class="form-control" type="text" id="id_quadra" name="quadra" placeholder="">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_bairro">Bairro *</label>
@@ -1021,8 +1009,8 @@
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_estado">Estado *</label>
-								<select id="id_estado" name="estado" class="form-control">
-									<option value=""></option>
+								<select id="id_estado" name="estado" class="form-control select2 select2-lg">
+									<option></option>
 									<option value="AC">AC</option>
 									<option value="AL">AL</option>
 									<option value="AP">AP</option>
@@ -1054,7 +1042,7 @@
 							</div>
 							<div class="col-sm-8 col-lg-8 mb-3 mb-sm-0">
 								<label for="id_complemento">Complemento</label>
-								<input class="form-control" type="text" id="id_complemento" name="complemento" required>
+								<input class="form-control" type="text" id="id_complemento" name="complemento">
 							</div>
 						</div>
 						<hr class="style-one">
@@ -1068,14 +1056,14 @@
 						</div>
 
 						<div id="id_div_grupo_convenio">
-							<div class="form-group row pt-0"  count="0">
+							<div class="form-group row pt-0" count="0">
 								<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 									<label for="id_convenio">Convênio *</label>
-									<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">
-										<option value="PLANO A "selected>PLANO A</option>
-										<option value="PLANO B">PLANO B</option>
-										<option value="PLANO C">PLANO C</option>
-										<option value="PLANO D">PLANO D</option>
+									<select id="id_convenio" name="convenio" class="form-control select2 select2-lg" required>
+										<option></option>
+										{% for convenio in convenios %}
+										<option value="{{ convenio.nome }}">{{ convenio.nome }}</option>
+										{% endfor %}
 									</select>
 								</div>
 								<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
@@ -1092,26 +1080,34 @@
 						<input id="id_grupo_convenio" name="grupo_convenio" hidden>
 
 
-						<hr class="style-one">
-						<h2 class="pt-0 pb-5">Família</h2>
-						<div class="form-group row pt-0">
-							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_nomeFamiliar">Nome do Familiar</label>
-								<input class="form-control" type="text" id="id_nomeFamiliar" name="nomeFamiliar" required>
-							</div>
-							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_grauParentesco">Grau de Parentesco</label>
-								<select id="id_grauParentesco" name="grauParentesco" class="form-control">
-									<option value="PAI selected">PAI</option>
-									<option value="MAE">MÃE</option>
-									<option value="TIO">TIO</option>
-									<option value="IRMAO">IRMAO</option>
-									<option value="SOBRINHO">SOBRINHO</option>
-									<option value="PRIMO">PRIMO</option>
-									<option value="AVO">AVO</option>
-								</select>
-							</div>
-						</div>
+						<!--<hr class="style-one">-->
+						<!--<h2 class="pt-0 pb-5">Família</h2>-->
+						<!--<div class="form-group row pt-0">-->
+							<!--<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">-->
+								<!--<label for="id_nomeFamiliar">Nome do Familiar</label>-->
+								<!--<select id="id_nomeFamiliar" name="nomeFamiliar" class="form-control select2 select2-lg">-->
+									<!--<option value="PLANO A " selected>PLANO A</option>-->
+									<!--<option value="PLANO B">PLANO B</option>-->
+									<!--<option value="PLANO C">PLANO C</option>-->
+									<!--<option value="PLANO D">PLANO D</option>-->
+								<!--</select>-->
+							<!--</div>-->
+							<!--<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">-->
+								<!--<label for="id_grauParentesco">Grau de Parentesco</label>-->
+								<!--<select id="id_grauParentesco" name="grauParentesco" class="form-control select2 select2-lg">-->
+									<!--<option></option>-->
+									<!--<option value="PAI">PAI</option>-->
+									<!--<option value="MAE">MÃE</option>-->
+									<!--<option value="FILHO">FILHO(A)</option>-->
+									<!--<option value="TIO">TIO(A)</option>-->
+									<!--<option value="IRMAO">IRMAO(Ã)</option>-->
+									<!--<option value="SOBRINHO">SOBRINHO(A)</option>-->
+									<!--<option value="PRIMO">PRIMO(A)</option>-->
+									<!--<option value="AVO">AVÔ(Ó)</option>-->
+								<!--</select>-->
+							<!--</div>-->
+						<!--</div>-->
+
 						<hr class="style-one">
 						<div class="form-group row text-right">
 							<div class="col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">

@@ -7,13 +7,11 @@ $('#id_item_meusPacientes').addClass('active');
 $("#id_telefone").mask("+ 55 (99) 9999-9999");
 $("#id_celular").mask("+ 55 (99) 99999-9999");
 
-
-
 $("#id_cep").mask("99999-999").keyup(function(event){
     var cep = $(this).val().replace(/\D/g,'');
     if (cep.length == 8) {$.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
     if (!("erro" in dados)) {$("#id_rua").val(dados.logradouro);$("#id_bairro").val(dados.bairro);
-    $("#id_cidade").val(dados.localidade);$("#id_estado").val(dados.uf);
+    $("#id_cidade").val(dados.localidade);$("#id_estado").val(dados.uf).change();
     $("#id_cep").removeClass("is-invalid").addClass("is-valid");}else{
     $("#id_cep").removeClass("is-valid").addClass("is-invalid");}});}else{
     $("#id_cep").removeClass("is-valid").addClass("is-invalid");}});
@@ -41,14 +39,11 @@ $("#id_enderecoCompleto").keyup(function(event){$("#id_enderecoCompleto").val(($
 // Maiúsculo ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+$(".select2").select2({ width: '100%'}); // Init Select2
+$(".tags").select2({tags: true, width: '100%'}); //Select2 tags
 
 
 //Tabelas////////////////////////////////////////////////////////////////////
-$('#id_mais_um_convenio').on( 'click', function () {
-    $("#id_")
-});
-
-
 var tabela_novoPaciente = $("#id_table_novoPaciente").DataTable({
     dom:
         "<'row be-datatable-header'<'col-sm-6 col-md-6 col-lg-6 col-xl-6' <'button_novoPaciente'>><'col-sm-6'f>>" +
@@ -100,13 +95,11 @@ $('#id_button_modal_novoPaciente').click(function(){
     //$('#id_modal_form_paciente form[id="id_form_editar_usuario"]').prop('id', 'id_form_novo_usuario'); // volta para o id original do formulário
     //$('#id_modal_form_paciente button[id="id_button_modal"]').html('<i class="icon mdi mdi-save"></i> Salvar Usuário'); // Volta para o nome original do button do formulário
 });
-
-
-$(".select2").select2({ width: '100%'}); // Init Select2
-$(".tags").select2({tags: true, width: '100%'}); //Select2 tags
+// Button /////////////////////////////////////////
 
 
 
+// Convenio ///////////////////////////////////////////////////////////////////////////////////////////////
 function remove_linha_convenho(count){
     $("#id_div_grupo_convenio").find("[count='" + count + "']").remove();
     $("#id_grupo_convenio").val(get_json_convenho());
@@ -122,19 +115,21 @@ function get_json_convenho(){
     return JSON.stringify(out);
 }
 
-
-
+function get_options_select_convenho(){ // Retorna os options do select principal convenho
+    var out = "";
+    var options = $('#id_convenio option');
+    for(var i = 0; i < options.length; i++)out += "<option>" + options[i].value + "</option>";
+    return out;
+}
 
 $("#id_button_mais_um_convenio").click(function(envent){
     $("#id_div_grupo_convenio").append(
         '<div class="form-group row pt-0 pb-0" count='+$("#id_div_grupo_convenio .form-group.row").length+'>' +
             '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
                 '<label for="id_convenio">Convênio *</label>' +
-                '<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">' +
-                    '<option value="PLANO A selected">PLANO A</option>' +
-                    '<option value="PLANO B">PLANO B</option>' +
-                    '<option value="PLANO C">PLANO C</option>' +
-                    '<option value="PLANO D">PLANO D</option>' +
+                '<select id="id_convenio" name="convenio" class="form-control select2 select2-lg" required>' +
+                    '<option></option>'+
+                    get_options_select_convenho() +
                 '</select>' +
             '</div>' +
             '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
@@ -157,6 +152,24 @@ $("#id_button_mais_um_convenio").click(function(envent){
         '</script>'
     );
 });
+// Convenio ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+// Formulários /////////////////////////////////////
+$('#id_form_novo_paciente').submit(function(e){
+    $("#id_grupo_convenio").val(get_json_convenho());
+    $("button").prop("disabled",true);
+    e.preventDefault();
+    $.post("/paciente/meusPacientes", $(this).serialize(), function(data){
+        if (data.ok){
+            console.log("Novo Paciente Salvo Com Sucesso!");
+            $("button").prop("disabled",false);
+            window.location.reload()
+        }else{
+            console.log(data.msg);
+            $("button").prop("disabled",false);
+        }
+    }, 'json');
+});
+// Formulários ////////////////////////////////////
