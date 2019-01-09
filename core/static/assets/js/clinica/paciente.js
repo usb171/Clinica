@@ -92,9 +92,54 @@ $('#id_button_modal_novoPaciente').click(function(){
     $('#id_modal_form_paciente form').trigger("reset"); // reseta todos os campos do formulário
     $('#id_modal_form_paciente').modal('show'); // Exibe o modal do formulário
     $('#id_modal_form_paciente h3[id="id_title"]').text('Novo Paciente'); // Volta para o título original do modal
-    //$('#id_modal_form_paciente form[id="id_form_editar_usuario"]').prop('id', 'id_form_novo_usuario'); // volta para o id original do formulário
-    //$('#id_modal_form_paciente button[id="id_button_modal"]').html('<i class="icon mdi mdi-save"></i> Salvar Usuário'); // Volta para o nome original do button do formulário
+    $('#id_modal_form_paciente form[id="id_form_editar_paciente"]').prop('id', 'id_form_novo_paciente'); // volta para o id original do formulário
+    $('#id_modal_form_paciente button[id="id_button_modal"]').html('<i class="icon mdi mdi-save"></i> Salvar Paciente'); // Volta para o nome original do button do formulário
+
 });
+
+$('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
+    // Modifica os campos do formulário de um novo paciente para editar paciente
+    $('#id_modal_form_paciente').modal('show'); // Exibe o modal do formulário
+    $('#id_modal_form_paciente  h3[id="id_title"]').text('Editar Paciente'); // Troca o título do modal
+    $('#id_modal_form_paciente  form[id="id_form_novo_paciente"]').prop('id', 'id_form_editar_paciente'); // Troca o id do formulário
+    $('#id_modal_form_paciente  button[id="id_button_modal"]').html('<i class="icon mdi mdi-save"></i> Editar Paciente'); // Muda o nome do button do formulário
+
+    // Busca as informações do paciente apartir da tabela passando como parâmetro o valor do button (Id do usuário)
+    $.ajax({
+        url: "/paciente/buscarDadosPacienteAjax",
+        data: {'id_paciente': $(this).val()}, // Recebe o id do paciente pelo value do button
+        dataType: 'json',
+        success: function (data) {
+            $('#id_modal_form_paciente form').trigger("reset");
+            console.log(data)
+            $('#id_modal_form_paciente form input[id="id_cpf"]').val(data.cpf);
+            $('#id_modal_form_paciente form input[id="id_cep"]').val(data.cep);
+            $('#id_modal_form_paciente form input[id="id_rua"]').val(data.rua);
+            $('#id_modal_form_paciente form input[id="id_sexo"]').val(data.sexo);
+            $('#id_modal_form_paciente form input[id="id_email"]').val(data.email);
+            $('#id_modal_form_paciente form input[id="id_numero"]').val(data.numero);
+            $('#id_modal_form_paciente form input[id="id_quadra"]').val(data.quadra);
+            $('#id_modal_form_paciente form input[id="id_bairro"]').val(data.bairro);
+            $('#id_modal_form_paciente form input[id="id_cidade"]').val(data.cidade);
+            $('#id_modal_form_paciente form input[id="id_estado"]').val(data.estado);
+            $('#id_modal_form_paciente form input[id="id_celular"]').val(data.celular);
+            $('#id_modal_form_paciente form input[id="id_telefone"]').val(data.telefone);
+
+            $('#id_modal_form_paciente form input[id="id_profissao"]').val(data.profissao);
+            $("#id_profissao_input").val($("#id_profissao").select2("val"));
+
+            $('#id_modal_form_paciente form textarea[id="id_observacao"]').val(data.observacao);
+            $('#id_modal_form_paciente form input[id="id_complemento"]').val(data.complemento);
+            $('#id_modal_form_paciente form input[id="id_estadoCivil"]').val(data.estadoCivil);
+            $('#id_modal_form_paciente form input[id="id_nomeCompleto"]').val(data.nomeCompleto);
+            $('#id_modal_form_paciente form input[id="id_grupoConvenio"]').val(data.grupoConvenio);
+            $('#id_modal_form_paciente form input[id="id_dataNascimento"]').val(data.dataNascimento);
+        }
+    });
+
+
+});
+
 // Button /////////////////////////////////////////
 
 
@@ -159,6 +204,8 @@ $("#id_button_mais_um_convenio").click(function(envent){
 // Formulários /////////////////////////////////////
 $('#id_form_novo_paciente').submit(function(e){
     $("#id_grupo_convenio").val(get_json_convenho());
+    $("#id_profissao_input").val($("#id_profissao").select2("val"));
+
     $("button").prop("disabled",true);
     e.preventDefault();
     $.post("/paciente/meusPacientes", $(this).serialize(), function(data){

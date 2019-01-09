@@ -129,7 +129,8 @@
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_profissao">Profissão *</label>
-								<select id="id_profissao" name="profissao" class="select2 select2-lg" multiple="" required>
+								<input id="id_profissao_input" name="profissao" hidden>
+								<select id="id_profissao" class="select2 select2-lg" multiple="" required>
 									<option></option>
 									<option value="">Selecione a Profissão</option>
 									<option value="Administrador(a)">Administrador(a)</option>
@@ -999,11 +1000,11 @@
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_bairro">Bairro *</label>
-								<input class="form-control" type="text" id="id_bairro" name="cep" placeholder="" required>
+								<input class="form-control" type="text" id="id_bairro" name="bairro" placeholder="" required>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_cidade">Cidade *</label>
-								<input class="form-control" type="text" id="id_cidade" name="cep" placeholder="" required>
+								<input class="form-control" type="text" id="id_cidade" name="cidade" placeholder="" required>
 							</div>
 						</div>
 						<div class="form-group row pt-0">
@@ -1077,7 +1078,11 @@
 							</div>
 						</div>
 
-						<input id="id_grupo_convenio" name="grupo_convenio" hidden>
+						<input id="id_grupo_convenio" name="grupoConvenio" hidden>
+
+						<!--Campo contendo o ID do Paciente a ser editado-->
+						<input id="id_paciente" name="id_paciente" value="-1" hidden>
+						<!--Campo contendo o ID do Paciente a ser editado-->
 
 
 						<!--<hr class="style-one">-->
