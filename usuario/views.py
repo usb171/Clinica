@@ -140,7 +140,6 @@ def usuario(request):
                                                controleProntuario=controleProntuario,
                                                funcionalidadeUsuario=funcionalidadeUsuario).save()
                 except:
-                    print("Aqui")
                     return HttpResponse(json.dumps({'ok': False, 'msg': "Ocorreu um Erro ao Criar um Novo Usuário!", 'erros': {}}), content_type="application/json")
                 return HttpResponse(json.dumps({'ok': True, 'msg': "Usuário Salvo com Sucesso!", 'erros': {}}), content_type="application/json")
             else:

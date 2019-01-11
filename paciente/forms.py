@@ -11,7 +11,7 @@ class PacienteForm(forms.Form):
     estadoCivil = forms.CharField(required=True)
 
     profissao = forms.CharField(widget=forms.Textarea, required=True)
-    observacao = forms.CharField(widget=forms.Textarea)
+    observacao = forms.CharField(widget=forms.Textarea, required=False)
 
     telefone = forms.CharField(required=False)
     celular = forms.CharField(required=True)

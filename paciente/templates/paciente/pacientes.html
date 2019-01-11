@@ -16,6 +16,7 @@
 }
 
 
+
 </style>
 {% endblock %}
 
@@ -101,7 +102,7 @@
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_cpf">CPF *</label>
-								<input class="form-control is-invalid" type="text" id="id_cpf" name="cpf" placeholder="000.000.000-00" required>
+								<input class="form-control " type="text" id="id_cpf" name="cpf" placeholder="000.000.000-00" required>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_sexo">Sexo *</label>
@@ -129,7 +130,6 @@
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_profissao">Profissão *</label>
-								<input id="id_profissao_input" name="profissao" hidden>
 								<select id="id_profissao" class="select2 select2-lg" multiple="" required>
 									<option></option>
 									<option value="">Selecione a Profissão</option>
@@ -981,7 +981,7 @@
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_cep">CEP</label>
-								<input class="form-control is-invalid" type="text" id="id_cep" name="cep" placeholder="64082-550">
+								<input class="form-control " type="text" id="id_cep" name="cep" placeholder="64082-550">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_numero">Número</label>
@@ -1078,39 +1078,49 @@
 							</div>
 						</div>
 
+						<!--Campo contendo uma string com todas as profissões do campo id_profissão select2-->
+						<input id="id_profissao_input" name="profissao" hidden>
+						<!--Campo contendo uma string com todas as profissões do campo id_profissão select2-->
+
+						<!--Campo contendo uma string padrão JSON com todos os valores dos campos de convenio-->
 						<input id="id_grupo_convenio" name="grupoConvenio" hidden>
+						<!--Campo contendo uma string padrão JSON com todos os valores dos campos de convenio-->
 
 						<!--Campo contendo o ID do Paciente a ser editado-->
 						<input id="id_paciente" name="id_paciente" value="-1" hidden>
 						<!--Campo contendo o ID do Paciente a ser editado-->
 
+						<!--Campo utilizado para evitar a edição do próprio email-->
+						<input type="text" id="id_email_original" name="email_original" hidden>
+						<!--Campo utilizado para evitar a edição do próprio email-->
+
 
 						<!--<hr class="style-one">-->
 						<!--<h2 class="pt-0 pb-5">Família</h2>-->
 						<!--<div class="form-group row pt-0">-->
-							<!--<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">-->
-								<!--<label for="id_nomeFamiliar">Nome do Familiar</label>-->
-								<!--<select id="id_nomeFamiliar" name="nomeFamiliar" class="form-control select2 select2-lg">-->
-									<!--<option value="PLANO A " selected>PLANO A</option>-->
-									<!--<option value="PLANO B">PLANO B</option>-->
-									<!--<option value="PLANO C">PLANO C</option>-->
-									<!--<option value="PLANO D">PLANO D</option>-->
-								<!--</select>-->
-							<!--</div>-->
-							<!--<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">-->
-								<!--<label for="id_grauParentesco">Grau de Parentesco</label>-->
-								<!--<select id="id_grauParentesco" name="grauParentesco" class="form-control select2 select2-lg">-->
-									<!--<option></option>-->
-									<!--<option value="PAI">PAI</option>-->
-									<!--<option value="MAE">MÃE</option>-->
-									<!--<option value="FILHO">FILHO(A)</option>-->
-									<!--<option value="TIO">TIO(A)</option>-->
-									<!--<option value="IRMAO">IRMAO(Ã)</option>-->
-									<!--<option value="SOBRINHO">SOBRINHO(A)</option>-->
-									<!--<option value="PRIMO">PRIMO(A)</option>-->
-									<!--<option value="AVO">AVÔ(Ó)</option>-->
-								<!--</select>-->
-							<!--</div>-->
+						<!--<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">-->
+						<!--<label for="id_nomeFamiliar">Nome do Familiar</label>-->
+						<!--<select id="id_nomeFamiliar" name="nomeFamiliar" class="form-control select2 select2-lg">-->
+						<!--<option value="PLANO A " selected>PLANO A</option>-->
+						<!--<option value="PLANO B">PLANO B</option>-->
+						<!--<option value="PLANO C">PLANO C</option>-->
+						<!--<option value="PLANO D">PLANO D</option>-->
+						<!--</select>-->
+						<!--</div>-->
+						<!--<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">-->
+						<!--<label for="id_grauParentesco">Grau de Parentesco</label>-->
+						<!--<select id="id_grauParentesco" name="grauParentesco" class="form-control select2 select2-lg">-->
+						<!--<option></option>-->
+						<!--<option value="PAI">PAI</option>-->
+						<!--<option value="MAE">MÃE</option>-->
+						<!--<option value="FILHO">FILHO(A)</option>-->
+						<!--<option value="TIO">TIO(A)</option>-->
+						<!--<option value="IRMAO">IRMAO(Ã)</option>-->
+						<!--<option value="SOBRINHO">SOBRINHO(A)</option>-->
+						<!--<option value="PRIMO">PRIMO(A)</option>-->
+						<!--<option value="AVO">AVÔ(Ó)</option>-->
+						<!--</select>-->
+						<!--</div>-->
 						<!--</div>-->
 
 						<hr class="style-one">

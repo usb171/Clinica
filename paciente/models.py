@@ -30,11 +30,11 @@ class Paciente(models.Model):
 
     cep = models.CharField('CEP', max_length=20, null=True, blank=True)
     numero = models.CharField('Número', max_length=20, null=True, blank=True)
-    rua = models.CharField('Rua', max_length=20, null=True, blank=True)
-    quadra = models.CharField('Quadra', max_length=20, null=True, blank=True)
-    bairro = models.CharField('Bairro', max_length=20, null=True, blank=True)
-    cidade = models.CharField('Cidade', max_length=20, null=True, blank=True)
-    estado = models.CharField('Estado', max_length=20, null=True, blank=True)
+    rua = models.CharField('Rua', max_length=240, null=True, blank=True)
+    quadra = models.CharField('Quadra', max_length=240, null=True, blank=True)
+    bairro = models.CharField('Bairro', max_length=240, null=True, blank=True)
+    cidade = models.CharField('Cidade', max_length=240, null=True, blank=True)
+    estado = models.CharField('Estado', max_length=240, null=True, blank=True)
     complemento = models.TextField("Complemento", null=True, blank=True)
 
     grupoConvenio = models.TextField("Convenios", null=True, blank=True)

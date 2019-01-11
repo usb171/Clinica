@@ -7,6 +7,18 @@ from django.shortcuts import redirect
 
 import json
 
+def buscarEmailAjax(request):
+    if request.user.is_authenticated:
+        email = request.GET.get('email', None)
+        email_original = request.GET.get('email_original', None)
+        if email_original == email:
+            data = {'email': False}
+        else:
+            data = {'email': Paciente.objects.filter(email=request.GET.get('email', None)).exists()}
+        return JsonResponse(data)
+    else:
+        return redirect('login')
+
 def buscarDadosPacienteAjax(request):
     if request.user.is_authenticated:
         try:
@@ -25,6 +37,7 @@ def buscarDadosPacienteAjax(request):
                 'bairro': paciente.bairro,
                 'cidade': paciente.cidade,
                 'estado': paciente.estado,
+                'id_paciente': paciente.pk,
                 'celular': paciente.celular,
                 'telefone': paciente.telefone,
                 'profissao': paciente.profissao,
@@ -101,6 +114,7 @@ def paciente(request):
                                         grupoConvenio=grupoConvenio,
                                         dataNascimento=dataNascimento)
                 else: # Crie um Paciente
+                    print("Estou criando")
                     Paciente.objects.create(cpf=cpf,
                                             cep=cep,
                                             rua=rua,
