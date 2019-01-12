@@ -28,6 +28,7 @@ $("#id_email").keyup(function( event ) {
 });
 // Validar Email /////////////////////////////
 
+
 $("#id_cep").mask("99999-999").keyup(function(event){
     var cep = $(this).val().replace(/\D/g,'');
     if (cep.length == 8) {$.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
@@ -48,10 +49,17 @@ $("#id_cpf").mask("000.000.000-00").keyup(function(event){
   else{$("#id_cpf").removeClass("is-invalid").addClass("is-valid");}
 });
 
+validar_dataNascimento("#id_dataNascimento");
+validar_dataNascimento("#id_convenioValidade");
 
-$("#id_dataNascimento").mask("00/00/0000", {onKeyPress: function(data, e, field, options){
-var dia = data.split('/')[0],mes = data.split('/')[1];if(data.length >=2) if(dia > 31) $('#id_dataNascimento').val('31/');
-else if(data.length >=5) if(mes > 12) $('#id_dataNascimento').val(dia+'/12/');}});
+
+function validar_dataNascimento(id){
+$(id).mask("00/00/0000", {onKeyPress: function(data, e, field, options){
+var dia = data.split('/')[0],mes = data.split('/')[1];if(data.length >=2) if(dia > 31) $(id).val('31/');
+else if(data.length >=5) if(mes > 12) $(id).val(dia+'/12/');}});
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Maiúsculo ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,36 +158,51 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
             $("#id_profissao").val(data.profissao.split(",")).trigger('change');
             $('#id_modal_form_paciente form textarea[id="id_observacao"]').val(data.observacao);
             $('#id_modal_form_paciente form input[id="id_complemento"]').val(data.complemento);
-            $('#id_modal_form_paciente form input[id="id_estadoCivil"]').val(data.estadoCivil);
+            $("#id_estadoCivil").val(data.estadoCivil).trigger('change');
             $('#id_modal_form_paciente form input[id="id_nomeCompleto"]').val(data.nomeCompleto);
             $('#id_modal_form_paciente form input[id="id_grupoConvenio"]').val(data.grupoConvenio);
             $('#id_modal_form_paciente form input[id="id_dataNascimento"]').val(data.dataNascimento);
 
+            $("#id_nomeFamiliar").val(data.nomeFamiliar).trigger('change');
+            $("#id_grauParentesco").val(data.grauParentesco).trigger('change');
+
             $('#id_modal_form_paciente form input[id="id_paciente"]').val(data.id_paciente);
 
-
-
-
+            var RegExp = /["|']/g;
             convenioGrupos = JSON.parse(data.grupoConvenio);
             for(k in convenioGrupos){
                 if( k != "'0'"){
-                    adicionar_linha_convenio(parseInt(k), convenioGrupos[k].convenio, convenioGrupos[k].numero, convenioGrupos[k].validade);
+                    adicionar_linha_convenio(parseInt(k.replace(RegExp, '')), convenioGrupos[k].convenio, convenioGrupos[k].numero, convenioGrupos[k].validade);
                 }else{
                     $("#id_convenio").val(convenioGrupos[k].convenio).trigger("change");
                     $('#id_modal_form_paciente form input[id="id_convenioCarteira"]').val(convenioGrupos[k].numero);
                     $('#id_modal_form_paciente form input[id="id_convenioValidade"]').val(convenioGrupos[k].validade);
                 }
             }
+
+
+            //Permissões //////////////////////////////////////
+            if($("#id_button_modal").val() == undefined){
+                $('form *').prop('disabled', true); // Desativa todos os campos do formulário para edição
+                $('#id_button_mais_um_convenio').prop('hidden', true); // Esconde a div que contém o button mais um convênio para edição
+                $("div[id*='id_button_menos_um_convenio']").prop('hidden', true); // Esconde os buttons de menos um convênio
+                $("div[class='col-sm-3 col-lg-3 mb-3 mb-sm-0']").toggleClass('col-sm-4 col-lg-4 mb-4 mb-sm-0'); // Alinha os campos do convênio após remover os button de ação
+
+
+            }
+            else $('form *').prop('disabled', false); // Reativa todos os campos do formulário para edição
+            //Permissões //////////////////////////////////////
+
+
         }
     });
-
-
 });
 // Button /////////////////////////////////////////
 
 function resetar_campos(){
     $('#id_modal_form_paciente form').trigger("reset"); // reseta todos os campos do formulário
     $("#id_profissao").val("------").trigger('change'); // reseta o campo profissão
+    $("#id_convenio").val("------").trigger('change'); // reseta o campo profissão
     var gruposConvenioSize = $("#id_div_grupo_convenio .form-group.row").length;
     for(var i = 1; i < gruposConvenioSize; i++) // reseta os grupos do convenio
         remove_linha_convenio(i);
@@ -209,18 +232,19 @@ function adicionar_linha_convenio(count="", convenio="", numero="", validade="")
             '</div>' +
             '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
                 '<label for="id_convenioCarteira">Número Carteira *</label>' +
-                '<input class="form-control" type="text" id="id_convenioCarteira" name="numeroCarteira" value="'+numero+'" required>' +
+                '<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira" value="'+numero+'" required>' +
             '</div>' +
             '<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">' +
                 '<label for="id_convenioValidade">Validade *</label>' +
-                '<input class="form-control" type="text" id="id_convenioValidade" name="convenioValidade" value="'+validade+'" required>' +
+                '<input class="form-control" type="text" id="id_convenioValidade_'+$("#id_div_grupo_convenio .form-group.row").length+'" name="convenioValidade" placeholder="04/08/1993" value="'+validade+'" required>' +
             '</div>' +
-            '<div class="col-sm-1 col-lg-1 icon-container icon-visible text-right" id='+"id_button_menos_um_convenio_"+ $("#id_div_grupo_convenio .form-group.row").length +'>' +
+            '<div class="col-sm-1 col-lg-1 mb-1 mb-sm-1 icon-container icon-visible text-center" id='+"id_button_menos_um_convenio_"+ $("#id_div_grupo_convenio .form-group.row").length +'>' +
                 '<div class="icon"><span class="mdi mdi-minus-circle" ></span></div>' +
             '</div>' +
         '</div>' +
         '<script> $(".select2").select2({ width: "100%"}); $(".tags").select2({tags: true, width: "100%"});'+
             '$("#id_convenio_'+count+'").val("'+convenio+'").trigger("change");' +
+            'validar_dataNascimento("#id_convenioValidade_'+$("#id_div_grupo_convenio .form-group.row").length+'");' +
 
             '$('+"id_button_menos_um_convenio_"+ $("#id_div_grupo_convenio .form-group.row").length +').click(function(envent){'+
                 'var count = ' + $("#id_div_grupo_convenio .form-group.row").length + ';'+
@@ -271,3 +295,4 @@ $('#id_form_novo_paciente').submit(function(e){
     }, 'json');
 });
 // Formulários ////////////////////////////////////
+

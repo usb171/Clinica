@@ -12,8 +12,16 @@ _ESTADO_CIVIL_CHOICES = {
     ('VIUVO(A)', 'VIUVO(A)'),
 }
 
+_FLAG_CHOICES = (
+    ('ON', 'ON'),
+    ('OFF', 'OFF'),
+)
 
 class Paciente(models.Model):
+
+    ativo = models.CharField('Paciente Ativo ?', max_length=4, choices=_FLAG_CHOICES, default="ON", null=True, blank=True)
+
+
     nomeCompleto = models.CharField('Nome Completo', max_length=120, null=True, blank=True)
     cpf = models.CharField('CPF', max_length=20, null=True, blank=True)
     dataNascimento = models.CharField('Data Nascimento', max_length=20, null=True, blank=True)
@@ -29,7 +37,7 @@ class Paciente(models.Model):
     celular = models.CharField('Celular', max_length=20, null=True, blank=True)
 
     cep = models.CharField('CEP', max_length=20, null=True, blank=True)
-    numero = models.CharField('Número', max_length=20, null=True, blank=True)
+    numero = models.CharField('Número', max_length=240, null=True, blank=True)
     rua = models.CharField('Rua', max_length=240, null=True, blank=True)
     quadra = models.CharField('Quadra', max_length=240, null=True, blank=True)
     bairro = models.CharField('Bairro', max_length=240, null=True, blank=True)
@@ -38,6 +46,11 @@ class Paciente(models.Model):
     complemento = models.TextField("Complemento", null=True, blank=True)
 
     grupoConvenio = models.TextField("Convenios", null=True, blank=True)
+
+    nomeFamiliar = models.CharField('Nome do Familiar', max_length=120, null=True, blank=True)
+    grauParentesco = models.CharField('Grau de Parentesco', max_length=120, null=True, blank=True)
+
+
 
 
 

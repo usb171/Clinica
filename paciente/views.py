@@ -45,8 +45,10 @@ def buscarDadosPacienteAjax(request):
                 'complemento': paciente.complemento,
                 'estadoCivil': paciente.estadoCivil,
                 'nomeCompleto': paciente.nomeCompleto,
+                'nomeFamiliar': paciente.nomeFamiliar,
                 'grupoConvenio': paciente.grupoConvenio,
-                'dataNascimento': paciente.dataNascimento
+                'dataNascimento': paciente.dataNascimento,
+                'grauParentesco': paciente.grauParentesco,
                }
         return JsonResponse(data)
     else:
@@ -87,8 +89,11 @@ def paciente(request):
                 complemento = dados['complemento']
                 estadoCivil = dados['estadoCivil']
                 nomeCompleto = dados['nomeCompleto']
+                nomeFamiliar = dados['nomeFamiliar']
                 grupoConvenio = dados['grupoConvenio']
                 dataNascimento = dados['dataNascimento']
+                grauParentesco = dados['grauParentesco']
+
 
                 id_paciente = request.POST['id_paciente']
 
@@ -111,8 +116,11 @@ def paciente(request):
                                         complemento=complemento,
                                         estadoCivil=estadoCivil,
                                         nomeCompleto=nomeCompleto,
+                                        nomeFamiliar=nomeFamiliar,
                                         grupoConvenio=grupoConvenio,
-                                        dataNascimento=dataNascimento)
+                                        dataNascimento=dataNascimento,
+                                        grauParentesco=grauParentesco,
+                                        )
                 else: # Crie um Paciente
                     print("Estou criando")
                     Paciente.objects.create(cpf=cpf,
@@ -132,7 +140,9 @@ def paciente(request):
                                             complemento=complemento,
                                             estadoCivil=estadoCivil,
                                             nomeCompleto=nomeCompleto,
+                                            nomeFamiliar=nomeFamiliar,
                                             grupoConvenio=grupoConvenio,
+                                            grauParentesco=grauParentesco,
                                             dataNascimento=dataNascimento).save()
 
                 return HttpResponse(json.dumps({'ok': True, 'msg': "Paciente Salvo com Sucesso!", 'erros': {}}), content_type="application/json")

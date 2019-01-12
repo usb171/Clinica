@@ -28,6 +28,9 @@ class PacienteForm(forms.Form):
 
     grupoConvenio = forms.CharField(widget=forms.Textarea)
 
+    nomeFamiliar = forms.CharField(required=False)
+    grauParentesco = forms.CharField(required=False)
+
 
     def is_valid_from_form(self):
         return super(PacienteForm, self).is_valid()
