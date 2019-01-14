@@ -20,6 +20,8 @@
 
 
 
+
+
 </style>
 {% endblock %}
 
@@ -82,6 +84,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="modal fade colored-header colored-header-primary " id="id_modal_form_paciente" role="dialog">
 		<div class="modal-dialog full-width">
 			<div class="modal-content">
@@ -97,7 +100,23 @@
 					<form method="POST" id="id_form_novo_paciente">
 						{% csrf_token %}
 						<hr class="style-one">
-						<h2 class="pt-0 pb-5">Identificação</h2>
+						<div class="form-group row">
+							<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+								<h2>Identificação</h2>
+							</div>
+							<div class="col-sm-12 col-lg-6 mb-6 mb-sm-0 text-right" style="padding-top: 20px;">
+								<label class="custom-control custom-radio custom-control-inline">
+									<input class="custom-control-input is-valid" id="id_radio_ativado"  type="radio" checked="" value="on" name="radioStateColor2"><span
+										class="custom-control-label">Ativado</span>
+								</label>
+								<label class="custom-control custom-radio custom-control-inline">
+									<input class="custom-control-input is-invalid" id="id_radio_desativado" type="radio" value="off"  name="radioStateColor2"><span
+										class="custom-control-label">Desativado</span>
+								</label>
+							</div>
+						</div>
+
+					<!--<h2 class="pt-0 pb-5">Identificação</h2>-->
 
 
 						<div class="form-group row pt-0">
@@ -1120,7 +1139,7 @@
 									<option value="PAI">PAI</option>
 									<option value="MAE">MÃE</option>
 									<option value="PADRASTO">PADRASTO</option>
-									<option value="MADRASTO">MADRASTO</option>
+									<option value="MADRASTA">MADRASTA</option>
 									<option value="ENTIADO(A)">ENTIADO(A)</option>
 									<option value="FILHO">FILHO(A)</option>
 									<option value="TIO">TIO(A)</option>
