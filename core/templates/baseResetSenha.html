@@ -23,10 +23,10 @@
         <script src="{% static '/assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
         <script src="{% static '/assets/js/app.js' %}" type="text/javascript"></script>
         <script type="text/javascript">
-          $(document).ready(function(){
+         $(document).ready(function(){
+            //-initialize the javascript
             App.init();
-            if($("#id_msg_erro").attr("value") == "False") $("#id_div_msg_login").fadeIn(1000);
-          });
+         });
         </script>
     </body>
 </html>
