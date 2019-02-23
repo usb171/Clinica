@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from core.models import Clinica
 
 _TITULE_CHOICES = (
     ('MEDICO', 'MÉDICO'),
@@ -44,6 +45,9 @@ _FLAG_CHOICES = (
 )
 
 class Usuario(models.Model):
+
+    clinica = models.ForeignKey(Clinica, on_delete=models.SET_NULL, related_name='Clinica', null=True, blank=True)
+
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     nomeCompleto = models.CharField('Nome Completo', max_length=120, null=True, blank=True)
     email = models.CharField('Email', max_length=120, null=True, blank=True, unique=True)
@@ -61,9 +65,15 @@ class Usuario(models.Model):
     admin = models.CharField('Usuário Administrador ?', max_length=25, choices=_FLAG_CHOICES, default="ON", null=True, blank=True)
     agendaPropria = models.CharField('Usuário com Agenda Própria ?', max_length=25, choices=_FLAG_CHOICES, default="ON", null=True, blank=True)
 
+    senhaPadraoAlterada = models.BooleanField(default=False)
+
+
     funcionalidadeUsuario = models.TextField("Funcionalidades", null=True, blank=True)
 
     # imagemPerfil = models.FileField(null=True, blank=True)
 
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     update_at = models.DateTimeField('Atualizado em', auto_now_add=True)
+
+    def __str__(self):
+        return self.nomeCompleto

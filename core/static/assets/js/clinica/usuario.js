@@ -13,6 +13,7 @@ $("#id_nomeCompleto").keyup(function(event){$("#id_nomeCompleto").val(($(this).v
 $("#id_enderecoCompleto").keyup(function(event){$("#id_enderecoCompleto").val(($(this).val()).toUpperCase());});
 // Maiúsculo ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 // Validar Email /////////////////////////////
 $("#id_email").keyup(function( event ) {
     $("#id_email").val(($(this).val()).toLowerCase());

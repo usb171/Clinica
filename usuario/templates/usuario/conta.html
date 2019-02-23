@@ -1,6 +1,5 @@
 {% extends 'core/dashboard.html' %}
 {% load static %}
-
 {% block content %}
 <div class="be-content">
 	<div class="main-content container-fluid">
@@ -11,13 +10,16 @@
 					<div class="card-body">
 						<form id="id_form_nova_senha" method="POST">
 							{% csrf_token %}
+							{% if "{{ request.session.senhaPadraoAlterada }}" == False %}
 							<div class="form-group row">
 								<label class="col-12 col-sm-3 col-form-label text-sm-right" for="id_old_password">Senha Atual</label>
 								<div class="col-12 col-sm-8 col-lg-6">
-									<input class="form-control" id="id_old_password" name="old_password" type="password" placeholder="Sua senha padrão é 123"
-										   autofocus required>
+									<input class="form-control" id="id_old_password" name="old_password" type="password" placeholder="Entre com a sua senha atual" autofocus required>
 								</div>
 							</div>
+							{% else %}
+								<input class="form-control" id="id_old_password" name="old_password" type="password" value="{{ request.session.senhaPadrao }}" hidden required>
+							{% endif %}
 							<div class="form-group row">
 								<label class="col-12 col-sm-3 col-form-label text-sm-right" for="id_new_password1">Nova Senha</label>
 								<div class="col-12 col-sm-8 col-lg-6">

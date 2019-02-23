@@ -1,0 +1,21 @@
+{% extends 'baseResetSenha.html' %}
+{% block body %}
+{% load static %}
+
+<div class="be-wrapper be-login">
+	<div class="be-wrapper be-error be-error-404">
+		<div class="be-content">
+			<div class="main-content container-fluid">
+				<div class="error-container">
+					<!--<div class="error-number">404</div>-->
+					<div class="error-description">Link bloqueado</div>
+					<div class="error-goback-text">Esse link já foi utilizado para ativar uma conta!</div>
+					<div class="error-goback-button"><a class="btn btn-xl btn-primary"  href="{% url 'login' %}">Ir para Login</a></div>
+					<div class="footer">&copy; 2019 Sua Pele</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
