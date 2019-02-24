@@ -10,7 +10,7 @@
 					<div class="card-body">
 						<form id="id_form_nova_senha" method="POST">
 							{% csrf_token %}
-							{% if "{{ request.session.senhaPadraoAlterada }}" == False %}
+							{% if request.session.senhaPadraoAlterada %}
 							<div class="form-group row">
 								<label class="col-12 col-sm-3 col-form-label text-sm-right" for="id_old_password">Senha Atual</label>
 								<div class="col-12 col-sm-8 col-lg-6">
