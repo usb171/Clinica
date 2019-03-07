@@ -5,6 +5,8 @@ from django.shortcuts import redirect
 from .models import HistoricoAcesso, Titulo
 from django.utils.timezone import localtime
 from django.http import HttpResponse, JsonResponse
+from django.db import IntegrityError
+
 import json
 
 
@@ -69,32 +71,43 @@ def handler500(request):
 
 
 
-
-
-
+###################################################### Título ######################################################
 def titulo(request):
+
     if request.user.is_authenticated:
         if request.method == 'GET':
             contexto = {'titulos': Titulo.objects.all()}
             return render(request, 'titulo/titulos.html', contexto)
         elif request.method == 'POST':
-            for key in request.POST.keys():
-                print(key, " ", request.POST[key])
-
+            # for key in request.POST.keys():
+            #     print(key, " ", request.POST[key])
             clinica = Usuario.objects.get(user=request.user).clinica
             titulo = request.POST['nomeTitulo']
             status = request.POST['status']
             id_titulo = request.POST['id_titulo']
-
-            if Titulo.objects.filter(id=id_titulo).exists():  # Caso exista o ID passado, edite esse Título
-                titulo_obj = Titulo.objects.filter(id=id_titulo)
-                titulo_obj.update(titulo=titulo, clinica=clinica, status=status)
-            else:
-                Titulo.objects.create(titulo=titulo, clinica=clinica, status=status).save()
+            try:
+                if Titulo.objects.filter(id=id_titulo).exists():  # Caso exista o ID passado, edite esse Título
+                    titulo_obj = Titulo.objects.filter(id=id_titulo)
+                    titulo_obj.update(titulo=titulo, clinica=clinica, status=status)
+                else:
+                    Titulo.objects.create(titulo=titulo, clinica=clinica, status=status).save()
+            except IntegrityError:
+                return HttpResponse(json.dumps({'fail': True, 'msg': "O título " + titulo + " já existe", 'erros': {'nomeTitulo': -1 }}), content_type="application/json")
             return HttpResponse(json.dumps({'ok': True, 'msg': "Título Salvo com Sucesso!", 'erros': {}}), content_type="application/json")
     else:
         return redirect('login')
 
+def buscarTituloAjax(request):
+    if request.user.is_authenticated:
+        titulo = request.GET.get('titulo', None)
+        id_nomeTitulo_original = request.GET.get('id_nomeTitulo_original', None)
+        if id_nomeTitulo_original == titulo:
+            data = {'titulo': False}
+        else:
+            data = {'titulo': Titulo.objects.filter(titulo=request.GET.get('titulo', None)).exists()}
+        return JsonResponse(data)
+    else:
+        return redirect('login')
 
 def buscarDadosTituloAjax(request):
     if request.user.is_authenticated:
@@ -102,13 +115,12 @@ def buscarDadosTituloAjax(request):
             titulo = Titulo.objects.get(id=request.GET.get('id_titulo', None))
         except:
             return redirect('login')
-
         data = {
             'nomeTitulo': titulo.titulo,
             'status': titulo.status,
             'id_titulo': titulo.pk,
         }
-
         return JsonResponse(data)
     else:
         return redirect('login')
+###################################################### Título ######################################################

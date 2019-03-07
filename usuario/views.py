@@ -56,7 +56,7 @@ def buscarDadosUsuarioAjax(request):
             'email': usuario.email,
             'ativo': usuario.ativo,
             'admin': usuario.admin,
-            'titulo': usuario.titulo,
+            'titulo': usuario.titulo.titulo if usuario.titulo is not None else "",
             'celular': usuario.celular,
             'telefone': usuario.telefone,
             'nomeCompleto': usuario.nomeCompleto,
@@ -92,7 +92,7 @@ def usuario(request):
                 email = dados['email']
                 ativo = dados['ativo']
                 admin = dados['admin']
-                titulo = dados['titulo']
+                titulo = Titulo.objects.get(titulo=dados['titulo'])
                 celular = dados['celular']
                 telefone = dados['telefone']
                 id_user = request.POST['id_user']
@@ -105,6 +105,8 @@ def usuario(request):
 
                 user = None
                 usuario_obj = None
+
+                print(titulo)
 
                 try:
                     if Usuario.objects.filter(id=id_user).exists():  # Caso exista o ID passado, edite esse Usuário

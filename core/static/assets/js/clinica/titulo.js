@@ -63,7 +63,29 @@ $('#id_button_modal_novoTitulo').click(function(){
 
 function resetar_campos(){
     $('#id_modal_form_titulo form').trigger("reset"); // reseta todos os campos do formulário
+    $("#id_nomeTitulo").removeClass("is-invalid").addClass("is-valid");
+    $("#id_nomeTitulo")[0].setCustomValidity('');
 }
+
+// validar Título ///////////////////////////////
+$("#id_nomeTitulo").keyup(function( event ) {
+    $.ajax({
+        url: "/configuracoes/buscarTituloAjax",
+        data: {'titulo': $(this).val(), 'id_nomeTitulo_original': $('#id_modal_form_titulo form input[id="id_nomeTitulo_original"]').val()},
+        dataType: 'json',
+        success: function (data) {
+             if (data.titulo){
+                $("#id_nomeTitulo").removeClass("is-valid").addClass("is-invalid");
+                $("#id_nomeTitulo")[0].setCustomValidity("Título já Existe");
+            }
+            else{
+                $("#id_nomeTitulo").removeClass("is-invalid").addClass("is-valid");
+                $("#id_nomeTitulo")[0].setCustomValidity('');
+            }
+        }
+    });
+});
+// validar Título ///////////////////////////////
 
 
 // Formulários /////////////////////////////////////
@@ -72,11 +94,14 @@ $('#id_form_novo_titulo').submit(function(e){
     e.preventDefault();
     $.post("/configuracoes/titulos", $(this).serialize(), function(data){
         if (data.ok){
-            console.log("Novo Título Salvo Com Sucesso!");
+//            console.log("Novo Título Salvo Com Sucesso!");
             $("button").prop("disabled",false);
             window.location.reload()
         }else{
-            console.log(data.msg);
+            if(data.erros['nomeTitulo'] != undefined){
+                $("#id_nomeTitulo").addClass("is-invalid");
+                $("#id_nomeTitulo")[0].setCustomValidity("Título já Existe");
+            }
             $("button").prop("disabled",false);
         }
     }, 'json');
@@ -98,9 +123,11 @@ $('#id_table_novoTitulo tbody ').on('click', 'tr button', function () {
         data: {'id_titulo': $(this).val()}, // Recebe o id do título pelo value do button
         dataType: 'json',
         success: function (data) {
-            console.log(data)
+//            console.log(data)
             $('#id_modal_form_titulo form').trigger("reset");
             $('#id_modal_form_titulo form input[id="id_nomeTitulo"]').val(data.nomeTitulo);
+            $('#id_modal_form_titulo form input[id="id_nomeTitulo_original"]').val(data.nomeTitulo);
+
             $("#id_status").val(data.status).trigger('change');
             $('#id_modal_form_titulo form input[id="id_titulo"]').val(data.id_titulo);
         }

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from core.models import Clinica
+from core.models import Clinica, Titulo
 
 _TITULE_CHOICES = (
     ('MEDICO', 'MÉDICO'),
@@ -56,7 +56,8 @@ class Usuario(models.Model):
     enderecoCompleto = models.CharField('Endereço Completo', max_length=220, null=True, blank=True)
 
     # Selects
-    titulo = models.CharField('Título', max_length=25, choices=_TITULE_CHOICES, default="MÉDICO", null=True, blank=True)
+    # titulo = models.CharField('Título', max_length=25, choices=_TITULE_CHOICES, default="MÉDICO", null=True, blank=True)
+    titulo = models.ForeignKey(Titulo, on_delete=models.SET_NULL, related_name='Titulo', null=True, blank=True)
     controleEstoque = models.CharField('Controle de Estoque', max_length=25, choices=_CONTROLE_ESTOQUE_CHOICES, default="NAO_VISUALIZAR", null=True, blank=True)
     controleProntuario = models.CharField('Controle de Prontuario', max_length=25, choices=_CONTROLE_PRONTUARIO_CHOICES, default="NAO_VISUALIZAR", null=True, blank=True)
 

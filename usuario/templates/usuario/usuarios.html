@@ -54,7 +54,15 @@
 									<tr class="odd gradeX center">
 										<td class="center">{{ usuario.pk }}</td>
 										<td class="center">{{ usuario.nomeCompleto }}</td>
-										<td class="center">{{ usuario.titulo }}</td>
+										{% if usuario.titulo is not None %}
+											{% if usuario.titulo.status == "ON" %}
+												<td class="center">{{ usuario.titulo.titulo }}</td>
+											{% else %}
+												<td class="center">{{ usuario.titulo.titulo }} (OFF)</td>
+											{% endif %}
+										{% else %}
+											<td class="center"></td>
+										{% endif %}
 										<td class="center">{{ usuario.ativo }}</td>
 										<td class="center">{{ usuario.admin }}</td>
 										<td class="center">{{ usuario.agendaPropria }}</td>
@@ -118,9 +126,9 @@
 						</div>
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_titulo">Título</label>
-							<select id="id_titulo" name="titulo" class="form-control">
+							<select id="id_titulo" name="titulo" class="form-control" required>
 								{% for titulo in titulos %}
-									<option value="{{titulo.titulo}}" selected> {{titulo.titulo}} </option>
+									{% if titulo.status != "OFF" %} <option value="{{titulo.titulo}}"> {{titulo.titulo}} </option> {% endif %}
 								{% endfor %}
 							</select>
 						</div>

@@ -116,6 +116,10 @@
 						<input id="id_titulo" name="id_titulo" value="-1" hidden>
 						<!--Campo contendo o ID do Título a ser editado-->
 
+						<!--Campo utilizado para evitar a edição do próprio título-->
+						<input type="text" id="id_nomeTitulo_original" name="id_nomeTitulo_original" hidden>
+						<!--Campo utilizado para evitar a edição do próprio título-->
+
 						<hr class="style-one">
 						{% if perms.core.change_titulo %}
 						<div class="form-group row text-right">

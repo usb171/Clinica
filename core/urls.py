@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login, dashboard, logout, titulo, buscarDadosTituloAjax
+from .views import login, dashboard, logout, titulo, buscarDadosTituloAjax, buscarTituloAjax
 from django.contrib.auth import views as auth_views
 from . import util
 
@@ -28,6 +28,7 @@ urlpatterns = [
 
 
     path('configuracoes/titulos', titulo, name='titulos'),
+    path('configuracoes/buscarTituloAjax', buscarTituloAjax, name='buscarTituloAjax'),
     path('configuracoes/buscarDadosTituloAjax', buscarDadosTituloAjax, name='buscarDadosTituloAjax'),
 
 ]
