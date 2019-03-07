@@ -180,7 +180,6 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
                 }
             }
 
-
             //Permissões //////////////////////////////////////
             if($("#id_button_modal").val() == undefined){
                 $('form *').prop('disabled', true); // Desativa todos os campos do formulário para edição

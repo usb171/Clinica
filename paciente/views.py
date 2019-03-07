@@ -121,8 +121,7 @@ def paciente(request):
                                         dataNascimento=dataNascimento,
                                         grauParentesco=grauParentesco,
                                         )
-                else: # Crie um Paciente
-                    print("Estou criando")
+                else: #Crie um Paciente
                     Paciente.objects.create(cpf=cpf,
                                             cep=cep,
                                             rua=rua,

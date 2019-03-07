@@ -89,7 +89,7 @@
 </div>
 
 <!--Modal Usuário-->
-<div class="modal fade colored-header colored-header-primary " id="id_modal_form_usuario" role="dialog">
+<div class="modal fade colored-header colored-header-primary" id="id_modal_form_usuario" role="dialog" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog full-width">
 		<div class="modal-content">
 			<div class="modal-header modal-header-colored">
@@ -119,9 +119,9 @@
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_titulo">Título</label>
 							<select id="id_titulo" name="titulo" class="form-control">
-								<option value="MEDICO" selected>MÉDICO</option>
-								<option value="FISIOTERAPEUTA">FISIOTERAPEUTA</option>
-								<option value="ENFERMEIRO">ENFERMEIRO</option>
+								{% for titulo in titulos %}
+									<option value="{{titulo.titulo}}" selected> {{titulo.titulo}} </option>
+								{% endfor %}
 							</select>
 						</div>
 					</div>

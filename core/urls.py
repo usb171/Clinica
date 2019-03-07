@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login, dashboard, logout
+from .views import login, dashboard, logout, titulo, buscarDadosTituloAjax
 from django.contrib.auth import views as auth_views
 from . import util
 
@@ -24,7 +24,11 @@ urlpatterns = [
          auth_views.PasswordResetView.as_view(template_name='core/email/password_reset_complete.html'),
          name='password_reset_complete'),
 
-    path('ativarAcesso/<uidb64>/<token>/', util.ativarAcesso, name='ativarAcesso')
+    path('ativarAcesso/<uidb64>/<token>/', util.ativarAcesso, name='ativarAcesso'),
+
+
+    path('configuracoes/titulos', titulo, name='titulos'),
+    path('configuracoes/buscarDadosTituloAjax', buscarDadosTituloAjax, name='buscarDadosTituloAjax'),
 
 ]
 

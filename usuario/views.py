@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from .forms import UsuarioForm
+from core.models import Titulo
 from core.util import enviarAtivador
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -74,8 +75,11 @@ def buscarDadosUsuarioAjax(request):
 def usuario(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
-            contexto = {'usuarios': Usuario.objects.all()}
-            print(contexto)
+            contexto = {
+                'usuarios': Usuario.objects.all(),
+                'titulos': Titulo.objects.all(),
+            }
+            # print(contexto)
             return render(request, 'usuario/usuarios.html', contexto)
         elif request.method == 'POST':
             # for key in request.POST.keys():

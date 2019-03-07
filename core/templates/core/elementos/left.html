@@ -13,12 +13,24 @@
 							</ul>
 						</li>
 						<li class="parent" id="id_list_menu_usuario"><a href="#"><i class="icon mdi mdi-chart-donut"></i><span>Usuário</span></a>
-							<ul class="sub-menu" >
+							<ul class="sub-menu">
 								<li id="id_item_meusUsuarios"><a href="{% url 'meusUsuarios' %}">Meus Usuários</a></li>
 							</ul>
-							<ul class="sub-menu" >
-								<li id="id_item_permissao"><a href="#">Permissões</a></li>
+						</li>
+						<li class="parent" id="id_list_menu_configuracao"><a href="#"><i class="icon mdi mdi-settings"></i><span>Configurações</span></a>
+
+							{% if perms.core.add_titulo and perms.core.change_titulo %}
+							<ul class="sub-menu">
+								<li id="id_item_titulo"><a href="{% url 'titulos' %}">Títulos</a></li>
 							</ul>
+							{% endif %}
+
+							{% if perms.core.add_convenio and perms.core.change_convenio %}
+							<ul class="sub-menu">
+								<li id="id_item_convenio"><a href="#">Convênio</a></li>
+							</ul>
+							{% endif %}
+
 						</li>
 					</ul>
 				</div>
