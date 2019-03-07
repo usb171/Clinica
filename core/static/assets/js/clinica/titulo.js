@@ -74,7 +74,7 @@ $("#id_nomeTitulo").keyup(function( event ) {
         data: {'titulo': $(this).val(), 'id_nomeTitulo_original': $('#id_modal_form_titulo form input[id="id_nomeTitulo_original"]').val()},
         dataType: 'json',
         success: function (data) {
-             if (data.titulo){
+            if (data.titulo){
                 $("#id_nomeTitulo").removeClass("is-valid").addClass("is-invalid");
                 $("#id_nomeTitulo")[0].setCustomValidity("Título já Existe");
             }

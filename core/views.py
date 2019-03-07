@@ -75,19 +75,19 @@ def handler500(request):
 def titulo(request):
 
     if request.user.is_authenticated:
+        clinica = Usuario.objects.get(user=request.user).clinica
         if request.method == 'GET':
-            contexto = {'titulos': Titulo.objects.all()}
+            contexto = {'titulos': Titulo.objects.filter(clinica=clinica)}
             return render(request, 'titulo/titulos.html', contexto)
         elif request.method == 'POST':
             # for key in request.POST.keys():
             #     print(key, " ", request.POST[key])
-            clinica = Usuario.objects.get(user=request.user).clinica
             titulo = request.POST['nomeTitulo']
             status = request.POST['status']
             id_titulo = request.POST['id_titulo']
             try:
-                if Titulo.objects.filter(id=id_titulo).exists():  # Caso exista o ID passado, edite esse Título
-                    titulo_obj = Titulo.objects.filter(id=id_titulo)
+                if Titulo.objects.filter(clinica=clinica, id=id_titulo).exists():  # Caso exista o ID passado, edite esse Título
+                    titulo_obj = Titulo.objects.filter(clinica=clinica, id=id_titulo)
                     titulo_obj.update(titulo=titulo, clinica=clinica, status=status)
                 else:
                     Titulo.objects.create(titulo=titulo, clinica=clinica, status=status).save()
@@ -104,7 +104,8 @@ def buscarTituloAjax(request):
         if id_nomeTitulo_original == titulo:
             data = {'titulo': False}
         else:
-            data = {'titulo': Titulo.objects.filter(titulo=request.GET.get('titulo', None)).exists()}
+            clinica = Usuario.objects.get(user=request.user).clinica
+            data = {'titulo': Titulo.objects.filter(clinica=clinica, titulo=request.GET.get('titulo', None)).exists()}
         return JsonResponse(data)
     else:
         return redirect('login')

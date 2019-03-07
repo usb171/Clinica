@@ -36,9 +36,12 @@ class Titulo(models.Model):
     """
     status = models.CharField('Clínica Ativa ?', max_length=4, choices=_FLAG_CHOICES, default="ON", null=True, blank=True)
     clinica = models.ForeignKey(Clinica, on_delete=models.SET_NULL, null=True)
-    titulo = models.CharField('Nome do Título', max_length=60, null=True, blank=True, unique=True)
+    titulo = models.CharField('Nome do Título', max_length=60, null=True, blank=True)
     created_at = models.DateTimeField('Criada em', auto_now_add=True)
     update_at = models.DateTimeField('Atualizada em', auto_now_add=True)
+
+    class Meta:
+        unique_together = ('titulo', 'clinica',)
 
     def __str__(self):
         return self.titulo
