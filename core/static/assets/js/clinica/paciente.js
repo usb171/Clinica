@@ -216,7 +216,7 @@ function resetar_campos(){
 // Convenio ///////////////////////////////////////////////////////////////////////////////////////////////
 function remove_linha_convenio(count){ // Remove umma linha (grupo) de dados de um convênio
     $("#id_div_grupo_convenio").find("[count='" + count + "']").remove();
-    $("#id_grupo_convenio").val(get_json_convenho());
+    $("#id_grupo_convenio").val(get_json_convenio());
 }
 
 function adicionar_linha_convenio(count="", convenio="", numero="", validade=""){
@@ -224,9 +224,8 @@ function adicionar_linha_convenio(count="", convenio="", numero="", validade="")
         '<div class="form-group row pt-0 pb-0" count='+$("#id_div_grupo_convenio .form-group.row").length+'>' +
             '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
                 '<label for="id_convenio">Convênio *</label>' +
-                '<select id="id_convenio_'+count+'" name="convenio" class="form-control select2 select2-lg" required>' +
-                    '<option></option>'+
-                    get_options_select_convenho() +
+                '<select id="id_convenio_'+count+'" name="convenio" class="form-control select2 select2-lg">' +
+                    get_options_select_convenio() +
                 '</select>' +
             '</div>' +
             '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
@@ -253,7 +252,7 @@ function adicionar_linha_convenio(count="", convenio="", numero="", validade="")
     );
 }
 
-function get_json_convenho(){ // Retorna em json os dados dos grupos do convênio
+function get_json_convenio(){ // Retorna em json os dados dos grupos do convênio
     var grupos_size  = $("#id_div_grupo_convenio .form-group.row").length;
     var out = JSON.parse("{}");
     for(var i = 0; i < grupos_size; i++){
@@ -263,10 +262,11 @@ function get_json_convenho(){ // Retorna em json os dados dos grupos do convêni
     return JSON.stringify(out);
 }
 
-function get_options_select_convenho(){ // Retorna os options do select convenho
+function get_options_select_convenio(){ // Retorna os options do select convenho
     var out = "";
     var options = $('#id_convenio option');
     for(var i = 0; i < options.length; i++)out += "<option>" + options[i].value + "</option>";
+    console.log(out)
     return out;
 }
 
@@ -277,7 +277,7 @@ $("#id_button_mais_um_convenio").click(function(envent){
 
 // Formulários /////////////////////////////////////
 $('#id_form_novo_paciente').submit(function(e){
-    $("#id_grupo_convenio").val(get_json_convenho());
+    $("#id_grupo_convenio").val(get_json_convenio());
     $("#id_profissao_input").val($("#id_profissao").select2("val"));
 
     $("button").prop("disabled",true);

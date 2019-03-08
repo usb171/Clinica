@@ -1,4 +1,5 @@
 from django.db import models
+from core.models import Clinica
 
 _SEXO_CHOICES = {
     ('MASCULINO', 'MASCULINO'),
@@ -21,6 +22,7 @@ class Paciente(models.Model):
 
     ativo = models.CharField('Paciente Ativo ?', max_length=4, choices=_FLAG_CHOICES, default="ON", null=True, blank=True)
 
+    clinica = models.ForeignKey(Clinica, on_delete=models.SET_NULL, null=True, blank=True)
 
     nomeCompleto = models.CharField('Nome Completo', max_length=120, null=True, blank=True)
     cpf = models.CharField('CPF', max_length=20, null=True, blank=True)

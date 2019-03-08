@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from usuario.models import Usuario
 from django.shortcuts import redirect
-from .models import HistoricoAcesso, Titulo
+from .models import HistoricoAcesso, Titulo, Convenio
 from django.utils.timezone import localtime
 from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
@@ -101,6 +101,7 @@ def buscarTituloAjax(request):
     if request.user.is_authenticated:
         titulo = request.GET.get('titulo', None)
         id_nomeTitulo_original = request.GET.get('id_nomeTitulo_original', None)
+
         if id_nomeTitulo_original == titulo:
             data = {'titulo': False}
         else:
@@ -125,3 +126,60 @@ def buscarDadosTituloAjax(request):
     else:
         return redirect('login')
 ###################################################### Título ######################################################
+
+
+###################################################### Convênio ####################################################
+def convenio(request):
+    if request.user.is_authenticated:
+        clinica = Usuario.objects.get(user=request.user).clinica
+        if request.method == 'GET':
+            contexto = {'convenios': Convenio.objects.filter(clinica=clinica)}
+            return render(request, 'convenio/convenio.html', contexto)
+        elif request.method == 'POST':
+            for key in request.POST.keys():
+                print(key, " ", request.POST[key])
+            nome = request.POST['nome']
+            status = request.POST['status']
+            id_convenio = request.POST['id_convenio']
+            try:
+                if Convenio.objects.filter(clinica=clinica, id=id_convenio).exists():  # Caso exista o ID passado, edite esse Convenio
+                    convenio_obj = Convenio.objects.filter(clinica=clinica, id=id_convenio)
+                    convenio_obj.update(nome=nome, clinica=clinica, status=status)
+                else:
+                    Convenio.objects.create(nome=nome, clinica=clinica, status=status).save()
+            except IntegrityError:
+                return HttpResponse(json.dumps({'fail': True, 'msg': "O Convênio " + nome + " já existe", 'erros': {'nome': -1 }}), content_type="application/json")
+            return HttpResponse(json.dumps({'ok': True, 'msg': "Convênio Salvo com Sucesso!", 'erros': {}}), content_type="application/json")
+    else:
+        return redirect('login')
+
+def buscarConvenioAjax(request):
+    if request.user.is_authenticated:
+        nome = request.GET.get('nome', None)
+        id_nome_original = request.GET.get('id_nome_original', None)
+
+        if id_nome_original == nome:
+            data = {'nome': False}
+        else:
+            clinica = Usuario.objects.get(user=request.user).clinica
+            data = {'convenio': Convenio.objects.filter(clinica=clinica, nome=request.GET.get('nome', None)).exists()}
+        return JsonResponse(data)
+    else:
+        return redirect('login')
+
+def buscarDadosConvenioAjax(request):
+    if request.user.is_authenticated:
+        try:
+            convenio = Convenio.objects.get(id=request.GET.get('id_convenio', None))
+        except:
+            return redirect('login')
+        data = {
+            'nome': convenio.nome,
+            'status': convenio.status,
+            'id_convenio': convenio.pk,
+        }
+        return JsonResponse(data)
+    else:
+        return redirect('login')
+###################################################### Convênio ####################################################
+

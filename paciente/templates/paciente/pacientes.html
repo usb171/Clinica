@@ -92,6 +92,21 @@
 					{% endif %}
 					<button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
 				</div>
+
+
+				<!--&lt;!&ndash; Stream video via webcam &ndash;&gt;-->
+				<!--<div class="video-wrap">-->
+					<!--<video id="video" playsinline autoplay></video>-->
+				<!--</div>-->
+
+				<!--&lt;!&ndash; Trigger canvas web API &ndash;&gt;-->
+				<!--<div class="controller">-->
+					<!--<button id="snap">Capture</button>-->
+				<!--</div>-->
+
+				<!--&lt;!&ndash; Webcam video snapshot &ndash;&gt;-->
+				<!--<canvas id="canvas" width="250" height="124"></canvas>-->
+
 				<div class="modal-body">
 					<form method="POST" id="id_form_novo_paciente">
 						{% csrf_token %}
@@ -119,14 +134,14 @@
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_nomeCompleto">Nome Completo *</label>
 								<input class="form-control" type="text" id="id_nomeCompleto" name="nomeCompleto" placeholder="Nome completo do paciente"
-									   required>
+									   >
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_cpf">CPF *</label>
-								<input class="form-control " type="text" id="id_cpf" name="cpf" placeholder="000.000.000-00" required>
+								<label for="id_cpf">CPF</label>
+								<input class="form-control " type="text" id="id_cpf" name="cpf" placeholder="000.000.000-00">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_sexo">Sexo *</label>
+								<label for="id_sexo">Sexo</label>
 								<select id="id_sexo" name="sexo" class="form-control">
 									<option value="MASCULINO" selected>MASCULINO</option>
 									<option value="FEMENINO">FEMENINO</option>
@@ -137,21 +152,22 @@
 
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_cpf">Data Nascimento *</label>
-								<input class="form-control" type="text" id="id_dataNascimento" name="dataNascimento" placeholder="04/08/1993" required>
+								<label for="id_cpf">Data Nascimento</label>
+								<input class="form-control" type="text" id="id_dataNascimento" name="dataNascimento" placeholder="04/08/1993">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_estadoCivil">Estado Civil *</label>
+								<label for="id_estadoCivil">Estado Civil</label>
 								<select id="id_estadoCivil" name="estadoCivil" class="form-control select2 select2-lg">
-									<option value="SOLTEIRO(A)" selected>SOLTEIRO(A)</option>
+									<option value="NÃO INFORMADO" selected>NÃO INFORMADO</option>
+									<option value="SOLTEIRO(A)">SOLTEIRO(A)</option>
 									<option value="CASADO(A)">CASADO(A)</option>
 									<option value="DIVORCIADO(A)">DIVORCIADO(A)</option>
 									<option value="VIUVO(A)">VIUVO(A)</option>
 								</select>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_profissao">Profissão *</label>
-								<select id="id_profissao" class="select2 select2-lg" multiple="" required>
+								<label for="id_profissao">Profissão</label>
+								<select id="id_profissao" class="select2 select2-lg" multiple="">
 									<option></option>
 									<option value="">Selecione a Profissão</option>
 									<option value="Administrador(a)">Administrador(a)</option>
@@ -984,16 +1000,16 @@
 						<h2 class="pt-0 pb-5">Contato</h2>
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_telefone">Telefône</label>
+								<label for="id_telefone">Telefone</label>
 								<input class="form-control" type="text" id="id_telefone" name="telefone" placeholder="+ 55 (99) 9999-9999">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_celular">Celular *</label>
-								<input class="form-control" type="text" id="id_celular" name="celular" placeholder="+ 55 (99) 99999-9999" required>
+								<label for="id_celular">Celular</label>
+								<input class="form-control" type="text" id="id_celular" name="celular" placeholder="+ 55 (99) 99999-9999">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_email">Email</label>
-								<input class="form-control" type="email" id="id_email" name="email" placeholder="paciente@gmail.com" required>
+								<input class="form-control" type="email" id="id_email" name="email" placeholder="paciente@gmail.com">
 							</div>
 						</div>
 
@@ -1009,8 +1025,8 @@
 								<input class="form-control" type="text" id="id_numero" name="numero" placeholder="">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_rua">Rua *</label>
-								<input class="form-control" type="text" id="id_rua" name="rua" placeholder="" required>
+								<label for="id_rua">Rua</label>
+								<input class="form-control" type="text" id="id_rua" name="rua" placeholder="">
 							</div>
 						</div>
 
@@ -1020,17 +1036,17 @@
 								<input class="form-control" type="text" id="id_quadra" name="quadra" placeholder="">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_bairro">Bairro *</label>
-								<input class="form-control" type="text" id="id_bairro" name="bairro" placeholder="" required>
+								<label for="id_bairro">Bairro</label>
+								<input class="form-control" type="text" id="id_bairro" name="bairro" placeholder="">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_cidade">Cidade *</label>
-								<input class="form-control" type="text" id="id_cidade" name="cidade" placeholder="" required>
+								<label for="id_cidade">Cidade</label>
+								<input class="form-control" type="text" id="id_cidade" name="cidade" placeholder="">
 							</div>
 						</div>
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-								<label for="id_estado">Estado *</label>
+								<label for="id_estado">Estado</label>
 								<select id="id_estado" name="estado" class="form-control select2 select2-lg">
 									<option></option>
 									<option value="AC">AC</option>
@@ -1080,21 +1096,20 @@
 						<div id="id_div_grupo_convenio">
 							<div class="form-group row pt-0" count="0">
 								<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-									<label for="id_convenio">Convênio *</label>
-									<select id="id_convenio" name="convenio" class="form-control select2 select2-lg" required>
-										<option></option>
+									<label for="id_convenio">Convênio</label>
+									<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">
 										{% for convenio in convenios %}
-										<option value="{{ convenio.nome }}">{{ convenio.nome }}</option>
+										{% if convenio.status != "OFF" %} <option value="{{ convenio.nome }}">{{ convenio.nome }}</option> {% endif %}
 										{% endfor %}
 									</select>
 								</div>
 								<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-									<label for="id_convenioCarteira">Número Carteira *</label>
-									<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira" required>
+									<label for="id_convenioCarteira">Número Carteira</label>
+									<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira">
 								</div>
 								<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
-									<label for="id_convenioValidade">Validade *</label>
-									<input class="form-control" type="text" id="id_convenioValidade" name="convenioValidade" placeholder="04/08/1993" required>
+									<label for="id_convenioValidade">Validade</label>
+									<input class="form-control" type="text" id="id_convenioValidade" name="convenioValidade" placeholder="04/08/1993" >
 								</div>
 							</div>
 						</div>
@@ -1150,7 +1165,7 @@
 						</div>
 
 						<hr class="style-one">
-						{% if perms.usuario.change_usuario %}
+						{% if perms.paciente.change_paciente %}
 						<div class="form-group row text-right">
 							<div class="col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">
 								<button class="btn btn-space btn-primary btn-big" type="submit" id="id_button_modal"><i class="icon mdi mdi-save"></i> Slavar
@@ -1179,5 +1194,51 @@
 <script src="{% static '/assets/js/jquery.validate.msg.pt-br.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/js/jquery.mask.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/js/clinica/paciente.js' %}" type="text/javascript"></script>
+
+
+<!--<script>-->
+<!--'use strict';-->
+
+<!--const video = document.getElementById('video');-->
+<!--const canvas = document.getElementById('canvas');-->
+<!--var context = canvas.getContext('2d');-->
+<!--const snap = document.getElementById("snap");-->
+<!--const errorMsgElement = document.querySelector('span#errorMsg');-->
+
+<!--const constraints = {-->
+  <!--audio: false,-->
+  <!--video: {-->
+    <!--width: 250, height: 124-->
+  <!--}-->
+<!--};-->
+
+<!--// Access webcam-->
+<!--async function init() {-->
+  <!--try {-->
+    <!--const stream = await navigator.mediaDevices.getUserMedia(constraints);-->
+    <!--handleSuccess(stream);-->
+  <!--} catch (e) {-->
+    <!--errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;-->
+  <!--}-->
+<!--}-->
+
+<!--// Success-->
+<!--function handleSuccess(stream) {-->
+  <!--window.stream = stream;-->
+  <!--video.srcObject = stream;-->
+<!--}-->
+
+<!--// Load init-->
+<!--init();-->
+
+<!--// Draw image-->
+<!--snap.addEventListener("click", function() {-->
+	<!--context.drawImage(video, 0, 0, 250, 124);-->
+<!--});-->
+<!--</script>-->
+
+
+
+
 {% endblock %}
 

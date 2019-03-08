@@ -1,5 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
+from usuario.models import Usuario
+
 from paciente.models import Paciente
 from core.models import Convenio
 from .forms import PacienteForm
@@ -57,10 +59,12 @@ def buscarDadosPacienteAjax(request):
 def paciente(request):
 
     if request.user.is_authenticated:
+        clinica = Usuario.objects.get(user=request.user).clinica
+
         if request.method == 'GET':
             contexto = {
-                'pacientes': Paciente.objects.all(),
-                'convenios': Convenio.objects.all(),
+                'pacientes': Paciente.objects.filter(clinica=clinica),
+                'convenios': Convenio.objects.filter(clinica=clinica),
             }
             print(contexto)
             return render(request, 'paciente/pacientes.html', contexto)
@@ -133,6 +137,7 @@ def paciente(request):
                                             cidade=cidade,
                                             estado=estado,
                                             celular=celular,
+                                            clinica=clinica,
                                             telefone=telefone,
                                             profissao=profissao,
                                             observacao=observacao,

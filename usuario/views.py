@@ -74,10 +74,12 @@ def buscarDadosUsuarioAjax(request):
 
 def usuario(request):
     if request.user.is_authenticated:
+        clinica = Usuario.objects.get(user=request.user).clinica
+
         if request.method == 'GET':
             contexto = {
                 'usuarios': Usuario.objects.all(),
-                'titulos': Titulo.objects.all(),
+                'titulos': Titulo.objects.filter(clinica=clinica),
             }
             # print(contexto)
             return render(request, 'usuario/usuarios.html', contexto)
@@ -92,7 +94,7 @@ def usuario(request):
                 email = dados['email']
                 ativo = dados['ativo']
                 admin = dados['admin']
-                titulo = Titulo.objects.get(titulo=dados['titulo'])
+                titulo = Titulo.objects.get(clinica=clinica, titulo=dados['titulo'])
                 celular = dados['celular']
                 telefone = dados['telefone']
                 id_user = request.POST['id_user']
@@ -105,8 +107,6 @@ def usuario(request):
 
                 user = None
                 usuario_obj = None
-
-                print(titulo)
 
                 try:
                     if Usuario.objects.filter(id=id_user).exists():  # Caso exista o ID passado, edite esse Usuário

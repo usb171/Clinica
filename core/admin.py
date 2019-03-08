@@ -9,10 +9,9 @@ class HistoricoAcessoAdmin(admin.ModelAdmin):
     )
 
 class ConvenioAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'numeroCarteira', 'clinica']
+    list_display = ['nome', 'clinica']
     search_fields = (
         'nome',
-        'numeroCarteira',
         'clinica__nome'
     )
 
