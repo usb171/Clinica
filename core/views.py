@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from usuario.models import Usuario
 from django.shortcuts import redirect
-from .models import HistoricoAcesso, Titulo, Convenio
+from .models import HistoricoAcesso, Titulo, Convenio, Origem
 from django.utils.timezone import localtime
 from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
@@ -20,21 +20,25 @@ def login(request):
         user = authenticate(request, username=username, password=password) # Faz a autenticação do usuário
         contexto = {'flag': False, 'msg': None, 'username': username, 'password': password}
         if user is not None: # Se existir acesso
-            usuario = Usuario.objects.filter(user=user)[0] # Busque os dados do usuário com esse acesso
-            if usuario.ativo == "ON":  # Se o usuário estiver ativo pelo administrador
-                auth_login(request, user)  # Faz o login do usuário
-                desired_datetime = localtime().strftime('%Y-%m-%d %H:%M:%S')
-                HistoricoAcesso.objects.create(idUser=user.id, user=request.user, dataLogon=desired_datetime)
+            try:
+                usuario = Usuario.objects.filter(user=user)[0] # Busque os dados do usuário com esse acesso
+                if usuario.ativo == "ON":  # Se o usuário estiver ativo pelo administrador
+                    auth_login(request, user)  # Faz o login do usuário
+                    desired_datetime = localtime().strftime('%Y-%m-%d %H:%M:%S')
+                    HistoricoAcesso.objects.create(idUser=user.id, user=request.user, dataLogon=desired_datetime)
 
-                request.session['senhaPadraoAlterada'] = usuario.senhaPadraoAlterada
-                request.session['senhaPadrao'] = usuario.clinica.senhaPadrao
-                request.session['logo'] = "/static/media/" + str(usuario.clinica.logo)
+                    request.session['senhaPadraoAlterada'] = usuario.senhaPadraoAlterada
+                    request.session['senhaPadrao'] = usuario.clinica.senhaPadrao
+                    request.session['logo'] = "/static/media/" + str(usuario.clinica.logo)
 
 
-                if usuario.senhaPadraoAlterada:
-                    return redirect('dashboard')
-                else:
-                    return redirect('conta')
+                    if usuario.senhaPadraoAlterada:
+                        return redirect('dashboard')
+                    else:
+                        return redirect('conta')
+            except IndexError:
+                contexto['msg'] = "Seu acesso foi desativado pelo administrador do sistema"
+                return render(request, "core/login.html", contexto)
             else:
                 contexto['msg'] = "Seu acesso foi desativado pelo administrador do sistema"
                 return render(request, "core/login.html", contexto)
@@ -183,3 +187,58 @@ def buscarDadosConvenioAjax(request):
         return redirect('login')
 ###################################################### Convênio ####################################################
 
+
+###################################################### Origem ####################################################
+def origem(request):
+    if request.user.is_authenticated:
+        clinica = Usuario.objects.get(user=request.user).clinica
+        if request.method == 'GET':
+            contexto = {'origens': Origem.objects.filter(clinica=clinica)}
+            return render(request, 'origem/origem.html', contexto)
+        elif request.method == 'POST':
+            for key in request.POST.keys():
+                print(key, " ", request.POST[key])
+            nome = request.POST['nome']
+            status = request.POST['status']
+            id_origem = request.POST['id_origem']
+            try:
+                if Origem.objects.filter(clinica=clinica, id=id_origem).exists():  # Caso exista o ID passado, edite essa Origem
+                    origem_obj = Origem.objects.filter(clinica=clinica, id=id_origem)
+                    origem_obj.update(nome=nome, clinica=clinica, status=status)
+                else:
+                    Origem.objects.create(nome=nome, clinica=clinica, status=status).save()
+            except IntegrityError:
+                return HttpResponse(json.dumps({'fail': True, 'msg': "A Origem " + nome + " já existe", 'erros': {'nome': -1 }}), content_type="application/json")
+            return HttpResponse(json.dumps({'ok': True, 'msg': "Origem Salva com Sucesso!", 'erros': {}}), content_type="application/json")
+    else:
+        return redirect('login')
+
+def buscarOrigemAjax(request):
+    if request.user.is_authenticated:
+        nome = request.GET.get('nome', None)
+        id_nome_original = request.GET.get('id_nome_original', None)
+
+        if id_nome_original == nome:
+            data = {'nome': False}
+        else:
+            clinica = Usuario.objects.get(user=request.user).clinica
+            data = {'origem': Origem.objects.filter(clinica=clinica, nome=request.GET.get('nome', None)).exists()}
+        return JsonResponse(data)
+    else:
+        return redirect('login')
+
+def buscarDadosOrigemAjax(request):
+    if request.user.is_authenticated:
+        try:
+            origem = Origem.objects.get(id=request.GET.get('id_origem', None))
+        except:
+            return redirect('login')
+        data = {
+            'nome': origem.nome,
+            'status': origem.status,
+            'id_origem': origem.pk,
+        }
+        return JsonResponse(data)
+    else:
+        return redirect('login')
+###################################################### Origem ####################################################

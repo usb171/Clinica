@@ -46,7 +46,7 @@ _FLAG_CHOICES = (
 
 class Usuario(models.Model):
 
-    clinica = models.ForeignKey(Clinica, on_delete=models.SET_NULL, related_name='Clinica', null=True, blank=True)
+    clinica = models.ForeignKey(Clinica, on_delete=models.CASCADE, related_name='Clinica', null=True, blank=True)
 
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     nomeCompleto = models.CharField('Nome Completo', max_length=120, null=True, blank=True)

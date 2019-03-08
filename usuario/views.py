@@ -78,7 +78,7 @@ def usuario(request):
 
         if request.method == 'GET':
             contexto = {
-                'usuarios': Usuario.objects.all(),
+                'usuarios': Usuario.objects.filter(clinica=clinica),
                 'titulos': Titulo.objects.filter(clinica=clinica),
             }
             # print(contexto)

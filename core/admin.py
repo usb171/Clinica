@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import HistoricoAcesso, Convenio, Clinica, Titulo
+from .models import HistoricoAcesso, Convenio, Clinica, Titulo, Origem
 
 class HistoricoAcessoAdmin(admin.ModelAdmin):
     list_display = ['idUser', 'user', 'dataLogon']
@@ -22,6 +22,13 @@ class ClinicaAdmin(admin.ModelAdmin):
         'usuarioAdmin',
     )
 
+class OrigemAdmin(admin.ModelAdmin):
+    list_display = ['nome', 'clinica']
+    search_fields = (
+        'nome',
+        'clinica__nome',
+    )
+
 class TituloAdmin(admin.ModelAdmin):
     list_display = ['titulo', 'clinica']
     search_fields = (
@@ -33,3 +40,4 @@ admin.site.register(HistoricoAcesso, HistoricoAcessoAdmin)
 admin.site.register(Convenio, ConvenioAdmin)
 admin.site.register(Clinica, ClinicaAdmin)
 admin.site.register(Titulo, TituloAdmin)
+admin.site.register(Origem, OrigemAdmin)

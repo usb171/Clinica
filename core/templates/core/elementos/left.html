@@ -30,6 +30,12 @@
 								<li id="id_item_convenio"><a href="{% url 'convenios' %}">Convênios</a></li>
 							</ul>
 							{% endif %}
+
+							{% if perms.core.add_origem and perms.core.change_origem %}
+							<ul class="sub-menu">
+								<li id="id_item_origem"><a href="{% url 'origens' %}">Origens</a></li>
+							</ul>
+							{% endif %}
 						</li>
 					</ul>
 				</div>
