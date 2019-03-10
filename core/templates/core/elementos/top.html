@@ -7,11 +7,11 @@
 		<div class="be-right-navbar">
 			<ul class="nav navbar-nav float-right be-user-nav">
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><img
-						src="{% static '/media/avatar2.png'%}" alt="Avatar"><span class="user-name">"{{request.session.nomeCompleto}}"</span></a>
+						src="{% static '/media/avatar2.png'%}" alt="Avatar">
+				</a>
 					<div class="dropdown-menu" role="menu">
 						<div class="user-info">
-							<div class="user-name">{{request.session.nomeCompleto}}</div>
-							<div class="user-position online">Online</div>
+							<div class="user-position online" id="id_dataHora" style="font-size: 16px;"><a></a></div>
 						</div>
 						<a class="dropdown-item" href="{% url 'conta' %}"><span class="icon mdi mdi-face"></span>Conta</a><a class="dropdown-item"
 																															 href="#"><span

@@ -8,6 +8,8 @@ $("#id_telefone").mask("+ 55 (99) 9999-9999");
 $("#id_celular").mask("+ 55 (99) 99999-9999");
 
 // Validar Email /////////////////////////////
+
+
 $("#id_email").keyup(function( event ) {
     $("#id_email").val(($(this).val()).toLowerCase());
     $.ajax({
@@ -15,6 +17,7 @@ $("#id_email").keyup(function( event ) {
         data: {'email': $(this).val(), 'email_original': $('#id_modal_form_paciente form input[id="id_email_original"]').val()},
         dataType: 'json',
         success: function (data) {
+        console.log("aqui:" + $("#id_dataHora a").text());
             if (data.email){
                 $("#id_email").removeClass("is-valid").addClass("is-invalid");
                 $("#id_email")[0].setCustomValidity("Email já Existe");
@@ -52,11 +55,63 @@ $("#id_cpf").mask("000.000.000-00").keyup(function(event){
 validar_dataNascimento("#id_dataNascimento");
 validar_dataNascimento("#id_convenioValidade");
 
-
 function validar_dataNascimento(id){
-$(id).mask("00/00/0000", {onKeyPress: function(data, e, field, options){
-var dia = data.split('/')[0],mes = data.split('/')[1];if(data.length >=2) if(dia > 31) $(id).val('31/');
-else if(data.length >=5) if(mes > 12) $(id).val(dia+'/12/');}});
+    $(id).mask("00/00/0000", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
+        var dia = data.split('/')[0], mes = data.split('/')[1], ano = data.split('/')[2]
+        //console.log(data);
+        $("#id_idade").val("...");
+        if(data.length >= 2)
+            if(dia > 31)
+                $(id).val('31/');
+            else if(dia == 0)
+                $(id).val('01/');
+        else
+            if(data.length >=5)
+                if(mes > 12)
+                    $(id).val(dia+'/12/');
+                if(mes == 2 && dia > 28)
+                    $(id).val('28/02');
+
+
+        if(data.length == 10){
+            diaSistema = $("#id_dataHora a").text().split('/')[0].split(' ')[0];
+            mesSistema = $("#id_dataHora a").text().split('/')[1].split(' ')[0];
+            anoSistema = $("#id_dataHora a").text().split('/')[2].split(' ')[0];
+            //console.log(diaSistema + " " + mesSistema + " " + anoSistema)
+            //console.log(dia + " " + mes + " " + ano)
+            if(ano >= 1930 && ano <= anoSistema){
+                //console.log((anoSistema - ano) + " anos de idade");
+                $(id).removeClass("is-invalid").addClass("is-valid");
+                $("#id_idade").removeClass("is-invalid").addClass("is-valid");
+                $("#id_dataNascimento")[0].setCustomValidity('');
+
+                if(diaSistema >= dia && mesSistema >= mes)
+                    $("#id_idade").val(anoSistema-ano + " anos");
+                else
+                    $("#id_idade").val((anoSistema-ano)-1 + " anos");
+
+            }
+            else{
+                $(id).removeClass("is-valid").addClass("is-invalid")
+                if(ano < 1930){
+                    $("#id_dataNascimento")[0].setCustomValidity("Data de nascimento muito antiga");
+                    //console.log("Data de nascimento muito antiga");
+
+                }
+                else{
+                    $("#id_dataNascimento")[0].setCustomValidity("Data de nascimento não pode ser maior do que o ano corrente");
+                    //console.log("Data de nascimento não pode ser maior do que o ano corrente");
+                }
+            }
+        } else{
+            $(id).removeClass("is-valid").addClass("is-invalid");
+            $("#id_idade").removeClass("is-valid").addClass("is-invalid");
+
+            $("#id_dataNascimento")[0].setCustomValidity("Data de nascimento inválida");
+            //console.log("Data de nascimento inválida");
+        }
+    }
+    });
 }
 
 
@@ -162,6 +217,7 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
             $('#id_modal_form_paciente form input[id="id_nomeCompleto"]').val(data.nomeCompleto);
             $('#id_modal_form_paciente form input[id="id_grupoConvenio"]').val(data.grupoConvenio);
             $('#id_modal_form_paciente form input[id="id_dataNascimento"]').val(data.dataNascimento);
+            $('#id_modal_form_paciente form input[id="id_idade"]').val(data.idade);
 
             $("#id_nomeFamiliar").val(data.nomeFamiliar).trigger('change');
             $("#id_grauParentesco").val(data.grauParentesco).trigger('change');

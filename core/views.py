@@ -6,6 +6,7 @@ from .models import HistoricoAcesso, Titulo, Convenio, Origem
 from django.utils.timezone import localtime
 from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
+import datetime, time
 
 import json
 
@@ -242,3 +243,13 @@ def buscarDadosOrigemAjax(request):
     else:
         return redirect('login')
 ###################################################### Origem ####################################################
+
+
+def getDataHoraAjax(request):
+    if request.user.is_authenticated:
+        data = {
+            'dataHora': time.mktime(datetime.datetime.now().timetuple())
+        }
+        return JsonResponse(data)
+    else:
+        return redirect('login')

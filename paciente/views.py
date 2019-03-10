@@ -34,6 +34,7 @@ def buscarDadosPacienteAjax(request):
                 'rua': paciente.rua,
                 'sexo': paciente.sexo,
                 'email': paciente.email,
+                'idade': paciente.idade,
                 'numero': paciente.numero,
                 'quadra': paciente.quadra,
                 'bairro': paciente.bairro,
@@ -80,6 +81,7 @@ def paciente(request):
                 cep = dados['cep']
                 rua = dados['rua']
                 sexo = dados['sexo']
+                idade = dados['idade']
                 email = dados['email']
                 numero = dados['numero']
                 quadra = dados['quadra']
@@ -108,6 +110,7 @@ def paciente(request):
                                         rua=rua,
                                         sexo=sexo,
                                         email=email,
+                                        idade=idade,
                                         numero=numero,
                                         quadra=quadra,
                                         bairro=bairro,
@@ -131,6 +134,7 @@ def paciente(request):
                                             rua=rua,
                                             sexo=sexo,
                                             email=email,
+                                            idade=idade,
                                             numero=numero,
                                             quadra=quadra,
                                             bairro=bairro,

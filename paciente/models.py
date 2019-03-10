@@ -27,6 +27,7 @@ class Paciente(models.Model):
     nomeCompleto = models.CharField('Nome Completo', max_length=120, null=True, blank=True)
     cpf = models.CharField('CPF', max_length=20, null=True, blank=True)
     dataNascimento = models.CharField('Data Nascimento', max_length=20, null=True, blank=True)
+    idade = models.CharField('Idade', max_length=3, null=True, blank=True)
 
     sexo = models.CharField('Sexo', max_length=10, choices=_SEXO_CHOICES, default="MASCULINO", null=True, blank=True)
     estadoCivil = models.CharField('Estado Civil', max_length=25, choices=_ESTADO_CIVIL_CHOICES, default="SOLTEIRO(A)", null=True, blank=True)

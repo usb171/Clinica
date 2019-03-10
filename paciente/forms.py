@@ -7,6 +7,7 @@ class PacienteForm(forms.Form):
     nomeCompleto = forms.CharField(required=True)
     cpf = forms.CharField(required=False)
     dataNascimento = forms.CharField(required=False)
+    idade = forms.CharField(required=False)
     sexo = forms.CharField(required=False)
     estadoCivil = forms.CharField(required=False)
 

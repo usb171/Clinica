@@ -112,23 +112,28 @@
 						{% csrf_token %}
 						<hr class="style-one">
 						<div class="form-group row">
-							<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+							<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
 								<h2>Identificação</h2>
 							</div>
-							<div class="col-sm-12 col-lg-6 mb-6 mb-sm-0 text-right" style="padding-top: 20px;">
-								<label class="custom-control custom-radio custom-control-inline">
-									<input class="custom-control-input is-valid" id="id_radio_ativado"  type="radio" checked="" value="on" name="radioStateColor2"><span
-										class="custom-control-label">Ativado</span>
-								</label>
-								<label class="custom-control custom-radio custom-control-inline">
-									<input class="custom-control-input is-invalid" id="id_radio_desativado" type="radio" value="off"  name="radioStateColor2"><span
-										class="custom-control-label">Desativado</span>
-								</label>
+
+							<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0" style="padding-top: 2px;">
+								<label for="id_status">Status</label>
+								<select id="id_status" name="status" class="form-control">
+									<option value="ON" selected>ON</option>
+									<option value="OFF">OFF</option>
+								</select>
 							</div>
+							<!--<div class="col-sm-12 col-lg-6 mb-6 mb-sm-0 text-right" style="padding-top: 20px;">-->
+								<!--<label class="custom-control custom-radio custom-control-inline">-->
+									<!--<input class="custom-control-input is-valid" id="id_radio_ativado"  type="radio" checked="" value="on" name="radioStateColor2"><span-->
+										<!--class="custom-control-label">Ativado</span>-->
+								<!--</label>-->
+								<!--<label class="custom-control custom-radio custom-control-inline">-->
+									<!--<input class="custom-control-input is-invalid" id="id_radio_desativado" type="radio" value="off"  name="radioStateColor2"><span-->
+										<!--class="custom-control-label">Desativado</span>-->
+								<!--</label>-->
+							<!--</div>-->
 						</div>
-
-					<!--<h2 class="pt-0 pb-5">Identificação</h2>-->
-
 
 						<div class="form-group row pt-0">
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
@@ -147,13 +152,16 @@
 									<option value="FEMENINO">FEMENINO</option>
 								</select>
 							</div>
-
 						</div>
 
 						<div class="form-group row pt-0">
-							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
+							<div class="col-sm-2 col-lg-2 mb-2 mb-sm-0">
 								<label for="id_cpf">Data Nascimento</label>
 								<input class="form-control" type="text" id="id_dataNascimento" name="dataNascimento" placeholder="04/08/1993">
+							</div>
+							<div class="col-sm-2 col-lg-2 mb-2 mb-sm-0">
+								<label for="id_idade">Idade</label>
+								<input class="form-control" type="text" id="id_idade" name="idade">
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_estadoCivil">Estado Civil</label>
