@@ -67,7 +67,6 @@ def paciente(request):
                 'pacientes': Paciente.objects.filter(clinica=clinica),
                 'convenios': Convenio.objects.filter(clinica=clinica),
             }
-            print(contexto)
             return render(request, 'paciente/pacientes.html', contexto)
         elif request.method == 'POST':
             for key in request.POST.keys():

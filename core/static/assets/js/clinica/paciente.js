@@ -34,7 +34,7 @@ $("#id_email").keyup(function( event ) {
 
 $("#id_cep").mask("99999-999").keyup(function(event){
     var cep = $(this).val().replace(/\D/g,'');
-    if (cep.length == 8) {$.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+    if (cep.length == 8) {$.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados){
     if (!("erro" in dados)) {$("#id_rua").val(dados.logradouro);$("#id_bairro").val(dados.bairro);
     $("#id_cidade").val(dados.localidade);$("#id_estado").val(dados.uf).change();
     $("#id_cep").removeClass("is-invalid").addClass("is-valid");}else{
@@ -52,13 +52,15 @@ $("#id_cpf").mask("000.000.000-00").keyup(function(event){
   else{$("#id_cpf").removeClass("is-invalid").addClass("is-valid");}
 });
 
-validar_dataNascimento("#id_dataNascimento");
-validar_dataNascimento("#id_convenioValidade");
 
-function validar_dataNascimento(id){
-    $(id).mask("00/00/0000", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
+
+validarData("#id_dataNascimento", "dataNascimento");
+validarData("#id_convenioValidade", "convenioValidade");
+
+function validarData(id, campo){
+    $(id).mask("99/99/9999", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
         var dia = data.split('/')[0], mes = data.split('/')[1], ano = data.split('/')[2]
-        //console.log(data);
+        console.log(data);
         $("#id_idade").val("...");
         if(data.length >= 2)
             if(dia > 31)
@@ -69,46 +71,59 @@ function validar_dataNascimento(id){
             if(data.length >=5)
                 if(mes > 12)
                     $(id).val(dia+'/12/');
-                if(mes == 2 && dia > 28)
+                else if(mes == 0)
+                    $(id).val(dia+'/01/');
+                else if(mes == 2 && dia > 28)
                     $(id).val('28/02');
 
-
         if(data.length == 10){
+
             diaSistema = $("#id_dataHora a").text().split('/')[0].split(' ')[0];
             mesSistema = $("#id_dataHora a").text().split('/')[1].split(' ')[0];
             anoSistema = $("#id_dataHora a").text().split('/')[2].split(' ')[0];
-            //console.log(diaSistema + " " + mesSistema + " " + anoSistema)
-            //console.log(dia + " " + mes + " " + ano)
-            if(ano >= 1930 && ano <= anoSistema){
-                //console.log((anoSistema - ano) + " anos de idade");
-                $(id).removeClass("is-invalid").addClass("is-valid");
-                $("#id_idade").removeClass("is-invalid").addClass("is-valid");
-                $("#id_dataNascimento")[0].setCustomValidity('');
 
-                if(diaSistema >= dia && mesSistema >= mes)
-                    $("#id_idade").val(anoSistema-ano + " anos");
-                else
-                    $("#id_idade").val((anoSistema-ano)-1 + " anos");
+            if(ano == 0){ $(id).val(dia+'/'+mes+'/'+anoSistema); ano=anoSistema;}
 
-            }
-            else{
-                $(id).removeClass("is-valid").addClass("is-invalid")
-                if(ano < 1930){
-                    $("#id_dataNascimento")[0].setCustomValidity("Data de nascimento muito antiga");
-                    //console.log("Data de nascimento muito antiga");
-
+            if(campo == "dataNascimento"){
+                if(ano >= 1930 && ano <= anoSistema){
+                    $(id).removeClass("is-invalid").addClass("is-valid");
+                    $("#id_idade").removeClass("is-invalid").addClass("is-valid");
+                    $(id)[0].setCustomValidity('');
+                    if(diaSistema >= dia && mesSistema >= mes)
+                        $("#id_idade").val(anoSistema-ano + " anos");
+                    else
+                        if(ano == anoSistema)
+                            $("#id_idade").val("0 anos");
+                        else
+                            $("#id_idade").val((anoSistema-ano)-1 + " anos");
                 }
                 else{
-                    $("#id_dataNascimento")[0].setCustomValidity("Data de nascimento não pode ser maior do que o ano corrente");
-                    //console.log("Data de nascimento não pode ser maior do que o ano corrente");
+                    $(id).removeClass("is-valid").addClass("is-invalid")
+                    if(ano < 1930){
+                        $(id)[0].setCustomValidity("Data de nascimento muito antiga");
+                    }
+                    else{
+                        $(id)[0].setCustomValidity("Data de nascimento não pode ser maior do que o ano corrente");
+                    }
+                }
+            } else if(campo == "convenioValidade"){
+
+                var dataCampo = new Date(mes+'/'+dia+'/'+ano).setHours(0,0,0,0);
+                var dataSistema = new Date(mesSistema+'/'+diaSistema+'/'+anoSistema).setHours(0,0,0,0);
+
+                if (dataCampo < dataSistema) {
+                  $(id).removeClass("is-valid").addClass("is-invalid");
+                  $("#id_convenioValidade")[0].setCustomValidity("Convênio expirado");
+                }else{
+                  $(id).removeClass("is-invalid").addClass("is-valid");
+                  $("#id_convenioValidade")[0].setCustomValidity("");
                 }
             }
+
         } else{
             $(id).removeClass("is-valid").addClass("is-invalid");
-            $("#id_idade").removeClass("is-valid").addClass("is-invalid");
-
-            $("#id_dataNascimento")[0].setCustomValidity("Data de nascimento inválida");
-            //console.log("Data de nascimento inválida");
+//            $("#id_idade").removeClass("is-valid").addClass("is-invalid");
+            $(id)[0].setCustomValidity("Data inválida");
         }
     }
     });
@@ -286,7 +301,7 @@ function adicionar_linha_convenio(count="", convenio="", numero="", validade="")
             '</div>' +
             '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
                 '<label for="id_convenioCarteira">Número Carteira *</label>' +
-                '<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira" value="'+numero+'" required>' +
+                '<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira" value="'+numero+'">' +
             '</div>' +
             '<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">' +
                 '<label for="id_convenioValidade">Validade *</label>' +
@@ -298,7 +313,7 @@ function adicionar_linha_convenio(count="", convenio="", numero="", validade="")
         '</div>' +
         '<script> $(".select2").select2({ width: "100%"}); $(".tags").select2({tags: true, width: "100%"});'+
             '$("#id_convenio_'+count+'").val("'+convenio+'").trigger("change");' +
-            'validar_dataNascimento("#id_convenioValidade_'+$("#id_div_grupo_convenio .form-group.row").length+'");' +
+            'validarData("#id_convenioValidade_'+$("#id_div_grupo_convenio .form-group.row").length+'", "convenioValidade");' +
 
             '$('+"id_button_menos_um_convenio_"+ $("#id_div_grupo_convenio .form-group.row").length +').click(function(envent){'+
                 'var count = ' + $("#id_div_grupo_convenio .form-group.row").length + ';'+

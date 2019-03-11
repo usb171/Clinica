@@ -157,7 +157,9 @@
 						<div class="form-group row pt-0">
 							<div class="col-sm-2 col-lg-2 mb-2 mb-sm-0">
 								<label for="id_cpf">Data Nascimento</label>
-								<input class="form-control" type="text" id="id_dataNascimento" name="dataNascimento" placeholder="04/08/1993">
+								<!--<input class="form-control" type="text" id="id_dataNascimento" name="dataNascimento" placeholder="04/08/1993">-->
+								<input class="form-control" type="text" id="id_dataNascimento" name="dataNascimento" data-mask="date" placeholder="DD/MM/YYYY">
+
 							</div>
 							<div class="col-sm-2 col-lg-2 mb-2 mb-sm-0">
 								<label for="id_idade">Idade</label>
@@ -1195,12 +1197,12 @@
 <script src="{% static '/assets/lib/datatables/datatables.net/js/jquery.dataTables.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'assets/lib/jquery.maskedinput/jquery.maskedinput.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/lib/select2/js/select2.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/js/app-tables-datatables.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/js/jquery.validate.min.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/js/jquery.validate.msg.pt-br.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/js/jquery.mask.js' %}" type="text/javascript"></script>
+<!--<script src="{% static 'assets/lib/jquery.maskedinput/jquery.maskedinput.js' %}" type="text/javascript"></script>-->
 <script src="{% static '/assets/js/clinica/paciente.js' %}" type="text/javascript"></script>
 
 
