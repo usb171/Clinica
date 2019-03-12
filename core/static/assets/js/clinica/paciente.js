@@ -122,7 +122,7 @@ function validarData(id, campo){
 
         } else{
             $(id).removeClass("is-valid").addClass("is-invalid");
-//            $("#id_idade").removeClass("is-valid").addClass("is-invalid");
+//          $("#id_idade").removeClass("is-valid").addClass("is-invalid");
             $(id)[0].setCustomValidity("Data inválida");
         }
     }
@@ -269,7 +269,7 @@ function resetar_campos(){
     $("#id_convenio").val("------").trigger('change'); // reseta o campo profissão
     var gruposConvenioSize = $("#id_div_grupo_convenio .form-group.row").length;
     for(var i = 1; i < gruposConvenioSize; i++) // reseta os grupos do convenio
-        remove_linha_convenio(i);
+        remove_linha_grupo_convenio("id_button_menos_um_convenio_"+i);
 
     $("#id_cep").removeClass("is-invalid");
     $("#id_cep").removeClass("is-valid");
@@ -279,56 +279,15 @@ function resetar_campos(){
 }
 
 // Convenio ///////////////////////////////////////////////////////////////////////////////////////////////
-function remove_linha_convenio(count){ // Remove umma linha (grupo) de dados de um convênio
-    $("#id_div_grupo_convenio").find("[count='" + count + "']").remove();
-    $("#id_grupo_convenio").val(get_json_convenio());
-    grupos = $("#id_div_grupo_convenio .form-group.row");
-    buttonMenos = $("#id_div_grupo_convenio .form-group.row .icon-container");
-    count = grupos.length;
-    for(i = 0; i < count; i++){
-        $(grupos[i]).attr('count', i);
-        $(buttonMenos[i]).attr('id', 'id_button_menos_um_convenio_' + (i + 1));
-    }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-function atualiza_ids_grupo(idGrupo, idButton){
-    linhas = $("#" + idGrupo + " .row");
-    quant = linhas.length;
-    for(l = 1; l < quant; l++){
-        $(linhas[l]).attr('count', l);
-        $(linhas[l]).attr('id', idButton + "_" + l + "_row");
-        $($(linhas[l]).children()[3]).attr("id", "id_button_menos_um_convenio_" + l);
-
-        $($($($(linhas[l]).children()[0])).children()[0]).attr("id", "id_convenio_" + l).attr("for", "id_convenio_" + l);
-        $($($($(linhas[l]).children()[0])).children()[1]).attr("id", "id_convenio_" + l);
-
-        $($($($(linhas[l]).children()[1])).children()[0]).attr("id", "id_convenioCarteira_" + l).attr("for", "id_convenioCarteira_" + l);;
-        $($($($(linhas[l]).children()[1])).children()[1]).attr("id", "id_convenioCarteira_" + l);
-
-        $($($($(linhas[l]).children()[2])).children()[0]).attr("id", "id_convenioValidade_" + l).attr("for", "id_convenioValidade_" + l);;
-        $($($($(linhas[l]).children()[2])).children()[1]).attr("id", "id_convenioValidade_" + l);
-    }
-}
-
-function remove_linha_grupo(id){
+function remove_linha_grupo_convenio(id){
     $("#" + id + "_row").remove();
-    atualiza_ids_grupo("id_div_grupo_convenio", "id_button_menos_um_convenio");
+    atualiza_ids_grupo_convenio("id_div_grupo_convenio", "id_button_menos_um_convenio");
 }
-
 
 function adicionar_linha_convenio(count="", convenio="", numero="", validade=""){
+    grupos = $("#id_div_grupo_convenio .row");
+    count = grupos.length;
 
     $("#id_div_grupo_convenio").append(
         '<div class="form-group row pt-0 pb-0"  id="id_button_menos_um_convenio_'+count+'_row"  count='+count+'>' +
@@ -346,17 +305,38 @@ function adicionar_linha_convenio(count="", convenio="", numero="", validade="")
                 '<label for="id_convenioValidade_'+count+'">Validade </label>' +
                 '<input class="form-control" type="text" id="id_convenioValidade_'+count+'" name="convenioValidade" value="'+validade+'">' +
             '</div>' +
-            '<div class="col-sm-1 col-lg-1 mb-1 mb-sm-1 icon-container icon-visible text-center"  id="id_button_menos_um_convenio_'+count+'" onclick="remove_linha_grupo(id);" >' +
+            '<div class="col-sm-1 col-lg-1 mb-1 mb-sm-1 icon-container icon-visible text-center"  id="id_button_menos_um_convenio_'+count+'" onclick="remove_linha_grupo_convenio(id);" >' +
                 '<div class="icon"><span class="mdi mdi-minus-circle"></span></div>' +
             '</div>' +
+
+        '</div>' +
+
             '<script>' +
                 '$(".select2").select2({ width: "100%"}); $(".tags").select2({tags: true, width: "100%"});'+
                 '$("#id_convenio_'+count+'").val("'+convenio+'").trigger("change");' +
                 'validarData("#id_convenioValidade_'+count+'", "convenioValidade");' +
-            '</script>' +
-        '</div>'
+            '</script>'
 
     );
+}
+
+function atualiza_ids_grupo_convenio(idGrupo, idButton){
+    linhas = $("#" + idGrupo + " .row");
+    quant = linhas.length;
+    for(l = 1; l < quant; l++){
+        $(linhas[l]).attr('count', l);
+        $(linhas[l]).attr('id', idButton + "_" + l + "_row");
+        $($(linhas[l]).children()[3]).attr("id", "id_button_menos_um_convenio_" + l);
+
+        $($($($(linhas[l]).children()[0])).children()[0]).attr("id", "id_convenio_" + l).attr("for", "id_convenio_" + l);
+        $($($($(linhas[l]).children()[0])).children()[1]).attr("id", "id_convenio_" + l);
+
+        $($($($(linhas[l]).children()[1])).children()[0]).attr("id", "id_convenioCarteira_" + l).attr("for", "id_convenioCarteira_" + l);;
+        $($($($(linhas[l]).children()[1])).children()[1]).attr("id", "id_convenioCarteira_" + l);
+
+        $($($($(linhas[l]).children()[2])).children()[0]).attr("id", "id_convenioValidade_" + l).attr("for", "id_convenioValidade_" + l);;
+        $($($($(linhas[l]).children()[2])).children()[1]).attr("id", "id_convenioValidade_" + l);
+    }
 }
 
 function get_json_convenio(){ // Retorna em json os dados dos grupos do convênio
@@ -376,12 +356,12 @@ function get_options_select_convenio(){ // Retorna os options do select convenho
     return out;
 }
 
-$("#id_button_mais_um_convenio").click(function(envent){
-    grupos = $("#id_div_grupo_convenio .row");
-    count = grupos.length;
-    adicionar_linha_convenio(count=count);
-});
 // Convenio ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 
 // Formulários /////////////////////////////////////
 $('#id_form_novo_paciente').submit(function(e){
