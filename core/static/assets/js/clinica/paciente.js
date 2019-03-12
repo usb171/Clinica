@@ -60,7 +60,7 @@ validarData("#id_convenioValidade", "convenioValidade");
 function validarData(id, campo){
     $(id).mask("99/99/9999", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
         var dia = data.split('/')[0], mes = data.split('/')[1], ano = data.split('/')[2]
-        console.log(data);
+        console.log(data + " " + id);
         $("#id_idade").val("...");
         if(data.length >= 2)
             if(dia > 31)
@@ -113,10 +113,10 @@ function validarData(id, campo){
 
                 if (dataCampo < dataSistema) {
                   $(id).removeClass("is-valid").addClass("is-invalid");
-                  $("#id_convenioValidade")[0].setCustomValidity("Convênio expirado");
+                  $(id)[0].setCustomValidity("Convênio expirado");
                 }else{
                   $(id).removeClass("is-invalid").addClass("is-valid");
-                  $("#id_convenioValidade")[0].setCustomValidity("");
+                  $(id)[0].setCustomValidity("");
                 }
             }
 
@@ -128,8 +128,6 @@ function validarData(id, campo){
     }
     });
 }
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Maiúsculo ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,13 +255,9 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
                 $('#id_button_mais_um_convenio').prop('hidden', true); // Esconde a div que contém o button mais um convênio para edição
                 $("div[id*='id_button_menos_um_convenio']").prop('hidden', true); // Esconde os buttons de menos um convênio
                 $("div[class='col-sm-3 col-lg-3 mb-3 mb-sm-0']").toggleClass('col-sm-4 col-lg-4 mb-4 mb-sm-0'); // Alinha os campos do convênio após remover os button de ação
-
-
             }
             else $('form *').prop('disabled', false); // Reativa todos os campos do formulário para edição
             //Permissões //////////////////////////////////////
-
-
         }
     });
 });
@@ -288,38 +282,80 @@ function resetar_campos(){
 function remove_linha_convenio(count){ // Remove umma linha (grupo) de dados de um convênio
     $("#id_div_grupo_convenio").find("[count='" + count + "']").remove();
     $("#id_grupo_convenio").val(get_json_convenio());
+    grupos = $("#id_div_grupo_convenio .form-group.row");
+    buttonMenos = $("#id_div_grupo_convenio .form-group.row .icon-container");
+    count = grupos.length;
+    for(i = 0; i < count; i++){
+        $(grupos[i]).attr('count', i);
+        $(buttonMenos[i]).attr('id', 'id_button_menos_um_convenio_' + (i + 1));
+    }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+function atualiza_ids_grupo(idGrupo, idButton){
+    linhas = $("#" + idGrupo + " .row");
+    quant = linhas.length;
+    for(l = 1; l < quant; l++){
+        $(linhas[l]).attr('count', l);
+        $(linhas[l]).attr('id', idButton + "_" + l + "_row");
+        $($(linhas[l]).children()[3]).attr("id", "id_button_menos_um_convenio_" + l);
+
+        $($($($(linhas[l]).children()[0])).children()[0]).attr("id", "id_convenio_" + l).attr("for", "id_convenio_" + l);
+        $($($($(linhas[l]).children()[0])).children()[1]).attr("id", "id_convenio_" + l);
+
+        $($($($(linhas[l]).children()[1])).children()[0]).attr("id", "id_convenioCarteira_" + l).attr("for", "id_convenioCarteira_" + l);;
+        $($($($(linhas[l]).children()[1])).children()[1]).attr("id", "id_convenioCarteira_" + l);
+
+        $($($($(linhas[l]).children()[2])).children()[0]).attr("id", "id_convenioValidade_" + l).attr("for", "id_convenioValidade_" + l);;
+        $($($($(linhas[l]).children()[2])).children()[1]).attr("id", "id_convenioValidade_" + l);
+    }
+}
+
+function remove_linha_grupo(id){
+    $("#" + id + "_row").remove();
+    atualiza_ids_grupo("id_div_grupo_convenio", "id_button_menos_um_convenio");
+}
+
+
 function adicionar_linha_convenio(count="", convenio="", numero="", validade=""){
+
     $("#id_div_grupo_convenio").append(
-        '<div class="form-group row pt-0 pb-0" count='+$("#id_div_grupo_convenio .form-group.row").length+'>' +
+        '<div class="form-group row pt-0 pb-0"  id="id_button_menos_um_convenio_'+count+'_row"  count='+count+'>' +
             '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
-                '<label for="id_convenio">Convênio *</label>' +
+                '<label for="id_convenio_'+count+'">Convênio </label>' +
                 '<select id="id_convenio_'+count+'" name="convenio" class="form-control select2 select2-lg">' +
                     get_options_select_convenio() +
                 '</select>' +
             '</div>' +
             '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
-                '<label for="id_convenioCarteira">Número Carteira *</label>' +
-                '<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira" value="'+numero+'">' +
+                '<label for="id_convenioCarteira_'+count+'">Número Carteira </label>' +
+                '<input class="form-control" type="number" id="id_convenioCarteira_'+count+'" name="numeroCarteira" value="'+numero+'">' +
             '</div>' +
             '<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">' +
-                '<label for="id_convenioValidade">Validade *</label>' +
-                '<input class="form-control" type="text" id="id_convenioValidade_'+$("#id_div_grupo_convenio .form-group.row").length+'" name="convenioValidade" placeholder="04/08/1993" value="'+validade+'" required>' +
+                '<label for="id_convenioValidade_'+count+'">Validade </label>' +
+                '<input class="form-control" type="text" id="id_convenioValidade_'+count+'" name="convenioValidade" value="'+validade+'">' +
             '</div>' +
-            '<div class="col-sm-1 col-lg-1 mb-1 mb-sm-1 icon-container icon-visible text-center" id='+"id_button_menos_um_convenio_"+ $("#id_div_grupo_convenio .form-group.row").length +'>' +
-                '<div class="icon"><span class="mdi mdi-minus-circle" ></span></div>' +
+            '<div class="col-sm-1 col-lg-1 mb-1 mb-sm-1 icon-container icon-visible text-center"  id="id_button_menos_um_convenio_'+count+'" onclick="remove_linha_grupo(id);" >' +
+                '<div class="icon"><span class="mdi mdi-minus-circle"></span></div>' +
             '</div>' +
-        '</div>' +
-        '<script> $(".select2").select2({ width: "100%"}); $(".tags").select2({tags: true, width: "100%"});'+
-            '$("#id_convenio_'+count+'").val("'+convenio+'").trigger("change");' +
-            'validarData("#id_convenioValidade_'+$("#id_div_grupo_convenio .form-group.row").length+'", "convenioValidade");' +
+            '<script>' +
+                '$(".select2").select2({ width: "100%"}); $(".tags").select2({tags: true, width: "100%"});'+
+                '$("#id_convenio_'+count+'").val("'+convenio+'").trigger("change");' +
+                'validarData("#id_convenioValidade_'+count+'", "convenioValidade");' +
+            '</script>' +
+        '</div>'
 
-            '$('+"id_button_menos_um_convenio_"+ $("#id_div_grupo_convenio .form-group.row").length +').click(function(envent){'+
-                'var count = ' + $("#id_div_grupo_convenio .form-group.row").length + ';'+
-                'remove_linha_convenio(count);' +
-            '});'+
-        '</script>'
     );
 }
 
@@ -337,12 +373,13 @@ function get_options_select_convenio(){ // Retorna os options do select convenho
     var out = "";
     var options = $('#id_convenio option');
     for(var i = 0; i < options.length; i++)out += "<option>" + options[i].value + "</option>";
-    console.log(out)
     return out;
 }
 
 $("#id_button_mais_um_convenio").click(function(envent){
-   adicionar_linha_convenio();
+    grupos = $("#id_div_grupo_convenio .row");
+    count = grupos.length;
+    adicionar_linha_convenio(count=count);
 });
 // Convenio ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
