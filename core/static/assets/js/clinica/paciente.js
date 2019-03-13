@@ -370,8 +370,7 @@ const canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 const errorMsgElement = document.querySelector('span#errorMsg');
 var imageObj = new Image();
-
-
+var stream = null;
 const constraints = {
   audio: false,
   video: {
@@ -381,11 +380,15 @@ const constraints = {
 
 async function initWebCam() {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    stream = await navigator.mediaDevices.getUserMedia(constraints);
     handleSuccess(stream);
   } catch (e) {
-    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+    errorMsgElement.innerHTML = 'navigator.getUserMedia error:${e.toString()}';
   }
+}
+
+function desativarWebCam(){
+    stream.getTracks()[0].stop();
 }
 
 function handleSuccess(stream) {
@@ -400,6 +403,7 @@ function take(){
 imageObj.onload = function() {
     context.restore();
     context.drawImage(imageObj, 5, 5, 240 + 50, 140);
+
 };
 
 // WebCam ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -411,8 +415,10 @@ $('#id_form_novo_paciente').submit(function(e){
     $("#id_grupo_convenio").val(get_json_convenio());
     $("#id_imagem_paciente").val(canvas.toDataURL());
     $("#id_profissao_input").val($("#id_profissao").select2("val"));
-
     $("button").prop("disabled",true);
+
+    desativarWebCam();
+
     e.preventDefault();
     $.post("/paciente/meusPacientes", $(this).serialize(), function(data){
         if (data.ok){

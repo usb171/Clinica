@@ -16,6 +16,7 @@
     background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
 
+
 canvas, video {
   width: 100%;
   height: 100%;
@@ -96,7 +97,7 @@ canvas, video {
 					{% else %}
 					<h3 class="modal-title" id="id_title">Novo Paciente</h3>
 					{% endif %}
-					<button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
+					<button class="close md-close" type="button" data-dismiss="modal" onclick="desativarWebCam()" aria-hidden="true"><span class="mdi mdi-close"></span></button>
 				</div>
 
 				<div class="modal-body">
@@ -984,11 +985,10 @@ canvas, video {
 								<textarea class="form-control" id="id_observacao" name="observacao"
 										  style="margin-top: 0px; margin-bottom: 0px; height: 104px;"></textarea>
 							</div>
-
 							<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0">
 								<div class="container" >
-									<div class="row">
-										<div class="col-md-6">
+									<div class="form-group row pt-5">
+										<div class="col-md-6" id="id_div_video">
 											<video  id="video" playsinline autoplay onclick="take();"></video>
 										</div>
 										<div class="col-md-6">
