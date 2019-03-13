@@ -221,6 +221,7 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
             $('#id_modal_form_paciente form input[id="id_cidade"]').val(data.cidade);
             $('#id_modal_form_paciente form input[id="id_estado"]').val(data.estado);
             $("#id_estado").val(data.estado).trigger('change');
+            $("#id_selectAtivarPaciente").val(data.ativo).trigger('change');
             $('#id_modal_form_paciente form input[id="id_celular"]').val(data.celular);
             $('#id_modal_form_paciente form input[id="id_telefone"]').val(data.telefone);
             $("#id_profissao").val(data.profissao.split(",")).trigger('change');
@@ -236,6 +237,9 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
             $("#id_grauParentesco").val(data.grauParentesco).trigger('change');
 
             $('#id_modal_form_paciente form input[id="id_paciente"]').val(data.id_paciente);
+
+            path = data.image_path;
+            imageObj.src = path.replace('core','');
 
             var RegExp = /["|']/g;
             convenioGrupos = JSON.parse(data.grupoConvenio);
@@ -316,7 +320,6 @@ function adicionar_linha_convenio(count="", convenio="", numero="", validade="")
                 '$("#id_convenio_'+count+'").val("'+convenio+'").trigger("change");' +
                 'validarData("#id_convenioValidade_'+count+'", "convenioValidade");' +
             '</script>'
-
     );
 }
 
@@ -361,11 +364,52 @@ function get_options_select_convenio(){ // Retorna os options do select convenho
 
 
 
+// WebCam ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+const errorMsgElement = document.querySelector('span#errorMsg');
+var imageObj = new Image();
+
+
+const constraints = {
+  audio: false,
+  video: {
+    width: 2000, height: 2000
+  }
+};
+
+async function initWebCam() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    handleSuccess(stream);
+  } catch (e) {
+    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+  }
+}
+
+function handleSuccess(stream) {
+  window.stream = stream;
+  video.srcObject = stream;
+}
+
+function take(){
+	context.drawImage(video, 5, 5, 240 + 50, 140);
+}
+
+imageObj.onload = function() {
+    context.restore();
+    context.drawImage(imageObj, 5, 5, 240 + 50, 140);
+};
+
+// WebCam ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 // Formulários /////////////////////////////////////
 $('#id_form_novo_paciente').submit(function(e){
     $("#id_grupo_convenio").val(get_json_convenio());
+    $("#id_imagem_paciente").val(canvas.toDataURL());
     $("#id_profissao_input").val($("#id_profissao").select2("val"));
 
     $("button").prop("disabled",true);

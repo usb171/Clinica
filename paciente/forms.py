@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 class PacienteForm(forms.Form):
 
+    ativo = forms.CharField(required=True)
     nomeCompleto = forms.CharField(required=True)
     cpf = forms.CharField(required=False)
     dataNascimento = forms.CharField(required=False)
@@ -27,7 +28,7 @@ class PacienteForm(forms.Form):
     estado = forms.CharField(required=False)
     complemento = forms.CharField(widget=forms.Textarea, required=False)
 
-    grupoConvenio = forms.CharField(widget=forms.Textarea)
+    grupoConvenio = forms.CharField(widget=forms.Textarea, required=False)
 
     nomeFamiliar = forms.CharField(required=False)
     grauParentesco = forms.CharField(required=False)

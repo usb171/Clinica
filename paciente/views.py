@@ -3,11 +3,14 @@ from django.http import JsonResponse
 from usuario.models import Usuario
 
 from paciente.models import Paciente
-from core.models import Convenio
+from core.models import Convenio, Origem
 from .forms import PacienteForm
 from django.shortcuts import redirect
+import base64
+import os.path
 
 import json
+
 
 def buscarEmailAjax(request):
     if request.user.is_authenticated:
@@ -25,6 +28,8 @@ def buscarDadosPacienteAjax(request):
     if request.user.is_authenticated:
         try:
             paciente = Paciente.objects.get(id=request.GET.get('id_paciente', None))
+            clinica = Usuario.objects.get(user=request.user).clinica
+            image_path = 'core/static/media/paciente/' + str(clinica.id) + '/' + str(paciente.id) + '.jpg'
         except:
             return redirect('login')
 
@@ -34,6 +39,7 @@ def buscarDadosPacienteAjax(request):
                 'rua': paciente.rua,
                 'sexo': paciente.sexo,
                 'email': paciente.email,
+                'ativo': paciente.ativo,
                 'idade': paciente.idade,
                 'numero': paciente.numero,
                 'quadra': paciente.quadra,
@@ -52,6 +58,7 @@ def buscarDadosPacienteAjax(request):
                 'grupoConvenio': paciente.grupoConvenio,
                 'dataNascimento': paciente.dataNascimento,
                 'grauParentesco': paciente.grauParentesco,
+                'image_path': image_path,
                }
         return JsonResponse(data)
     else:
@@ -61,16 +68,22 @@ def paciente(request):
 
     if request.user.is_authenticated:
         clinica = Usuario.objects.get(user=request.user).clinica
+        path_paciente_clinica = 'core/static/media/paciente/' + str(clinica.id)
+        if not os.path.isdir(path_paciente_clinica):
+            os.mkdir(path_paciente_clinica)
 
         if request.method == 'GET':
             contexto = {
                 'pacientes': Paciente.objects.filter(clinica=clinica),
                 'convenios': Convenio.objects.filter(clinica=clinica),
+                'origens': Origem.objects.filter(clinica=clinica),
             }
             return render(request, 'paciente/pacientes.html', contexto)
         elif request.method == 'POST':
-            for key in request.POST.keys():
-                print(key, " ", request.POST[key])
+
+            # for key in request.POST.keys():
+            #     print(key, " ", request.POST[key])
+
 
             form = PacienteForm(request.POST)
             print(form.errors)
@@ -80,6 +93,7 @@ def paciente(request):
                 cep = dados['cep']
                 rua = dados['rua']
                 sexo = dados['sexo']
+                ativo = dados['ativo']
                 idade = dados['idade']
                 email = dados['email']
                 numero = dados['numero']
@@ -110,6 +124,7 @@ def paciente(request):
                                         sexo=sexo,
                                         email=email,
                                         idade=idade,
+                                        ativo=ativo,
                                         numero=numero,
                                         quadra=quadra,
                                         bairro=bairro,
@@ -127,13 +142,17 @@ def paciente(request):
                                         dataNascimento=dataNascimento,
                                         grauParentesco=grauParentesco,
                                         )
+
+                    filename = path_paciente_clinica + "/" + str(id_paciente) + '.jpg'
+
                 else: #Crie um Paciente
-                    Paciente.objects.create(cpf=cpf,
+                    paciente_obj = Paciente.objects.create(cpf=cpf,
                                             cep=cep,
                                             rua=rua,
                                             sexo=sexo,
                                             email=email,
                                             idade=idade,
+                                            ativo=ativo,
                                             numero=numero,
                                             quadra=quadra,
                                             bairro=bairro,
@@ -150,10 +169,18 @@ def paciente(request):
                                             nomeFamiliar=nomeFamiliar,
                                             grupoConvenio=grupoConvenio,
                                             grauParentesco=grauParentesco,
-                                            dataNascimento=dataNascimento).save()
+                                            dataNascimento=dataNascimento)
+                    paciente_obj.save()
+                    filename = path_paciente_clinica + "/" + str(paciente_obj.id) + '.jpg'
+
+                imgdata = base64.b64decode(str(request.POST['imagem_paciente']).split(",")[1])
+                with open(filename, 'wb') as f:
+                    f.write(imgdata)
 
                 return HttpResponse(json.dumps({'ok': True, 'msg': "Paciente Salvo com Sucesso!", 'erros': {}}), content_type="application/json")
             else:
                 return HttpResponse(json.dumps({'ok': False, 'msg': "Ocorreu um Erro ao Criar um Novo Usuário!", 'erros': {}}), content_type="application/json")
     else:
         return redirect('login')
+
+
