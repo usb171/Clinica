@@ -33,6 +33,7 @@ class Paciente(models.Model):
     estadoCivil = models.CharField('Estado Civil', max_length=25, choices=_ESTADO_CIVIL_CHOICES, default="SOLTEIRO(A)", null=True, blank=True)
 
     profissao = models.TextField("Profissões", null=True, blank=True)
+    origem = models.TextField("Origem", null=True, blank=True)
     observacao = models.TextField("Observação", null=True, blank=True)
 
     email = models.CharField('Email', max_length=120, null=True, blank=True, unique=True)
@@ -49,9 +50,10 @@ class Paciente(models.Model):
     complemento = models.TextField("Complemento", null=True, blank=True)
 
     grupoConvenio = models.TextField("Convenios", null=True, blank=True)
+    grupoFamiliar = models.TextField("Familiares", null=True, blank=True)
 
-    nomeFamiliar = models.CharField('Nome do Familiar', max_length=120, null=True, blank=True)
-    grauParentesco = models.CharField('Grau de Parentesco', max_length=120, null=True, blank=True)
+    # nomeFamiliar = models.CharField('Nome do Familiar', max_length=120, null=True, blank=True)
+    # grauParentesco = models.CharField('Grau de Parentesco', max_length=120, null=True, blank=True)
 
 
 

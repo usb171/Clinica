@@ -42,6 +42,7 @@ def buscarDadosPacienteAjax(request):
                 'ativo': paciente.ativo,
                 'idade': paciente.idade,
                 'numero': paciente.numero,
+                'origem': paciente.origem,
                 'quadra': paciente.quadra,
                 'bairro': paciente.bairro,
                 'cidade': paciente.cidade,
@@ -54,10 +55,11 @@ def buscarDadosPacienteAjax(request):
                 'complemento': paciente.complemento,
                 'estadoCivil': paciente.estadoCivil,
                 'nomeCompleto': paciente.nomeCompleto,
-                'nomeFamiliar': paciente.nomeFamiliar,
+                #'nomeFamiliar': paciente.nomeFamiliar,
                 'grupoConvenio': paciente.grupoConvenio,
+                'grupoFamiliar': paciente.grupoFamiliar,
                 'dataNascimento': paciente.dataNascimento,
-                'grauParentesco': paciente.grauParentesco,
+                #'grauParentesco': paciente.grauParentesco,
                 'image_path': image_path,
                }
         return JsonResponse(data)
@@ -81,8 +83,8 @@ def paciente(request):
             return render(request, 'paciente/pacientes.html', contexto)
         elif request.method == 'POST':
 
-            # for key in request.POST.keys():
-            #     print(key, " ", request.POST[key])
+            #for key in request.POST.keys():
+                #print(key, " ", request.POST[key])
 
 
             form = PacienteForm(request.POST)
@@ -97,6 +99,7 @@ def paciente(request):
                 idade = dados['idade']
                 email = dados['email']
                 numero = dados['numero']
+                origem = dados['origem']
                 quadra = dados['quadra']
                 bairro = dados['bairro']
                 cidade = dados['cidade']
@@ -108,10 +111,11 @@ def paciente(request):
                 complemento = dados['complemento']
                 estadoCivil = dados['estadoCivil']
                 nomeCompleto = dados['nomeCompleto']
-                nomeFamiliar = dados['nomeFamiliar']
+                #nomeFamiliar = dados['nomeFamiliar']
                 grupoConvenio = dados['grupoConvenio']
+                grupoFamiliar = dados['grupoFamiliar']
                 dataNascimento = dados['dataNascimento']
-                grauParentesco = dados['grauParentesco']
+                #grauParentesco = dados['grauParentesco']
 
 
                 id_paciente = request.POST['id_paciente']
@@ -126,6 +130,7 @@ def paciente(request):
                                         idade=idade,
                                         ativo=ativo,
                                         numero=numero,
+                                        origem=origem,
                                         quadra=quadra,
                                         bairro=bairro,
                                         cidade=cidade,
@@ -137,10 +142,11 @@ def paciente(request):
                                         complemento=complemento,
                                         estadoCivil=estadoCivil,
                                         nomeCompleto=nomeCompleto,
-                                        nomeFamiliar=nomeFamiliar,
+                                        #nomeFamiliar=nomeFamiliar,
                                         grupoConvenio=grupoConvenio,
+                                        grupoFamiliar=grupoFamiliar,
                                         dataNascimento=dataNascimento,
-                                        grauParentesco=grauParentesco,
+                                        #grauParentesco=grauParentesco,
                                         )
 
                     filename = path_paciente_clinica + "/" + str(id_paciente) + '.jpg'
@@ -154,6 +160,7 @@ def paciente(request):
                                             idade=idade,
                                             ativo=ativo,
                                             numero=numero,
+                                            origem=origem,
                                             quadra=quadra,
                                             bairro=bairro,
                                             cidade=cidade,
@@ -166,9 +173,10 @@ def paciente(request):
                                             complemento=complemento,
                                             estadoCivil=estadoCivil,
                                             nomeCompleto=nomeCompleto,
-                                            nomeFamiliar=nomeFamiliar,
+                                            #nomeFamiliar=nomeFamiliar,
                                             grupoConvenio=grupoConvenio,
-                                            grauParentesco=grauParentesco,
+                                            grupoFamiliar=grupoFamiliar,
+                                            #grauParentesco=grauParentesco,
                                             dataNascimento=dataNascimento)
                     paciente_obj.save()
                     filename = path_paciente_clinica + "/" + str(paciente_obj.id) + '.jpg'

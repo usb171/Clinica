@@ -24,6 +24,7 @@ canvas, video {
   solid #000000;
 }
 
+
 </style>
 {% endblock %}
 
@@ -32,7 +33,9 @@ canvas, video {
 	<div class="row" id="id_div_button" hidden>
 		<div class="col-sm-6">
 			{% if perms.paciente.add_paciente%}
-			<button class="btn btn-space btn-primary col-sm-12" data-toggle="modal" id="id_button_modal_novoPaciente" onclick="initWebCam()" type="button">Novo Paciente</button>
+			<button class="btn btn-space btn-primary col-sm-12" data-toggle="modal" id="id_button_modal_novoPaciente" onclick="initWebCam()" type="button">Novo
+				Paciente
+			</button>
 			{% endif %}
 		</div>
 	</div>
@@ -63,7 +66,9 @@ canvas, video {
 										<td class="center">{{ paciente.cpf }}</td>
 										<td class="row">
 											{% if perms.paciente.change_paciente %}
-											<button class="btn btn-space btn-primary" value="{{ paciente.pk }}" onclick="initWebCam()" type="button">Editar Paciente</button>
+											<button class="btn btn-space btn-primary" value="{{ paciente.pk }}" onclick="initWebCam()" type="button">Editar
+												Paciente
+											</button>
 											{% else %}
 											<button class="btn btn-space btn-primary" value="{{ paciente.pk }}" type="button">Visualizar Paciente</button>
 											{% endif %}
@@ -97,7 +102,8 @@ canvas, video {
 					{% else %}
 					<h3 class="modal-title" id="id_title">Novo Paciente</h3>
 					{% endif %}
-					<button class="close md-close" type="button" data-dismiss="modal" onclick="desativarWebCam()" aria-hidden="true"><span class="mdi mdi-close"></span></button>
+					<button class="close md-close" type="button" data-dismiss="modal" onclick="desativarWebCam()" aria-hidden="true"><span
+							class="mdi mdi-close"></span></button>
 				</div>
 
 				<div class="modal-body">
@@ -121,7 +127,7 @@ canvas, video {
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_nomeCompleto">Nome Completo *</label>
 								<input class="form-control" type="text" id="id_nomeCompleto" name="nomeCompleto" placeholder="Nome completo do paciente"
-									   >
+								>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 								<label for="id_cpf">CPF</label>
@@ -986,13 +992,13 @@ canvas, video {
 										  style="margin-top: 0px; margin-bottom: 0px; height: 104px;"></textarea>
 							</div>
 							<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0">
-								<div class="container" >
+								<div class="container">
 									<div class="form-group row pt-5">
 										<div class="col-md-6" id="id_div_video">
-											<video  id="video" playsinline autoplay onclick="take();"></video>
+											<video id="video" playsinline autoplay onclick="take();"></video>
 										</div>
 										<div class="col-md-6">
-											<canvas id="canvas" ></canvas>
+											<canvas id="canvas"></canvas>
 										</div>
 									</div>
 								</div>
@@ -1098,11 +1104,13 @@ canvas, video {
 
 						<div id="id_div_grupo_convenio">
 							<div class="form-group row pt-0" count="0">
-								<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
+								<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0">
 									<label for="id_convenio">Convênio</label>
 									<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">
 										{% for convenio in convenios %}
-										{% if convenio.status != "OFF" %} <option value="{{ convenio.nome }}">{{ convenio.nome }}</option> {% endif %}
+										{% if convenio.status != "OFF" %}
+										<option value="{{ convenio.nome }}">{{ convenio.nome }}</option>
+										{% endif %}
 										{% endfor %}
 									</select>
 								</div>
@@ -1110,10 +1118,66 @@ canvas, video {
 									<label for="id_convenioCarteira">Número Carteira</label>
 									<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira">
 								</div>
-								<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
+								<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0">
 									<label for="id_convenioValidade">Validade</label>
 									<input class="form-control" type="text" id="id_convenioValidade" name="convenioValidade">
 								</div>
+							</div>
+						</div>
+
+						<hr class="style-one">
+						<div class="row">
+							<div class="col-sm-10 col-lg-10"><h2 class="pt-0 pb-5">Família e Origem</h2></div>
+							<div class="col-sm-2 col-lg-2 icon-container text-right" id="id_button_mais_um_familiar" onclick="adicionar_linha_familiar()">
+								<div class="icon"><span class="mdi mdi-plus-circle"></span></div>
+							</div>
+						</div>
+						<div id="id_div_grupo_familiar">
+							<div class="form-group row pt-0" count="0">
+								<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+									<label for="id_nomeFamiliar">Nome do Familiar</label>
+									<select id="id_nomeFamiliar" name="nomeFamiliar" class="form-control select2 select2-lg">
+										<option></option>
+										{% for paciente in pacientes %}
+										{% if paciente.ativo != "OFF" %}
+										<option value="{{paciente.nomeCompleto}}">{{paciente.nomeCompleto}}</option>
+										{% endif %}
+										{% endfor %}
+									</select>
+								</div>
+								<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+									<label for="id_grauParentesco">Grau de Parentesco</label>
+									<select id="id_grauParentesco" name="grauParentesco" class="form-control select2 select2-lg">
+										<option></option>
+										<option value="PAI">PAI</option>
+										<option value="MAE">MÃE</option>
+										<option value="PADRASTO">PADRASTO</option>
+										<option value="MADRASTA">MADRASTA</option>
+										<option value="ENTIADO(A)">ENTIADO(A)</option>
+										<option value="FILHO">FILHO(A)</option>
+										<option value="TIO">TIO(A)</option>
+										<option value="IRMAO">IRMAO(Ã)</option>
+										<option value="SOBRINHO">SOBRINHO(A)</option>
+										<option value="MARIDO">MARIDO</option>
+										<option value="ESPOSA">ESPOSA</option>
+										<option value="PRIMO">PRIMO(A)</option>
+										<option value="AVO">AVÔ(Ó)</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="from-group row pt-0">
+							<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+								<label for="id_origem">Origem</label>
+								<select id="id_origem" class="select2 select2-lg" multiple="">
+									{% for origem in origens %}
+									{% if origem.status != "OFF" %}
+									<option value="{{ origem.nome }}">{{ origem.nome }}</option>
+									{% endif %}
+									{% endfor %}
+								</select>
 							</div>
 						</div>
 
@@ -1121,9 +1185,17 @@ canvas, video {
 						<input id="id_profissao_input" name="profissao" hidden>
 						<!--Campo contendo uma string com todas as profissões do campo id_profissão select2-->
 
+						<!--Campo contendo uma string com todas as profissões do campo origem select2-->
+						<input id="id_origem_input" name="origem" hidden>
+						<!--Campo contendo uma string com todas as profissões do campo origem select2-->
+
 						<!--Campo contendo uma string padrão JSON com todos os valores dos campos de convenio-->
 						<input id="id_grupo_convenio" name="grupoConvenio" hidden>
 						<!--Campo contendo uma string padrão JSON com todos os valores dos campos de convenio-->
+
+						<!--Campo contendo uma string padrão JSON com todos os valores dos campos de familiares-->
+						<input id="id_grupo_familiar" name="grupoFamiliar" hidden>
+						<!--Campo contendo uma string padrão JSON com todos os valores dos campos de familiares-->
 
 						<!--Campo contendo o ID do Paciente a ser editado-->
 						<input id="id_paciente" name="id_paciente" value="-1" hidden>
@@ -1136,52 +1208,6 @@ canvas, video {
 						<!--Campo utilizado para evitar a imagem do paciente-->
 						<input type="text" id="id_imagem_paciente" name="imagem_paciente" hidden>
 						<!--Campo utilizado para evitar a imagem do paciente-->
-
-
-
-						<hr class="style-one">
-						<h2 class="pt-0 pb-5">Família e Origem</h2>
-						<div class="form-group row pt-0">
-							<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
-								<label for="id_nomeFamiliar">Nome do Familiar</label>
-								<select id="id_nomeFamiliar" name="nomeFamiliar" class="form-control select2 select2-lg">
-									<option></option>
-									{% for paciente in pacientes %}
-									<option value="{{paciente.nomeCompleto}}">{{paciente.nomeCompleto}}</option>
-									{% endfor %}
-								</select>
-							</div>
-							<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
-								<label for="id_grauParentesco">Grau de Parentesco</label>
-								<select id="id_grauParentesco" name="grauParentesco" class="form-control select2 select2-lg">
-									<option></option>
-									<option value="PAI">PAI</option>
-									<option value="MAE">MÃE</option>
-									<option value="PADRASTO">PADRASTO</option>
-									<option value="MADRASTA">MADRASTA</option>
-									<option value="ENTIADO(A)">ENTIADO(A)</option>
-									<option value="FILHO">FILHO(A)</option>
-									<option value="TIO">TIO(A)</option>
-									<option value="IRMAO">IRMAO(Ã)</option>
-									<option value="SOBRINHO">SOBRINHO(A)</option>
-									<option value="MARIDO">MARIDO</option>
-									<option value="ESPOSA">ESPOSA</option>
-									<option value="PRIMO">PRIMO(A)</option>
-									<option value="AVO">AVÔ(Ó)</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="from-group row pt-0">
-							<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
-								<label for="id_origem">Origem</label>
-								<select id="id_origem" class="select2 select2-lg" multiple="">
-									{% for origem in origens %}
-									{% if origem.status != "OFF" %} <option value="{{ origem.nome }}">{{ origem.nome }}</option> {% endif %}
-									{% endfor %}
-								</select>
-							</div>
-						</div>
 
 
 						<hr class="style-one">

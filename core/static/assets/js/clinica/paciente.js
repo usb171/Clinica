@@ -52,8 +52,6 @@ $("#id_cpf").mask("000.000.000-00").keyup(function(event){
   else{$("#id_cpf").removeClass("is-invalid").addClass("is-valid");}
 });
 
-
-
 validarData("#id_dataNascimento", "dataNascimento");
 validarData("#id_convenioValidade", "convenioValidade");
 
@@ -220,16 +218,19 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
             $('#id_modal_form_paciente form input[id="id_bairro"]').val(data.bairro);
             $('#id_modal_form_paciente form input[id="id_cidade"]').val(data.cidade);
             $('#id_modal_form_paciente form input[id="id_estado"]').val(data.estado);
+
             $("#id_estado").val(data.estado).trigger('change');
             $("#id_selectAtivarPaciente").val(data.ativo).trigger('change');
             $('#id_modal_form_paciente form input[id="id_celular"]').val(data.celular);
             $('#id_modal_form_paciente form input[id="id_telefone"]').val(data.telefone);
             $("#id_profissao").val(data.profissao.split(",")).trigger('change');
+            $("#id_origem").val(data.origem.split(",")).trigger('change');
             $('#id_modal_form_paciente form textarea[id="id_observacao"]').val(data.observacao);
             $('#id_modal_form_paciente form input[id="id_complemento"]').val(data.complemento);
             $("#id_estadoCivil").val(data.estadoCivil).trigger('change');
             $('#id_modal_form_paciente form input[id="id_nomeCompleto"]').val(data.nomeCompleto);
             $('#id_modal_form_paciente form input[id="id_grupoConvenio"]').val(data.grupoConvenio);
+            $('#id_modal_form_paciente form input[id="id_grupo"]').val(data.grupoConvenio);
             $('#id_modal_form_paciente form input[id="id_dataNascimento"]').val(data.dataNascimento);
             $('#id_modal_form_paciente form input[id="id_idade"]').val(data.idade);
 
@@ -243,6 +244,7 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
 
             var RegExp = /["|']/g;
             convenioGrupos = JSON.parse(data.grupoConvenio);
+            familiarGrupos = JSON.parse(data.grupoFamiliar);
             for(k in convenioGrupos){
                 if( k != "'0'"){
                     adicionar_linha_convenio(parseInt(k.replace(RegExp, '')), convenioGrupos[k].convenio, convenioGrupos[k].numero, convenioGrupos[k].validade);
@@ -250,6 +252,16 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
                     $("#id_convenio").val(convenioGrupos[k].convenio).trigger("change");
                     $('#id_modal_form_paciente form input[id="id_convenioCarteira"]').val(convenioGrupos[k].numero);
                     $('#id_modal_form_paciente form input[id="id_convenioValidade"]').val(convenioGrupos[k].validade);
+                }
+            }
+
+            for(k in familiarGrupos){
+                if( k != "'0'"){
+                    adicionar_linha_familiar(parseInt(k.replace(RegExp, '')), familiarGrupos[k].familiar, familiarGrupos[k].parentesco);
+                }else{
+                    $("#id_nomeFamiliar").val(familiarGrupos[k].familiar).trigger("change");
+                    $("#id_grauParentesco").val(familiarGrupos[k].parentesco).trigger("change");
+
                 }
             }
 
@@ -269,11 +281,17 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
 
 function resetar_campos(){
     $('#id_modal_form_paciente form').trigger("reset"); // reseta todos os campos do formulário
-    $("#id_profissao").val("------").trigger('change'); // reseta o campo profissão
-    $("#id_convenio").val("------").trigger('change'); // reseta o campo profissão
+    $("#id_profissao").val("").trigger('change'); // reseta o campo profissão
+    $("#id_origem").val("").trigger('change'); // reseta o campo origem
+    //$("#id_convenio").val("").trigger('change'); // reseta o campo convenio
+    $("#id_nomeFamiliar").val("").trigger('change'); // reseta o campo convenio
     var gruposConvenioSize = $("#id_div_grupo_convenio .form-group.row").length;
+    var gruposFamiliarSize = $("#id_div_grupo_familiar .form-group.row").length;
     for(var i = 1; i < gruposConvenioSize; i++) // reseta os grupos do convenio
         remove_linha_grupo_convenio("id_button_menos_um_convenio_"+i);
+
+    for(var i = 1; i < gruposFamiliarSize; i++) // reseta os grupos do familiar
+        remove_linha_grupo_familiar("id_button_menos_um_familiar_"+i);
 
     $("#id_cep").removeClass("is-invalid");
     $("#id_cep").removeClass("is-valid");
@@ -352,7 +370,7 @@ function get_json_convenio(){ // Retorna em json os dados dos grupos do convêni
     return JSON.stringify(out);
 }
 
-function get_options_select_convenio(){ // Retorna os options do select convenho
+function get_options_select_convenio(){ // Retorna os options do select convenio
     var out = "";
     var options = $('#id_convenio option');
     for(var i = 0; i < options.length; i++)out += "<option>" + options[i].value + "</option>";
@@ -360,6 +378,94 @@ function get_options_select_convenio(){ // Retorna os options do select convenho
 }
 
 // Convenio ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Familiar ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function remove_linha_grupo_familiar(id){
+    $("#" + id + "_row").remove();
+    atualiza_ids_grupo_familiar("id_div_grupo_familiar", "id_button_menos_um_familiar");
+}
+
+function adicionar_linha_familiar(count="", familiar="", parentesco=""){
+    grupos = $("#id_div_grupo_familiar .row");
+    count = grupos.length;
+
+    console.log(count + " " + familiar + " " + parentesco);
+
+    $("#id_div_grupo_familiar").append(
+        '<div class="form-group row pt-0 pb-0"  id="id_button_menos_um_familiar_'+count+'_row"  count='+count+'>' +
+            '<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">' +
+                '<label for="id_nomeFamiliar_'+count+'">Nome do Familiar</label>' +
+                '<select id="id_nomeFamiliar_'+count+'" name="nomeFamiliar" class="form-control select2 select2-lg">' +
+                    get_options_select_familiar() +
+                '</select>' +
+            '</div>' +
+            '<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">' +
+                '<label for="id_grauParentesco_'+count+'">Grau de Parentesco</label>' +
+                '<select id="id_grauParentesco_'+count+'" name="grauParentesco" class="form-control select2 select2-lg">' +
+                    '<option></option>' +
+                    '<option value="PAI">PAI</option>' +
+                    '<option value="MAE">MÃE</option>' +
+                    '<option value="PADRASTO">PADRASTO</option>' +
+                    '<option value="MADRASTA">MADRASTA</option>' +
+                    '<option value="ENTIADO(A)">ENTIADO(A)</option>' +
+                    '<option value="FILHO">FILHO(A)</option>' +
+                    '<option value="TIO">TIO(A)</option>' +
+                    '<option value="IRMAO">IRMAO(Ã)</option>' +
+                    '<option value="SOBRINHO">SOBRINHO(A)</option>' +
+                    '<option value="MARIDO">MARIDO</option>' +
+                    '<option value="ESPOSA">ESPOSA</option>' +
+                    '<option value="PRIMO">PRIMO(A)</option>' +
+                    '<option value="AVO">AVÔ(Ó)</option>' +
+                '</select>' +
+            '</div>' +
+            '<div class="col-sm-2 col-lg-2 mb-2 mb-sm-2 icon-container icon-visible text-center"  id="id_button_menos_um_familiar_'+count+'" onclick="remove_linha_grupo_familiar(id);" >' +
+                '<div class="icon"><span class="mdi mdi-minus-circle"></span></div>' +
+            '</div>' +
+        '</div>' +
+            '<script>' +
+                '$(".select2").select2({ width: "100%"}); $(".tags").select2({tags: true, width: "100%"});'+
+                '$("#id_nomeFamiliar_'+count+'").val("'+familiar+'").trigger("change");' +
+                '$("#id_grauParentesco_'+count+'").val("'+parentesco+'").trigger("change");' +
+            '</script>'
+    );
+}
+
+function atualiza_ids_grupo_familiar(idGrupo, idButton){
+    linhas = $("#" + idGrupo + " .row");
+    quant = linhas.length;
+    for(l = 1; l < quant; l++){
+        $(linhas[l]).attr('count', l);
+        $(linhas[l]).attr('id', idButton + "_" + l + "_row");
+        $($(linhas[l]).children()[2]).attr("id", "id_button_menos_um_familiar_" + l);
+
+        $($($($(linhas[l]).children()[0])).children()[0]).attr("id", "id_grauParentesco_" + l).attr("for", "id_grauParentesco_" + l);
+        $($($($(linhas[l]).children()[0])).children()[1]).attr("id", "id_grauParentesco_" + l);
+
+        $($($($(linhas[l]).children()[1])).children()[0]).attr("id", "id_grauParentesco_" + l).attr("for", "id_grauParentesco_" + l);;
+        $($($($(linhas[l]).children()[1])).children()[1]).attr("id", "id_grauParentesco_" + l);
+    }
+}
+
+function get_json_familiar(){ // Retorna em json os dados dos grupos do familiar
+    var grupos_size  = $("#id_div_grupo_familiar .form-group.row").length;
+    var out = JSON.parse("{}");
+    for(var i = 0; i < grupos_size; i++){
+        var grupo = $($("#id_div_grupo_familiar .form-group.row")[i]);
+        out["'"+grupo.attr('count')+"'"] = JSON.parse('{ "familiar": "'+ $(grupo.find("select")[0]).val() + '", "parentesco": "'+ $(grupo.find("select")[1]).val() + '"}');
+    }
+    return JSON.stringify(out);
+}
+
+function get_options_select_familiar(){ // Retorna os options do select familiar
+    var out = "";
+    var options = $('#id_nomeFamiliar option');
+    for(var i = 0; i < options.length; i++)out += "<option>" + options[i].value + "</option>";
+    return out;
+}
+
+// Familiar ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -413,8 +519,10 @@ imageObj.onload = function() {
 // Formulários /////////////////////////////////////
 $('#id_form_novo_paciente').submit(function(e){
     $("#id_grupo_convenio").val(get_json_convenio());
+    $("#id_grupo_familiar").val(get_json_familiar());
     $("#id_imagem_paciente").val(canvas.toDataURL());
     $("#id_profissao_input").val($("#id_profissao").select2("val"));
+    $("#id_origem_input").val($("#id_origem").select2("val"));
     $("button").prop("disabled",true);
 
     desativarWebCam();

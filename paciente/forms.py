@@ -13,6 +13,7 @@ class PacienteForm(forms.Form):
     estadoCivil = forms.CharField(required=False)
 
     profissao = forms.CharField(widget=forms.Textarea, required=False)
+    origem = forms.CharField(widget=forms.Textarea, required=False)
     observacao = forms.CharField(widget=forms.Textarea, required=False)
 
     telefone = forms.CharField(required=False)
@@ -29,9 +30,10 @@ class PacienteForm(forms.Form):
     complemento = forms.CharField(widget=forms.Textarea, required=False)
 
     grupoConvenio = forms.CharField(widget=forms.Textarea, required=False)
+    grupoFamiliar = forms.CharField(widget=forms.Textarea, required=False)
 
-    nomeFamiliar = forms.CharField(required=False)
-    grauParentesco = forms.CharField(required=False)
+    #nomeFamiliar = forms.CharField(required=False)
+    #grauParentesco = forms.CharField(required=False)
 
 
     def is_valid_from_form(self):
