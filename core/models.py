@@ -6,6 +6,11 @@ _FLAG_CHOICES = (
     ('OFF', 'OFF'),
 )
 
+_FLAG_CONTROLE_PACIENTE = (
+    ('required', 'required'),
+    ('no_required', 'no_required'),
+)
+
 class Clinica(models.Model):
     """
         A Clínica é uma entidade que tem como escopo um estabelecimento médico que será referência
@@ -28,7 +33,6 @@ class Clinica(models.Model):
 
     def __str__(self):
         return self.nome
-
 
 class Titulo(models.Model):
     """
@@ -84,3 +88,36 @@ class Origem(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class ControleCampo(models.Model):
+
+    clinica = models.ForeignKey(Clinica, on_delete=models.CASCADE, null=True)
+    paciente_nomeCompleto = models.CharField('Paciente Nome Completo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_cpf = models.CharField('Paciente CPF', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_sexo = models.CharField('Paciente Sexo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_dataNascimento = models.CharField('Paciente Data de Nascimento', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_idade = models.CharField('Paciente Idade', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_estadoCivil = models.CharField('Paciente Estado Civil', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_profissao = models.CharField('Paciente Profissao', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_observacao = models.CharField('Paciente Observacao', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_telefone = models.CharField('Paciente Telefone', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_celular = models.CharField('Paciente Celular', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_email = models.CharField('Paciente email', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_cep = models.CharField('Paciente CEP', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_numero = models.CharField('Paciente Número', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_rua = models.CharField('Paciente Rua', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_quadra = models.CharField('Paciente Quadra', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_bairro = models.CharField('Paciente bairro', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_cidade = models.CharField('Paciente cidade', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_estado = models.CharField('Paciente estado', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_complemento = models.CharField('Paciente complemento', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_convenio = models.CharField('Paciente Convenio', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_numeroCarteira = models.CharField('Paciente Número Carteira', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_convenioValidade = models.CharField('Paciente Convenio Validade', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_nomeFamiliar = models.CharField('Paciente Nome Familiar', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_grauParentesco = models.CharField('Paciente Grau Parentesco', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_origem = models.CharField('Paciente Origem', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+
+    def __str__(self):
+        return self.clinica.nome

@@ -36,6 +36,13 @@
 								<li id="id_item_origem"><a href="{% url 'origens' %}">Origens</a></li>
 							</ul>
 							{% endif %}
+
+							{% if perms.core.change_controlecampo %}
+							<ul class="sub-menu">
+								<li id="id_item_controleCampo"><a href="{% url 'controleCampos' %}">Controle de Campos</a></li>
+							</ul>
+							{% endif %}
+
 						</li>
 					</ul>
 				</div>

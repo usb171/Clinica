@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from usuario.models import Usuario
 from django.shortcuts import redirect
-from .models import HistoricoAcesso, Titulo, Convenio, Origem
+from .models import HistoricoAcesso, Titulo, Convenio, Origem, ControleCampo
 from django.utils.timezone import localtime
 from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
@@ -243,6 +243,92 @@ def buscarDadosOrigemAjax(request):
     else:
         return redirect('login')
 ###################################################### Origem ####################################################
+
+
+###################################################### Origem ####################################################
+def controleCampo(request):
+    if request.user.is_authenticated:
+        clinica = Usuario.objects.get(user=request.user).clinica
+        controleCampo_obj = ControleCampo.objects.filter(clinica=clinica)
+        if request.method == 'GET':
+            contexto = {'controleCampo': controleCampo_obj[0]}
+            return render(request, 'controleCampo/controleCampo.html', contexto)
+        elif request.method == 'POST':
+            for key in request.POST.keys():
+                print(key, " ", request.POST[key])
+
+            paciente_cpf = request.POST['cpf']
+            paciente_rua = request.POST['rua']
+            paciente_cep = request.POST['cep']
+            paciente_sexo = request.POST['sexo']
+            paciente_idade = request.POST['idade']
+            paciente_email = request.POST['email']
+            paciente_numero = request.POST['numero']
+            paciente_quadra = request.POST['quadra']
+            paciente_bairro = request.POST['bairro']
+            paciente_cidade = request.POST['cidade']
+            paciente_estado = request.POST['estado']
+            paciente_origem = request.POST['origem']
+            paciente_celular = request.POST['celular']
+            paciente_telefone = request.POST['telefone']
+            paciente_convenio = request.POST['convenio']
+            paciente_profissao = request.POST['profissao']
+            paciente_observacao = request.POST['observacao']
+            paciente_estadoCivil = request.POST['estadoCivil']
+            paciente_complemento = request.POST['complemento']
+            paciente_nomeCompleto = request.POST['nomeCompleto']
+            paciente_nomeFamiliar = request.POST['nomeFamiliar']
+            paciente_dataNascimento = request.POST['dataNascimento']
+            paciente_grauParentesco = request.POST['grauParentesco']
+
+            controleCampo_obj.update(
+                                    paciente_cpf=paciente_cpf,
+                                    paciente_rua=paciente_rua,
+                                    paciente_cep=paciente_cep,
+                                    paciente_sexo=paciente_sexo,
+                                    paciente_idade=paciente_idade,
+                                    paciente_email=paciente_email,
+                                    paciente_quadra=paciente_quadra,
+                                    paciente_bairro=paciente_bairro,
+                                    paciente_cidade=paciente_cidade,
+                                    paciente_estado=paciente_estado,
+                                    paciente_origem=paciente_origem,
+                                    paciente_numero=paciente_numero,
+                                    paciente_celular=paciente_celular,
+                                    paciente_telefone=paciente_telefone,
+                                    paciente_convenio=paciente_convenio,
+                                    paciente_profissao=paciente_profissao,
+                                    paciente_observacao=paciente_observacao,
+                                    paciente_estadoCivil=paciente_estadoCivil,
+                                    paciente_complemento=paciente_complemento,
+                                    paciente_nomeFamiliar=paciente_nomeFamiliar,
+                                    paciente_nomeCompleto=paciente_nomeCompleto,
+                                    paciente_dataNascimento=paciente_dataNascimento,
+                                    paciente_grauParentesco=paciente_grauParentesco
+                                    )
+
+        contexto = {'controleCampo': ControleCampo.objects.filter(clinica=clinica)[0]}
+        return render(request, 'controleCampo/controleCampo.html', contexto)
+    else:
+        return redirect('login')
+
+
+def buscarDadosControleCampoAjax(request):
+    if request.user.is_authenticated:
+        try:
+            clinica = Usuario.objects.get(user=request.user).clinica
+            controleCampo = ControleCampo.objects.get(clinica=clinica)
+        except:
+            return redirect('login')
+        data = {
+            "controleCampo": controleCampo
+        }
+        return JsonResponse(data)
+    else:
+        return redirect('login')
+###################################################### Origem ####################################################
+
+
 
 
 def getDataHoraAjax(request):
