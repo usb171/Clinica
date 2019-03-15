@@ -18,7 +18,7 @@ $("#id_email").keyup(function( event ) {
         data: {'email': $(this).val(), 'email_original': $('#id_modal_form_paciente form input[id="id_email_original"]').val()},
         dataType: 'json',
         success: function (data) {
-        console.log("aqui:" + $("#id_dataHora a").text());
+        //console.log("aqui:" + $("#id_dataHora a").text());
             if (data.email){
                 $("#id_email").removeClass("is-valid").addClass("is-invalid");
                 $("#id_email")[0].setCustomValidity("Email já Existe");
@@ -59,7 +59,7 @@ validarData("#id_convenioValidade", "convenioValidade");
 function validarData(id, campo){
     $(id).mask("99/99/9999", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
         var dia = data.split('/')[0], mes = data.split('/')[1], ano = data.split('/')[2]
-        console.log(data + " " + id);
+        //console.log(data + " " + id);
         $("#id_idade").val("...");
         if(data.length >= 2)
             if(dia > 31)
@@ -299,6 +299,8 @@ function resetar_campos(){
 
     $("#id_cpf").removeClass("is-invalid");
     $("#id_cpf").removeClass("is-valid");
+    context.restore();
+
 }
 
 // Convenio ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -391,7 +393,7 @@ function adicionar_linha_familiar(count="", familiar="", parentesco=""){
     grupos = $("#id_div_grupo_familiar .row");
     count = grupos.length;
 
-    console.log(count + " " + familiar + " " + parentesco);
+    //console.log(count + " " + familiar + " " + parentesco);
 
     $("#id_div_grupo_familiar").append(
         '<div class="form-group row pt-0 pb-0"  id="id_button_menos_um_familiar_'+count+'_row"  count='+count+'>' +
@@ -504,6 +506,7 @@ function handleSuccess(stream) {
 }
 
 function take(){
+    context.restore();
 	context.drawImage(video, 5, 5, 240 + 50, 140);
 }
 
@@ -559,7 +562,7 @@ function teste(){
 			       label = $("form").find('[for='+ id +']');
 			       campo = $("form").find('[id='+ id +']');
 			       label.text(label.text() + " *");
-			       console.log(campo);
+			       //console.log(campo);
                    $(campo).attr('required', '');
 			    }
 			}

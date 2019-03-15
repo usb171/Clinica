@@ -16,7 +16,6 @@
     background: #333;
     background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
-
 </style>
 {% endblock %}
 
@@ -269,11 +268,17 @@
 	<script>
 		$(".select2").select2({ width: '100%'}); // Init Select2
 		$(".tags").select2({tags: true, width: '100%'}); //Select2 tags
+		function readonly_select(objs, action) {
+			if (action===true)
+				objs.prepend('<div class="disabled-select"></div>');
+			else
+				$(".disabled-select", objs).remove();
+		}
 
 		$("form").find("select").each(function(){
-			console.log(this.id + "		" + this.title);
 			$("#"+this.id).val(this.title).trigger('change');
 		});
+
 
 	</script>
 	{% endblock %}
