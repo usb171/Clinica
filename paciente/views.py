@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from usuario.models import Usuario
 
 from paciente.models import Paciente
-from core.models import Convenio, Origem
+from core.models import Convenio, Origem, ControleCampo
 from .forms import PacienteForm
 from django.shortcuts import redirect
 import base64
@@ -79,6 +79,7 @@ def paciente(request):
                 'pacientes': Paciente.objects.filter(clinica=clinica),
                 'convenios': Convenio.objects.filter(clinica=clinica),
                 'origens': Origem.objects.filter(clinica=clinica),
+                'controleCampo': ControleCampo.objects.filter(clinica=clinica)[0]
             }
             return render(request, 'paciente/pacientes.html', contexto)
         elif request.method == 'POST':

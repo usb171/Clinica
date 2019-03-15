@@ -113,7 +113,7 @@ class ControleCampo(models.Model):
     paciente_estado = models.CharField('Paciente estado', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_complemento = models.CharField('Paciente complemento', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_convenio = models.CharField('Paciente Convenio', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
-    paciente_numeroCarteira = models.CharField('Paciente Número Carteira', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_convenioCarteira = models.CharField('Paciente Número Carteira', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_convenioValidade = models.CharField('Paciente Convenio Validade', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_nomeFamiliar = models.CharField('Paciente Nome Familiar', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_grauParentesco = models.CharField('Paciente Grau Parentesco', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)

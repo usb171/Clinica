@@ -9,6 +9,7 @@ $("#id_celular").mask("+ 55 (99) 99999-9999");
 
 // Validar Email /////////////////////////////
 
+teste();
 
 $("#id_email").keyup(function( event ) {
     $("#id_email").val(($(this).val()).toLowerCase());
@@ -541,3 +542,29 @@ $('#id_form_novo_paciente').submit(function(e){
 });
 // Formulários ////////////////////////////////////
 
+
+function teste(){
+
+	$.ajax({
+        url: "/configuracoes/buscarDadosControleCampoAjax",
+        dataType: 'json',
+        success: function (data) {
+            keys = Object.keys(data)
+
+			for(i = 0; i < keys.length; i++){
+			    id = keys[i].replace('paciente', 'id');
+			    value = data[keys[i]];
+
+			    if(value == 'required'){
+			       label = $("form").find('[for='+ id +']');
+			       campo = $("form").find('[id='+ id +']');
+			       label.text(label.text() + " *");
+			       console.log(campo);
+                   $(campo).attr('required', '');
+			    }
+			}
+        }
+    });
+
+
+}

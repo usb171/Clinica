@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import login, dashboard, logout, titulo, buscarDadosTituloAjax, buscarTituloAjax,\
     convenio, buscarConvenioAjax, buscarDadosConvenioAjax, origem, buscarOrigemAjax,\
-    buscarDadosOrigemAjax, getDataHoraAjax, controleCampo
+    buscarDadosOrigemAjax, getDataHoraAjax, controleCampo, buscarDadosControleCampoAjax
 from django.contrib.auth import views as auth_views
 from . import util
 
@@ -42,6 +42,7 @@ urlpatterns = [
     path('configuracoes/buscarDadosOrigemAjax', buscarDadosOrigemAjax, name='buscarDadosOrigemAjax'),
 
     path('configuracoes/controleCampos', controleCampo, name='controleCampos'),
+    path('configuracoes/buscarDadosControleCampoAjax', buscarDadosControleCampoAjax, name='buscarDadosControleCampoAjax'),
 
     path('core/getDataHoraAjax', getDataHoraAjax, name='getDataHoraAjax'),
 

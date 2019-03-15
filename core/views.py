@@ -6,10 +6,8 @@ from .models import HistoricoAcesso, Titulo, Convenio, Origem, ControleCampo
 from django.utils.timezone import localtime
 from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
-import datetime, time
-
+import datetime,time
 import json
-
 
 def login(request):
 
@@ -245,7 +243,7 @@ def buscarDadosOrigemAjax(request):
 ###################################################### Origem ####################################################
 
 
-###################################################### Origem ####################################################
+###################################################### ControleCampo ####################################################
 def controleCampo(request):
     if request.user.is_authenticated:
         clinica = Usuario.objects.get(user=request.user).clinica
@@ -280,6 +278,7 @@ def controleCampo(request):
             paciente_nomeFamiliar = request.POST['nomeFamiliar']
             paciente_dataNascimento = request.POST['dataNascimento']
             paciente_grauParentesco = request.POST['grauParentesco']
+            paciente_convenioCarteira = request.POST['convenioCarteira']
 
             controleCampo_obj.update(
                                     paciente_cpf=paciente_cpf,
@@ -304,7 +303,8 @@ def controleCampo(request):
                                     paciente_nomeFamiliar=paciente_nomeFamiliar,
                                     paciente_nomeCompleto=paciente_nomeCompleto,
                                     paciente_dataNascimento=paciente_dataNascimento,
-                                    paciente_grauParentesco=paciente_grauParentesco
+                                    paciente_grauParentesco=paciente_grauParentesco,
+                                    paciente_convenioCarteira=paciente_convenioCarteira,
                                     )
 
         contexto = {'controleCampo': ControleCampo.objects.filter(clinica=clinica)[0]}
@@ -312,24 +312,22 @@ def controleCampo(request):
     else:
         return redirect('login')
 
-
 def buscarDadosControleCampoAjax(request):
     if request.user.is_authenticated:
         try:
             clinica = Usuario.objects.get(user=request.user).clinica
-            controleCampo = ControleCampo.objects.get(clinica=clinica)
+            controleCampo_obj = ControleCampo.objects.filter(clinica=clinica)[0]
         except:
             return redirect('login')
-        data = {
-            "controleCampo": controleCampo
-        }
+        data = controleCampo_obj.__dict__
+        data.pop('_state', None)
+        data.pop('clinica_id', None)
+        data.pop('id', None)
         return JsonResponse(data)
     else:
         return redirect('login')
-###################################################### Origem ####################################################
 
-
-
+###################################################### ControleCampo ####################################################
 
 def getDataHoraAjax(request):
     if request.user.is_authenticated:
