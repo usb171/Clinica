@@ -7,5 +7,5 @@ Seu E-mail de acesso: {{ usuario.email }}
 Sua senha padrão: {{ clinica.senhaPadrao }}
 
 Clink no link para ativar sua conta
-http://{{ domain }}{% url 'ativarAcesso' uidb64=uid token=token %}
+https://{{ domain }}{% url 'ativarAcesso' uidb64=uid token=token %}
 {% endautoescape %}

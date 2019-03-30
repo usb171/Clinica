@@ -280,6 +280,13 @@ def controleCampo(request):
             paciente_grauParentesco = request.POST['grauParentesco']
             paciente_convenioCarteira = request.POST['convenioCarteira']
 
+            usuario_email = request.POST['usuario_email']
+            usuario_titulo = request.POST['usuario_titulo']
+            usuario_celular = request.POST['usuario_celular']
+            usuario_telefone = request.POST['usuario_telefone']
+            usuario_nomeCompleto = request.POST['usuario_nomeCompleto']
+            usuario_enderecoCompleto =request.POST['usuario_enderecoCompleto']
+
             controleCampo_obj.update(
                                     paciente_cpf=paciente_cpf,
                                     paciente_rua=paciente_rua,
@@ -305,6 +312,12 @@ def controleCampo(request):
                                     paciente_dataNascimento=paciente_dataNascimento,
                                     paciente_grauParentesco=paciente_grauParentesco,
                                     paciente_convenioCarteira=paciente_convenioCarteira,
+                                    usuario_email=usuario_email,
+                                    usuario_titulo=usuario_titulo,
+                                    usuario_celular=usuario_celular,
+                                    usuario_telefone=usuario_telefone,
+                                    usuario_nomeCompleto=usuario_nomeCompleto,
+                                    usuario_enderecoCompleto=usuario_enderecoCompleto,
                                     )
 
         contexto = {'controleCampo': ControleCampo.objects.filter(clinica=clinica)[0]}
@@ -326,7 +339,6 @@ def buscarDadosControleCampoAjax(request):
         return JsonResponse(data)
     else:
         return redirect('login')
-
 ###################################################### ControleCampo ####################################################
 
 def getDataHoraAjax(request):

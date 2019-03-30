@@ -118,6 +118,12 @@ class ControleCampo(models.Model):
     paciente_nomeFamiliar = models.CharField('Paciente Nome Familiar', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_grauParentesco = models.CharField('Paciente Grau Parentesco', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_origem = models.CharField('Paciente Origem', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    usuario_nomeCompleto = models.CharField('Usuário Nome Completo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    usuario_email = models.CharField('Usuário Email', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    usuario_telefone = models.CharField('Usuário Telefone', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    usuario_celular = models.CharField('Usuário Celular', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    usuario_enderecoCompleto = models.CharField('Usuário Endereço Completo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    usuario_titulo = models.CharField('Usuário Título', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
 
     def __str__(self):
         return self.clinica.nome

@@ -38,6 +38,8 @@ $("#id_email").keyup(function( event ) {
 // Validar Email /////////////////////////////
 
 
+controleDeCampo();
+
 //Tabelas////////////////////////////////////////////////////////////////////
 var tabela_novoUsuario = $("#id_table_novoUsuario").DataTable({
     dom:
@@ -246,3 +248,27 @@ $('#id_form_novo_usuario').submit(function(e){
 if($("#id_button_modal").val() == undefined) $('form *').prop('disabled', true); // Desativa todos os campos do formulário para edição
 else $('form *').prop('disabled', false); // Reativa todos os campos do formulário para edição
 //Permissões //////////////////////////////////////
+
+function controleDeCampo(){
+	$.ajax({
+        url: "/configuracoes/buscarDadosControleCampoAjax",
+        dataType: 'json',
+        success: function (data) {
+            keys = Object.keys(data)
+            console.log(keys);
+
+			for(i = 0; i < keys.length; i++){
+			    id = keys[i].replace('usuario', 'id');
+			    value = data[keys[i]];
+
+			    if(value == 'required'){
+			       label = $("form").find('[for='+ id +']');
+			       campo = $("form").find('[id='+ id +']');
+			       label.text(label.text() + " *");
+			       console.log(campo);
+                   $(campo).attr('required', '');
+			    }
+			}
+        }
+    });
+}
