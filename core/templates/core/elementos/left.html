@@ -17,6 +17,11 @@
 								<li id="id_item_meusUsuarios"><a href="{% url 'meusUsuarios' %}">Meus Usuários</a></li>
 							</ul>
 						</li>
+						<li class="parent" id="id_list_menu_servico"><a href="#"><i class="icon mdi mdi-book"></i><span>Serviço</span></a>
+							<ul class="sub-menu">
+								<li id="id_item_meusServicos"><a href="{% url 'meusServicos' %}">Meus Serviços</a></li>
+							</ul>
+						</li>
 						<li class="parent" id="id_list_menu_configuracao"><a href="#"><i class="icon mdi mdi-settings"></i><span>Configurações</span></a>
 
 							{% if perms.core.add_titulo and perms.core.change_titulo %}
