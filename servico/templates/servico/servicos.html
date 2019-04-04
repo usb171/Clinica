@@ -183,15 +183,23 @@
 																	</div>
 																</div>
 																<div class="form-group row pt-0">
-																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
-																		<label for="id_valorOuPorcentagem">Valor ou Porcentagem </label>
-																		<input class="form-control" type="text" id="id_valorOuPorcentagem" name="valorOuPorcentagem"
-																			   data-mask="date" required>
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0">
+																		<label for="id_valor">Valor </label>
+																		<input class="form-control" type="text" id="id_valor" name="valor"
+																			   data-mask="date" >
 																	</div>
-																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
-																		<label for="id_quemRealiza">Quem Realiza ? </label>
-																		<input class="form-control" type="text" id="id_quemRealiza" name="quemRealiza"
-																			   data-mask="date" required>
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0">
+																		<label for="id_porcentagem">Porcentagem </label>
+																		<input class="form-control" type="text" id="id_porcentagem" name="porcentagem"
+																			   data-mask="date" >
+																	</div>
+																	<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
+																		<label for="id_quemRealiza">Quem realiza ?</label>
+																		<select id="id_quemRealiza" name="quemRealiza" class="form-control">
+																			{% for usuario in usuarios %}
+																				{% if usuario.status != "OFF" %} <option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}} </option> {% endif %}
+																			{% endfor %}
+																		</select>
 																	</div>
 																</div>
 															</div>

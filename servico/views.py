@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from usuario.models import Usuario
 from servico.models import Servico
+from usuario.models import Usuario
 from django.http import JsonResponse
 
 import json
@@ -11,7 +12,8 @@ def servico(request):
         clinica = Usuario.objects.get(user=request.user).clinica
         if request.method == 'GET':
             contexto = {
-                'servicos': Servico.objects.filter(clinica=clinica)
+                'servicos': Servico.objects.filter(clinica=clinica),
+                'usuarios': Usuario.objects.filter(clinica=clinica)
             }
             return render(request, 'servico/servicos.html', contexto)
         elif request.method == 'POST':
@@ -22,6 +24,11 @@ def servico(request):
             nome = request.POST['nome']
             preco = request.POST['preco']
             tempo = request.POST['tempo']
+
+            valor = request.POST['valor']
+            porcentagem = request.POST['porcentagem']
+            quemRealiza = request.POST['quemRealiza']
+
             prazoRetorno = request.POST['prazoRetorno']
             prazoValidade = request.POST['prazoValidade']
 
@@ -42,37 +49,43 @@ def servico(request):
             if Servico.objects.filter(id=id_servico).exists():  # Caso exista o ID passado, edite esse Serviço
                 servico_obj = Servico.objects.filter(id=id_servico)
                 servico_obj.update(nome=nome,
-                                    preco=preco,
-                                    tempo=tempo,
-                                    ativo=ativo,
-                                    clinica=clinica,
-                                    prazoRetorno=prazoRetorno,
-                                    prazoValidade=prazoValidade,
-                                    nomeDocumento1=nomeDocumento1,
-                                    codeDocumento1=codeDocumento1,
-                                    nomeDocumento2=nomeDocumento2,
-                                    codeDocumento2=codeDocumento2,
-                                    nomeDocumento3=nomeDocumento3,
-                                    codeDocumento3=codeDocumento3,
-                                    nomeDocumento4=nomeDocumento4,
-                                    codeDocumento4=codeDocumento4,
+                                   preco=preco,
+                                   tempo=tempo,
+                                   ativo=ativo,
+                                   valor=valor,
+                                   clinica=clinica,
+                                   quemRealiza=quemRealiza,
+                                   porcentagem=porcentagem,
+                                   prazoRetorno=prazoRetorno,
+                                   prazoValidade=prazoValidade,
+                                   nomeDocumento1=nomeDocumento1,
+                                   codeDocumento1=codeDocumento1,
+                                   nomeDocumento2=nomeDocumento2,
+                                   codeDocumento2=codeDocumento2,
+                                   nomeDocumento3=nomeDocumento3,
+                                   codeDocumento3=codeDocumento3,
+                                   nomeDocumento4=nomeDocumento4,
+                                   codeDocumento4=codeDocumento4,
                                    )
             else:  # Crie um Serviço
                 servico_obj = Servico.objects.create(nome=nome,
                                                       preco=preco,
                                                       tempo=tempo,
                                                       ativo=ativo,
+                                                      valor=valor,
                                                       clinica=clinica,
+                                                      quemRealiza=quemRealiza,
+                                                      porcentagem=porcentagem,
                                                       prazoRetorno=prazoRetorno,
                                                       prazoValidade=prazoValidade,
-                                                     nomeDocumento1=nomeDocumento1,
-                                                     codeDocumento1=codeDocumento1,
-                                                     nomeDocumento2=nomeDocumento2,
-                                                     codeDocumento2=codeDocumento2,
-                                                     nomeDocumento3=nomeDocumento3,
-                                                     codeDocumento3=codeDocumento3,
-                                                     nomeDocumento4=nomeDocumento4,
-                                                     codeDocumento4=codeDocumento4,
+                                                      nomeDocumento1=nomeDocumento1,
+                                                      codeDocumento1=codeDocumento1,
+                                                      nomeDocumento2=nomeDocumento2,
+                                                      codeDocumento2=codeDocumento2,
+                                                      nomeDocumento3=nomeDocumento3,
+                                                      codeDocumento3=codeDocumento3,
+                                                      nomeDocumento4=nomeDocumento4,
+                                                      codeDocumento4=codeDocumento4,
                                                      )
                 servico_obj.save()
 
@@ -93,7 +106,10 @@ def buscarDadosServicoAjax(request):
                 'nome': servico.nome,
                 'tempo': servico.tempo,
                 'preco': servico.preco,
+                'valor': servico.valor,
                 'id_servico': servico.pk,
+                'quemRealiza': servico.quemRealiza,
+                'porcentagem': servico.porcentagem,
                 'prazoRetorno': servico.prazoRetorno,
                 'prazoValidade': servico.prazoValidade,
                 'nomeDocumento_1':servico.nomeDocumento1,

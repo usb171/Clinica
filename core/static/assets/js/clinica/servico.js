@@ -10,6 +10,14 @@ $("#id_preco").maskMoney({
          thousands: "."
 });
 
+$("#id_valor").maskMoney({
+         prefix: "R$ ",
+         decimal: ",",
+         thousands: "."
+});
+
+$("#id_porcentagem").mask("999 %");
+
 $("#id_tempo").mask("999 min");
 $("#id_prazoRetorno").mask("999 d");
 $("#id_prazoValidade").mask("999 d");
@@ -86,8 +94,6 @@ $('#id_button_modal_novoServico').click(function(){
     $("#id_card_documento_2").attr('hidden','true')
     $("#id_card_documento_3").attr('hidden','true')
     $("#id_card_documento_4").attr('hidden','true')
-
-
 });
 $('#id_table_novoServico tbody ').on('click', 'tr button', function () {
     // Modifica os campos do formulário de um novo serviço para editar serviço
@@ -110,6 +116,11 @@ $('#id_table_novoServico tbody ').on('click', 'tr button', function () {
             $('#id_modal_form_servico form input[id="id_prazoValidade"]').val(data.prazoValidade);
             $('#id_modal_form_servico form input[id="id_servico"]').val(data.id_servico);
 
+            $('#id_modal_form_servico form input[id="id_valor"]').val(data.valor);
+            $('#id_modal_form_servico form input[id="id_porcentagem"]').val(data.porcentagem);
+            $('#id_modal_form_servico form select[id="id_quemRealiza"]').val(data.quemRealiza);
+
+
             $('#id_modal_form_servico form input[id="id_nomeDocumento_1"]').val(data.nomeDocumento_1);
             $('#id_modal_form_servico form input[id="id_nomeDocumento_2"]').val(data.nomeDocumento_2);
             $('#id_modal_form_servico form input[id="id_nomeDocumento_3"]').val(data.nomeDocumento_3);
@@ -129,8 +140,6 @@ $('#id_table_novoServico tbody ').on('click', 'tr button', function () {
                     $("#id_card_documento_"+i).removeAttr('hidden');
                 }
             }
-
-
         }
     });
 });
@@ -210,6 +219,11 @@ $('#id_button_salvar').click(function(){
    $('#summernote').summernote('reset');
 });
 
+$('#id_modal_documento').on('shown.bs.modal', function () {
+    $("#id_modal_form_servico").attr('hidden', 'true');
+})
+
 $('#id_modal_documento').on('hidden.bs.modal', function () {
     $('#id_modal_form_servico').css({'padding':'0 !important', 'overflow-x':'hidden', 'overflow-y':'auto'});
+    $("#id_modal_form_servico").removeAttr('hidden');
 })
