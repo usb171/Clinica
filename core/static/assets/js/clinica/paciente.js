@@ -236,13 +236,17 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
             $('#id_modal_form_paciente form input[id="id_dataNascimento"]').val(data.dataNascimento);
             $('#id_modal_form_paciente form input[id="id_idade"]').val(data.idade);
 
+//            $('#id_modal_form_paciente form input[id="id_fotoPerfil"]').val(data.fotoPerfil);
+//            $('#id_modal_form_paciente form input[id="id_atualizacaoFotoPerfil"]').val(data.atualizacaoFotoPerfil);
+
+
             $("#id_nomeFamiliar").val(data.nomeFamiliar).trigger('change');
             $("#id_grauParentesco").val(data.grauParentesco).trigger('change');
 
             $('#id_modal_form_paciente form input[id="id_paciente"]').val(data.id_paciente);
 
             path = data.image_path;
-            imageObj.src = path.replace('core','');
+            //imageObj.src = path.replace('core','');
 
             var RegExp = /["|']/g;
             convenioGrupos = JSON.parse(data.grupoConvenio);
@@ -492,8 +496,6 @@ $('#id_form_novo_paciente').submit(function(e){
     $("#id_origem_input").val($("#id_origem").select2("val"));
     $("button").prop("disabled",true);
 
-    desativarWebCam();
-
     e.preventDefault();
     $.post("/paciente/meusPacientes", $(this).serialize(), function(data){
         if (data.ok){
@@ -624,8 +626,6 @@ class Camera {
         this.imageObj.onload = function() {
             this.context.drawImage(this.imageObj, 5, 5, 250 + 50, 150);
         };
-
-
     }
 
     async iniciar(){
@@ -645,10 +645,12 @@ class Camera {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    capturar(id){
+    capturar(idFoto, idAtualizacao){
         this.context.restore();
         this.context.drawImage(this.video, 5, 5, 240 + 50, 140);
-        $("#"+id).val(this.canvas.toDataURL());
+        $(""+idFoto+"").val(this.canvas.toDataURL());
+        $(""+idAtualizacao+"").val("04/08/1993 12:21:20"); // OBS setar a data hora
+        console.log(idFoto + " " + idAtualizacao);
     }
 
     carregarImagem(strDataURI) {
@@ -665,11 +667,11 @@ const camera = new Camera();
 
 $(document).on("click", "#id_button_foto", function () {
      camera.iniciar();
-     var id = $(this).data('id');
-     $("#id_button_capturar").attr("onclick", "camera.capturar('id_nomeFoto_"+id+"')");
-     $("#id_button_deletar_foto").attr("onclick", "$('#id_nomeFoto_"+id+"').val('')");
-
-     camera.carregarImagem($("#id_nomeFoto_"+id).val());
+     var idFoto = "#" + $(this).data('foto');
+     var idAtualizacao = "#" + $(this).data('atualizacao');
+     $("#id_button_capturar").attr("onclick", "camera.capturar('"+idFoto+"','"+idAtualizacao+"')");
+     $("#id_button_deletar_foto").attr("onclick", "$('"+idFoto+"').val('')");
+     camera.carregarImagem($(idFoto).val());
 });
 
 

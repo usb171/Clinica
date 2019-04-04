@@ -25,9 +25,21 @@ def servico(request):
             preco = request.POST['preco']
             tempo = request.POST['tempo']
 
-            valor = request.POST['valor']
-            porcentagem = request.POST['porcentagem']
-            quemRealiza = request.POST['quemRealiza']
+            valor1 = request.POST['valor1']
+            porcentagem1 = request.POST['porcentagem1']
+            quemRealiza1 = request.POST['quemRealiza1']
+            especificar1 = request.POST['especificar1']
+
+            valor2 = request.POST['valor2']
+            porcentagem2 = request.POST['porcentagem2']
+            quemRealiza2 = request.POST['quemRealiza2']
+            especificar2 = request.POST['especificar2']
+
+            valor3 = request.POST['valor3']
+            porcentagem3 = request.POST['porcentagem3']
+            quemRealiza3 = request.POST['quemRealiza3']
+            especificar3 = request.POST['especificar3']
+
 
             prazoRetorno = request.POST['prazoRetorno']
             prazoValidade = request.POST['prazoValidade']
@@ -52,10 +64,7 @@ def servico(request):
                                    preco=preco,
                                    tempo=tempo,
                                    ativo=ativo,
-                                   valor=valor,
                                    clinica=clinica,
-                                   quemRealiza=quemRealiza,
-                                   porcentagem=porcentagem,
                                    prazoRetorno=prazoRetorno,
                                    prazoValidade=prazoValidade,
                                    nomeDocumento1=nomeDocumento1,
@@ -66,16 +75,28 @@ def servico(request):
                                    codeDocumento3=codeDocumento3,
                                    nomeDocumento4=nomeDocumento4,
                                    codeDocumento4=codeDocumento4,
+
+                                   valor1=valor1,
+                                   especificar1=especificar1,
+                                   quemRealiza1=quemRealiza1,
+                                   porcentagem1=porcentagem1,
+
+                                   valor2=valor2,
+                                   especificar2=especificar2,
+                                   quemRealiza2=quemRealiza2,
+                                   porcentagem2=porcentagem2,
+
+                                   valor3=valor3,
+                                   especificar3=especificar3,
+                                   quemRealiza3=quemRealiza3,
+                                   porcentagem3=porcentagem3,
                                    )
             else:  # Crie um Serviço
                 servico_obj = Servico.objects.create(nome=nome,
                                                       preco=preco,
                                                       tempo=tempo,
                                                       ativo=ativo,
-                                                      valor=valor,
                                                       clinica=clinica,
-                                                      quemRealiza=quemRealiza,
-                                                      porcentagem=porcentagem,
                                                       prazoRetorno=prazoRetorno,
                                                       prazoValidade=prazoValidade,
                                                       nomeDocumento1=nomeDocumento1,
@@ -86,6 +107,21 @@ def servico(request):
                                                       codeDocumento3=codeDocumento3,
                                                       nomeDocumento4=nomeDocumento4,
                                                       codeDocumento4=codeDocumento4,
+
+                                                      valor1=valor1,
+                                                      especificar1=especificar1,
+                                                      quemRealiza1=quemRealiza1,
+                                                      porcentagem1=porcentagem1,
+
+                                                      valor2=valor2,
+                                                      especificar2=especificar2,
+                                                      quemRealiza2=quemRealiza2,
+                                                      porcentagem2=porcentagem2,
+
+                                                      valor3=valor3,
+                                                      especificar3=especificar3,
+                                                      quemRealiza3=quemRealiza3,
+                                                      porcentagem3=porcentagem3,
                                                      )
                 servico_obj.save()
 
@@ -106,10 +142,8 @@ def buscarDadosServicoAjax(request):
                 'nome': servico.nome,
                 'tempo': servico.tempo,
                 'preco': servico.preco,
-                'valor': servico.valor,
                 'id_servico': servico.pk,
-                'quemRealiza': servico.quemRealiza,
-                'porcentagem': servico.porcentagem,
+
                 'prazoRetorno': servico.prazoRetorno,
                 'prazoValidade': servico.prazoValidade,
                 'nomeDocumento_1':servico.nomeDocumento1,
@@ -120,7 +154,23 @@ def buscarDadosServicoAjax(request):
                 'codeDocumento_2': servico.codeDocumento2,
                 'codeDocumento_3': servico.codeDocumento3,
                 'codeDocumento_4': servico.codeDocumento4,
-               }
+
+                'valor1': servico.valor1,
+                'especificar1': servico.especificar1,
+                'quemRealiza1': servico.quemRealiza1,
+                'porcentagem1': servico.porcentagem1,
+
+                'valor2': servico.valor2,
+                'especificar2': servico.especificar2,
+                'quemRealiza2': servico.quemRealiza2,
+                'porcentagem2': servico.porcentagem2,
+
+                'valor3': servico.valor3,
+                'especificar3': servico.especificar3,
+                'quemRealiza3': servico.quemRealiza3,
+                'porcentagem3': servico.porcentagem3,
+
+        }
         return JsonResponse(data)
     else:
         return redirect('login')

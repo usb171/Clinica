@@ -10,13 +10,27 @@ $("#id_preco").maskMoney({
          thousands: "."
 });
 
-$("#id_valor").maskMoney({
+$("#id_valor1").maskMoney({
          prefix: "R$ ",
          decimal: ",",
          thousands: "."
 });
 
-$("#id_porcentagem").mask("999 %");
+$("#id_valor2").maskMoney({
+         prefix: "R$ ",
+         decimal: ",",
+         thousands: "."
+});
+
+$("#id_valor3").maskMoney({
+         prefix: "R$ ",
+         decimal: ",",
+         thousands: "."
+});
+
+$("#id_porcentagem1").mask("999 %");
+$("#id_porcentagem2").mask("999 %");
+$("#id_porcentagem3").mask("999 %");
 
 $("#id_tempo").mask("999 min");
 $("#id_prazoRetorno").mask("999 d");
@@ -116,9 +130,20 @@ $('#id_table_novoServico tbody ').on('click', 'tr button', function () {
             $('#id_modal_form_servico form input[id="id_prazoValidade"]').val(data.prazoValidade);
             $('#id_modal_form_servico form input[id="id_servico"]').val(data.id_servico);
 
-            $('#id_modal_form_servico form input[id="id_valor"]').val(data.valor);
-            $('#id_modal_form_servico form input[id="id_porcentagem"]').val(data.porcentagem);
-            $('#id_modal_form_servico form select[id="id_quemRealiza"]').val(data.quemRealiza);
+            $('#id_modal_form_servico form input[id="id_valor1"]').val(data.valor1);
+            $('#id_modal_form_servico form input[id="id_porcentagem1"]').val(data.porcentagem1);
+            $('#id_modal_form_servico form select[id="id_quemRealiza1"]').val(data.quemRealiza1);
+            $('#id_modal_form_servico form input[id="id_especificar1"]').val(data.especificar1);
+
+            $('#id_modal_form_servico form input[id="id_valor2"]').val(data.valor2);
+            $('#id_modal_form_servico form input[id="id_porcentagem2"]').val(data.porcentagem2);
+            $('#id_modal_form_servico form select[id="id_quemRealiza2"]').val(data.quemRealiza2);
+            $('#id_modal_form_servico form input[id="id_especificar2"]').val(data.especificar2);
+
+             $('#id_modal_form_servico form input[id="id_valor3"]').val(data.valor3);
+            $('#id_modal_form_servico form input[id="id_porcentagem3"]').val(data.porcentagem3);
+            $('#id_modal_form_servico form select[id="id_quemRealiza3"]').val(data.quemRealiza3);
+            $('#id_modal_form_servico form input[id="id_especificar3"]').val(data.especificar3);
 
 
             $('#id_modal_form_servico form input[id="id_nomeDocumento_1"]').val(data.nomeDocumento_1);

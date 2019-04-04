@@ -25,6 +25,8 @@ canvas, video {
 
 
 
+
+
 </style>
 {% endblock %}
 
@@ -66,7 +68,7 @@ canvas, video {
 										<td class="center">{{ paciente.cpf }}</td>
 										<td class="row">
 											{% if perms.paciente.change_paciente %}
-											<button class="btn btn-space btn-primary" value="{{ paciente.pk }}" onclick="initWebCam()" type="button">Editar
+											<button class="btn btn-space btn-primary" value="{{ paciente.pk }}" type="button">Editar
 												Paciente
 											</button>
 											{% else %}
@@ -111,8 +113,22 @@ canvas, video {
 						<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
 							<div class="card-body">
 								<div class="form-group row">
-									<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
+									<div class="col-sm-8 col-lg-4 mb-4 mb-sm-0 pt-0">
 										<h2>Identificação</h2>
+									</div>
+									<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0 pb-2">
+										<label for="id_fotoPerfil">Foto do Perfil</label>
+										<div class="input-group mb-3">
+											<input class="form-control" id="id_fotoPerfil" name="fotoPerfil" type="text"  readonly>
+											<input class="form-control" id="id_atualizacaoFotoPerfil" name="atualizacaoFotoPerfil" hidden type="text" readonly>
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button" data-toggle="modal" id="id_button_foto"
+														data-foto="id_fotoPerfil"
+														data-atualizacao="id_atualizacaoFotoPerfil"
+														data-target="#id_modal_camera">Abrir Câmera
+												</button>
+											</div>
+										</div>
 									</div>
 									<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0" style="padding-top: 2px;">
 										<label for="id_selectAtivarPaciente">Ativar Paciente ?</label>
@@ -986,21 +1002,21 @@ canvas, video {
 								</div>
 
 								<div class="form-group row pt-0">
-									<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0">
+									<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0">
 										<label for="id_observacao">Observação</label>
 										<textarea class="form-control" id="id_observacao" name="observacao"
 												  style="margin-top: 0px; margin-bottom: 0px; height: 104px;"></textarea>
 									</div>
 									<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0">
 										<!--<div class="container">-->
-											<!--<div class="form-group row pt-5">-->
-												<!--<div class="col-md-6" id="id_div_video">-->
-													<!--<video id="video" playsinline autoplay onclick="take();"></video>-->
-												<!--</div>-->
-												<!--<div class="col-md-6">-->
-													<!--<canvas id="canvas"></canvas>-->
-												<!--</div>-->
-											<!--</div>-->
+										<!--<div class="form-group row pt-5">-->
+										<!--<div class="col-md-6" id="id_div_video">-->
+										<!--<video id="video" playsinline autoplay onclick="take();"></video>-->
+										<!--</div>-->
+										<!--<div class="col-md-6">-->
+										<!--<canvas id="canvas"></canvas>-->
+										<!--</div>-->
+										<!--</div>-->
 										<!--</div>-->
 									</div>
 								</div>
@@ -1100,90 +1116,94 @@ canvas, video {
 							</div>
 						</div>
 
-						<div class="row" id="id_grupo_card_convenio">
-							<div class="col-lg-6 pt-0 " id="id_card_convenio">
-								<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
-									<div class="card-header">Convênio 1</div>
-									<div class="card-body ">
-										<div class="form-group row pt-0">
-											<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
-												<label for="id_convenio">Convênio</label>
-												<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">
-													<option></option>
-													{% for convenio in convenios %}
-													{% if convenio.status != "OFF" %}
-													<option value="{{ convenio.nome }}">{{ convenio.nome }}</option>
-													{% endif %}
-													{% endfor %}
-												</select>
-											</div>
-											<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">
-												<label for="id_convenioCarteira">Número Carteira</label>
-												<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira">
-											</div>
-											<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">
-												<label for="id_convenioValidade_1">Validade</label>
-												<input class="form-control" type="text" id="id_convenioValidade_1" name="convenioValidade">
-											</div>
-											<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
-												<label for="id_nomeFoto_1">Path Imagem</label>
-												<div class="input-group mb-3">
-													<input class="form-control" id="id_nomeFoto_1" type="text" readonly>
-													<div class="input-group-append">
-														<button class="btn btn-primary" type="button" data-toggle="modal" id="id_button_foto" data-id="1" data-target="#id_modal_camera">Abrir Câmera</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+						<!--<div class="row" id="id_grupo_card_convenio">-->
+							<!--<div class="col-lg-6 pt-0 " id="id_card_convenio">-->
+								<!--<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">-->
+									<!--<div class="card-header">Convênio 1</div>-->
+									<!--<div class="card-body ">-->
+										<!--<div class="form-group row pt-0">-->
+											<!--<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">-->
+												<!--<label for="id_convenio">Convênio</label>-->
+												<!--<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">-->
+													<!--<option></option>-->
+													<!--{% for convenio in convenios %}-->
+													<!--{% if convenio.status != "OFF" %}-->
+													<!--<option value="{{ convenio.nome }}">{{ convenio.nome }}</option>-->
+													<!--{% endif %}-->
+													<!--{% endfor %}-->
+												<!--</select>-->
+											<!--</div>-->
+											<!--<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">-->
+												<!--<label for="id_convenioCarteira">Número Carteira</label>-->
+												<!--<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira">-->
+											<!--</div>-->
+											<!--<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">-->
+												<!--<label for="id_convenioValidade_1">Validade</label>-->
+												<!--<input class="form-control" type="text" id="id_convenioValidade_1" name="convenioValidade">-->
+											<!--</div>-->
+											<!--<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">-->
+												<!--<label for="id_nomeFoto_1">Path Imagem</label>-->
+												<!--<div class="input-group mb-3">-->
+													<!--<input class="form-control" id="id_nomeFoto_1" type="text" readonly>-->
+													<!--<div class="input-group-append">-->
+														<!--<button class="btn btn-primary" type="button" data-toggle="modal" id="id_button_foto" data-id="1"-->
+																<!--data-target="#id_modal_camera">Abrir Câmera-->
+														<!--</button>-->
+													<!--</div>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
 
-							<div class="col-lg-6 pt-0" id="id_card_convenio_2" count="2" onclick="RepeaterCardConvenio().ativaCard(this)"
-								 style="filter: blur(2px);"
-								 onmouseover="$(this).css({'filter': 'blur(0px)'})"
-								 onmouseout="$(this).css({'filter': 'blur(1px)'})">
-								<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
-									<div class="card-header">Convênio 2
-										<div class="tools"><span class="icon mdi mdi-close"></span></div>
-									</div>
+							<!--<div class="col-lg-6 pt-0" id="id_card_convenio_2" count="2" onclick="RepeaterCardConvenio().ativaCard(this)"-->
+								 <!--style="filter: blur(2px);"-->
+								 <!--onmouseover="$(this).css({'filter': 'blur(0px)'})"-->
+								 <!--onmouseout="$(this).css({'filter': 'blur(1px)'})">-->
+								<!--<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">-->
+									<!--<div class="card-header">Convênio 2-->
+										<!--<div class="tools"><span class="icon mdi mdi-close"></span></div>-->
+									<!--</div>-->
 
-									<div class="card-body">
-										<div class="form-group row pt-0" count="2">
-											<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
-												<label for="id_convenio">Convênio</label>
-												<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">
-													<option></option>
-													{% for convenio in convenios %}
-													{% if convenio.status != "OFF" %}
-													<option value="{{ convenio.nome }}">{{ convenio.nome }}</option>
-													{% endif %}
-													{% endfor %}
-												</select>
-											</div>
-											<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">
-												<label for="id_convenioCarteira">Número Carteira</label>
-												<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira">
-											</div>
-											<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">
-												<label for="id_convenioValidade_2">Validade</label>
-												<input class="form-control" type="text" id="id_convenioValidade_2" name="convenioValidade">
-											</div>
-											<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
-												<label for="id_nomeFoto_2">Path Imagem</label>
-												<div class="input-group mb-3">
-													<input class="form-control" id="id_nomeFoto_2" type="text" readonly>
-													<div class="input-group-append">
-														<button class="btn btn-primary" type="button" data-toggle="modal" id="id_button_foto" data-id="2" data-target="#id_modal_camera">Abrir Câmera</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+									<!--<div class="card-body">-->
+										<!--<div class="form-group row pt-0" count="2">-->
+											<!--<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">-->
+												<!--<label for="id_convenio">Convênio</label>-->
+												<!--<select id="id_convenio" name="convenio" class="form-control select2 select2-lg">-->
+													<!--<option></option>-->
+													<!--{% for convenio in convenios %}-->
+													<!--{% if convenio.status != "OFF" %}-->
+													<!--<option value="{{ convenio.nome }}">{{ convenio.nome }}</option>-->
+													<!--{% endif %}-->
+													<!--{% endfor %}-->
+												<!--</select>-->
+											<!--</div>-->
+											<!--<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">-->
+												<!--<label for="id_convenioCarteira">Número Carteira</label>-->
+												<!--<input class="form-control" type="number" id="id_convenioCarteira" name="numeroCarteira">-->
+											<!--</div>-->
+											<!--<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">-->
+												<!--<label for="id_convenioValidade_2">Validade</label>-->
+												<!--<input class="form-control" type="text" id="id_convenioValidade_2" name="convenioValidade">-->
+											<!--</div>-->
+											<!--<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">-->
+												<!--<label for="id_nomeFoto_2">Path Imagem</label>-->
+												<!--<div class="input-group mb-3">-->
+													<!--<input class="form-control" id="id_nomeFoto_2" type="text" readonly>-->
+													<!--<div class="input-group-append">-->
+														<!--<button class="btn btn-primary" type="button" data-toggle="modal" id="id_button_foto" data-id="2"-->
+																<!--data-target="#id_modal_camera">Abrir Câmera-->
+														<!--</button>-->
+													<!--</div>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</div>-->
+									<!--</div>-->
+								<!--</div>-->
 
-							</div>
-						</div>
+							<!--</div>-->
+						<!--</div>-->
 
 						<hr class="style-one">
 						<div class="row">
@@ -1291,7 +1311,7 @@ canvas, video {
 			<div class="modal-content">
 				<div class="modal-header modal-header-colored">
 					<h3 class="modal-title">Câmera</h3>
-					<button class="close md-close" type="button"  data-dismiss="modal" aria-hidden="true"><span
+					<button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true"><span
 							class="mdi mdi-close"></span></button>
 				</div>
 				<div class="modal-body">
@@ -1309,13 +1329,14 @@ canvas, video {
 
 					<div class="modal-footer">
 						<button class="btn btn-space btn-success" id="id_button_capturar" type="button">Fotografar</button>
-						<button class="btn btn-space btn-danger" id="id_button_deletar_foto" data-dismiss="modal" aria-hidden="true" type="button">Deletar Foto</button>
+						<button class="btn btn-space btn-danger" id="id_button_deletar_foto" data-dismiss="modal" aria-hidden="true" type="button">Deletar
+							Foto
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 
 
 </div>

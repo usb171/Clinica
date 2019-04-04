@@ -52,6 +52,33 @@ class Paciente(models.Model):
     grupoConvenio = models.TextField("Convenios", null=True, blank=True)
     grupoFamiliar = models.TextField("Familiares", null=True, blank=True)
 
+    # fotoPerfil = models.TextField("Foto Perfil", null=True, blank=True)
+    # atualizacaoFotoPerfil = models.CharField('Atualização Foto Perfil', max_length=240, null=True, blank=True)
+
+
+    # fotoConvenio1A = models.TextField("Foto Convênio 1A", null=True, blank=True)
+    # atualizacaoConvenio1A = models.CharField('Atualização Foto Convênio 1A', max_length=240, null=True, blank=True)
+    # fotoConvenio1B = models.TextField("Foto Convênio 1B", null=True, blank=True)
+    # atualizacaoConvenio1B = models.CharField('Atualização Foto Convênio 1B', max_length=240, null=True, blank=True)
+    #
+    # fotoConvenio2A = models.TextField("Foto Convênio 2A", null=True, blank=True)
+    # atualizacaoConvenio2A = models.CharField('Atualização Foto Convênio 2A', max_length=240, null=True, blank=True)
+    # fotoConvenio2B = models.TextField("Foto Convênio 2B", null=True, blank=True)
+    # atualizacaoConvenio2B = models.CharField('Atualização Foto Convênio 2B', max_length=240, null=True, blank=True)
+    #
+    # fotoConvenio3A = models.TextField("Foto Convênio 3A", null=True, blank=True)
+    # atualizacaoConvenio3A = models.CharField('Atualização Foto Convênio 3A', max_length=240, null=True, blank=True)
+    # fotoConvenio3B = models.TextField("Foto Convênio 3B", null=True, blank=True)
+    # atualizacaoConvenio3B = models.CharField('Atualização Foto Convênio 3B', max_length=240, null=True, blank=True)
+    #
+    # fotoConvenio4A = models.TextField("Foto Convênio 4A", null=True, blank=True)
+    # atualizacaoConvenio4A = models.CharField('Atualização Foto Convênio 4A', max_length=240, null=True, blank=True)
+    # fotoConvenio4B = models.TextField("Foto Convênio 4B", null=True, blank=True)
+    # atualizacaoConvenio4B = models.CharField('Atualização Foto Convênio 4B', max_length=240, null=True, blank=True)
+
+
+
+
     # nomeFamiliar = models.CharField('Nome do Familiar', max_length=120, null=True, blank=True)
     # grauParentesco = models.CharField('Grau de Parentesco', max_length=120, null=True, blank=True)
 

@@ -61,6 +61,8 @@ def buscarDadosPacienteAjax(request):
                 'dataNascimento': paciente.dataNascimento,
                 #'grauParentesco': paciente.grauParentesco,
                 'image_path': image_path,
+                # 'fotoPerfil': paciente.fotoPerfil,
+                # 'atualizacaoFotoPerfil': paciente.atualizacaoFotoPerfil
                }
         return JsonResponse(data)
     else:
@@ -84,14 +86,18 @@ def paciente(request):
             return render(request, 'paciente/pacientes.html', contexto)
         elif request.method == 'POST':
 
-            #for key in request.POST.keys():
-                #print(key, " ", request.POST[key])
+            for key in request.POST.keys():
+                print(key, " ", request.POST[key])
 
 
             form = PacienteForm(request.POST)
             print(form.errors)
             if form.is_valid():
+
                 dados = form.cleaned_data
+
+                # fotoPerfil = dados['fotoPerfil'],
+                # atualizacaoFotoPerfil = dados['atualizacaoFotoPerfil'],
                 cpf = dados['cpf']
                 cep = dados['cep']
                 rua = dados['rua']
@@ -148,6 +154,8 @@ def paciente(request):
                                         grupoFamiliar=grupoFamiliar,
                                         dataNascimento=dataNascimento,
                                         #grauParentesco=grauParentesco,
+                                        # fotoPerfil=fotoPerfil,
+                                        # atualizacaoFotoPerfil=atualizacaoFotoPerfil,
                                         )
 
                     filename = path_paciente_clinica + "/" + str(id_paciente) + '.jpg'
@@ -178,7 +186,10 @@ def paciente(request):
                                             grupoConvenio=grupoConvenio,
                                             grupoFamiliar=grupoFamiliar,
                                             #grauParentesco=grauParentesco,
-                                            dataNascimento=dataNascimento)
+                                            dataNascimento=dataNascimento,
+                                            # fotoPerfil=fotoPerfil,
+                                            # atualizacaoFotoPerfil=atualizacaoFotoPerfil,
+                                            )
                     paciente_obj.save()
                     filename = path_paciente_clinica + "/" + str(paciente_obj.id) + '.jpg'
 

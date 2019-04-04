@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 
 class PacienteForm(forms.Form):
 
+    # fotoPerfil = forms.CharField(required=False)
+    # atualizacaoFotoPerfil = forms.CharField(widget=forms.Textarea, required=False)
+
     ativo = forms.CharField(required=True)
     nomeCompleto = forms.CharField(required=True)
     cpf = forms.CharField(required=False)

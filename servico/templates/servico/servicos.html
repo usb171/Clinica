@@ -15,6 +15,9 @@
 }
 
 
+
+
+
 </style>
 {% endblock %}
 
@@ -117,7 +120,7 @@
 																		aria-selected="false"><span class="icon mdi mdi-money"></span>Distribuição
 													financeira</a></li>
 												<li class="nav-item"><a class="nav-link" href="#tablist3" data-toggle="tab" role="tab"
-																		aria-selected="false" ><span class="icon mdi mdi-file" ></span>Documentos</a></li>
+																		aria-selected="false"><span class="icon mdi mdi-file"></span>Documentos</a></li>
 											</ul>
 											<form method="POST" id="id_form_novo_servico">
 												{% csrf_token %}
@@ -182,26 +185,112 @@
 																		<h2>Distribuição financeira</h2>
 																	</div>
 																</div>
-																<div class="form-group row pt-0">
-																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0">
-																		<label for="id_valor">Valor </label>
-																		<input class="form-control" type="text" id="id_valor" name="valor"
-																			   data-mask="date" >
-																	</div>
-																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0">
-																		<label for="id_porcentagem">Porcentagem </label>
-																		<input class="form-control" type="text" id="id_porcentagem" name="porcentagem"
-																			   data-mask="date" >
-																	</div>
-																	<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
-																		<label for="id_quemRealiza">Quem realiza ?</label>
-																		<select id="id_quemRealiza" name="quemRealiza" class="form-control">
-																			{% for usuario in usuarios %}
-																				{% if usuario.status != "OFF" %} <option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}} </option> {% endif %}
-																			{% endfor %}
-																		</select>
+
+																<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																	<div class="card-header"><a>Regra 1</a></div>
+																	<div class="card-body ">
+																		<div class="form-group row pt-2">
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_valor1">Valor </label>
+																				<input class="form-control" type="text" id="id_valor1" name="valor1">
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_porcentagem1">Porcentagem </label>
+																				<input class="form-control" type="text" id="id_porcentagem1"
+																					   name="porcentagem1">
+																			</div>
+
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
+																				<label for="id_quemRealiza1">Quem realiza ?</label>
+																				<select id="id_quemRealiza1" name="quemRealiza1" class="form-control">
+																					<option></option>
+
+																					{% for usuario in usuarios %}
+																					{% if usuario.status != "OFF" %}
+																					<option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}}
+																					</option>
+																					{% endif %}
+																					{% endfor %}
+																				</select>
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_especificar1">Especificar </label>
+																				<input class="form-control" type="text" id="id_especificar1"
+																					   name="especificar1">
+																			</div>
+																		</div>
 																	</div>
 																</div>
+																<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																	<div class="card-header"><a>Regra 2</a></div>
+																	<div class="card-body">
+																		<div class="form-group row pt-2">
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_valor2">Valor </label>
+																				<input class="form-control" type="text" id="id_valor2" name="valor2">
+
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_porcentagem2">Porcentagem </label>
+																				<input class="form-control" type="text" id="id_porcentagem2"
+																					   name="porcentagem2">
+
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
+																				<label for="id_quemRealiza2">Quem realiza ?</label>
+																				<select id="id_quemRealiza2" name="quemRealiza2" class="form-control">
+																					<option></option>
+
+																					{% for usuario in usuarios %}
+																					{% if usuario.status != "OFF" %}
+																					<option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}}
+																					</option>
+																					{% endif %}
+																					{% endfor %}
+																				</select>
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_especificar2">Especificar </label>
+																				<input class="form-control" type="text" id="id_especificar2"
+																					   name="especificar2">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																	<div class="card-header"><a>Regra 3</a></div>
+																	<div class="card-body ">
+																		<div class="form-group row pt-2">
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_valor3">Valor </label>
+																				<input class="form-control" type="text" id="id_valor3" name="valor3">
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_porcentagem3">Porcentagem </label>
+																				<input class="form-control" type="text" id="id_porcentagem3"
+																					   name="porcentagem3">
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
+																				<label for="id_quemRealiza3">Quem realiza ?</label>
+																				<select id="id_quemRealiza3" name="quemRealiza3" class="form-control">
+																					<option></option>
+																					{% for usuario in usuarios %}
+																					{% if usuario.status != "OFF" %}
+																					<option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}}
+																					</option>
+																					{% endif %}
+																					{% endfor %}
+																				</select>
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_especificar3">Especificar </label>
+																				<input class="form-control" type="text" id="id_especificar3"
+																					   name="especificar3">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
 															</div>
 														</div>
 													</div>
@@ -210,8 +299,11 @@
 															<div class="card-body">
 																<div class="form-group row">
 																	<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
-																		<h2> <button
-																		type="button" onclick="RepeaterCardDocumento().maisUm()">Mais um Documento</button>  </h2>
+																		<h2>
+																			<button class="btn-primary"
+																					type="button" onclick="RepeaterCardDocumento().maisUm()">Mais Um Documento
+																			</button>
+																		</h2>
 																	</div>
 																</div>
 																<div class="row" id="id_grupo_card_documento">
@@ -223,12 +315,15 @@
 																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
 																						<label for="id_nomeDocumento_1">Nome do Documento</label>
 																						<div class="input-group mb-3">
-																							<input class="form-control" id="id_nomeDocumento_1" name="nomeDocumento_1" type="text">
-																							<input class="form-control" id="id_codeDocumento_1" name="codeDocumento_1" type="text" hidden>
+																							<input class="form-control" id="id_nomeDocumento_1"
+																								   name="nomeDocumento_1" type="text">
+																							<input class="form-control" id="id_codeDocumento_1"
+																								   name="codeDocumento_1" type="text" hidden>
 																							<div class="input-group-append">
 																								<button class="btn btn-primary" type="button"
 																										data-toggle="modal" id="id_button_documento_1"
-																										data-target="#id_modal_documento" data-id="1">Abrir Documento
+																										data-target="#id_modal_documento" data-id="1">Abrir
+																									Documento
 																								</button>
 																							</div>
 																						</div>
@@ -239,20 +334,24 @@
 																	</div>
 																	<div class="col-lg-6 pt-0" id="id_card_documento_2">
 																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
-																			<div class="card-header"> <a>Documento 2</a>
-																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('2')"><span class="icon mdi mdi-close"></span></div>
+																			<div class="card-header"><a>Documento 2</a>
+																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('2')"><span
+																						class="icon mdi mdi-close"></span></div>
 																			</div>
 																			<div class="card-body">
 																				<div class="form-group row pt-2">
 																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
 																						<label for="id_nomeDocumento_2">Nome do Documento</label>
 																						<div class="input-group mb-3">
-																							<input class="form-control" id="id_nomeDocumento_2" name="nomeDocumento_2" type="text">
-																							<input class="form-control" id="id_codeDocumento_2" name="codeDocumento_2" type="text" hidden>
+																							<input class="form-control" id="id_nomeDocumento_2"
+																								   name="nomeDocumento_2" type="text">
+																							<input class="form-control" id="id_codeDocumento_2"
+																								   name="codeDocumento_2" type="text" hidden>
 																							<div class="input-group-append">
 																								<button class="btn btn-primary" type="button"
 																										data-toggle="modal" id="id_button_documento_2"
-																										data-target="#id_modal_documento" data-id="2">Abrir Documento
+																										data-target="#id_modal_documento" data-id="2">Abrir
+																									Documento
 																								</button>
 																							</div>
 																						</div>
@@ -262,24 +361,28 @@
 																		</div>
 																	</div>
 																	<div class="col-lg-6 pt-0" id="id_card_documento_3" hidden>
-																	<!--style="filter: blur(2px);"-->
-																		 <!--onmouseover="$(this).css({'filter': 'blur(0px)'})"-->
-																		 <!--onmouseout="$(this).css({'filter': 'blur(1px)'})">-->
+																		<!--style="filter: blur(2px);"-->
+																		<!--onmouseover="$(this).css({'filter': 'blur(0px)'})"-->
+																		<!--onmouseout="$(this).css({'filter': 'blur(1px)'})">-->
 																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
 																			<div class="card-header"><a>Documento 3</a>
-																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('3')"><span class="icon mdi mdi-close"></span></div>
+																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('3')"><span
+																						class="icon mdi mdi-close"></span></div>
 																			</div>
 																			<div class="card-body">
 																				<div class="form-group row pt-2">
 																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
 																						<label for="id_nomeDocumento_3">Nome do Documento</label>
 																						<div class="input-group mb-3">
-																							<input class="form-control" id="id_nomeDocumento_3" name="nomeDocumento_3" type="text">
-																							<input class="form-control" id="id_codeDocumento_3" name="codeDocumento_3" type="text" hidden>
+																							<input class="form-control" id="id_nomeDocumento_3"
+																								   name="nomeDocumento_3" type="text">
+																							<input class="form-control" id="id_codeDocumento_3"
+																								   name="codeDocumento_3" type="text" hidden>
 																							<div class="input-group-append">
 																								<button class="btn btn-primary" type="button"
 																										data-toggle="modal" id="id_button_documento_3"
-																										data-target="#id_modal_documento" data-id="3">Abrir Documento
+																										data-target="#id_modal_documento" data-id="3">Abrir
+																									Documento
 																								</button>
 																							</div>
 																						</div>
@@ -289,24 +392,28 @@
 																		</div>
 																	</div>
 																	<div class="col-lg-6 pt-0" id="id_card_documento_4" hidden>
-																	<!--style="filter: blur(2px);"-->
-																		 <!--onmouseover="$(this).css({'filter': 'blur(0px)'})"-->
-																		 <!--onmouseout="$(this).css({'filter': 'blur(1px)'})">-->
+																		<!--style="filter: blur(2px);"-->
+																		<!--onmouseover="$(this).css({'filter': 'blur(0px)'})"-->
+																		<!--onmouseout="$(this).css({'filter': 'blur(1px)'})">-->
 																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
 																			<div class="card-header"><a>Documento 4</a>
-																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('4')"><span class="icon mdi mdi-close"></span></div>
+																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('4')"><span
+																						class="icon mdi mdi-close"></span></div>
 																			</div>
 																			<div class="card-body">
 																				<div class="form-group row pt-2">
 																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
 																						<label for="id_nomeDocumento_4">Nome do Documento</label>
 																						<div class="input-group mb-3">
-																							<input class="form-control" id="id_nomeDocumento_4" name="nomeDocumento_4" type="text">
-																							<input class="form-control" id="id_codeDocumento_4" name="codeDocumento_4" type="text" hidden>
+																							<input class="form-control" id="id_nomeDocumento_4"
+																								   name="nomeDocumento_4" type="text">
+																							<input class="form-control" id="id_codeDocumento_4"
+																								   name="codeDocumento_4" type="text" hidden>
 																							<div class="input-group-append">
 																								<button class="btn btn-primary" type="button"
 																										data-toggle="modal" id="id_button_documento_4"
-																										data-target="#id_modal_documento" data-id="4">Abrir Documento
+																										data-target="#id_modal_documento" data-id="4">Abrir
+																									Documento
 																								</button>
 																							</div>
 																						</div>
@@ -365,7 +472,8 @@
 				</div>
 			</div>
 			<div class="modal-footer col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">
-				<button class="btn btn-space btn-primary btn-big" type="button" id="id_button_salvar"><i class="icon mdi mdi-save"></i> Salvar Documento</button>
+				<button class="btn btn-space btn-primary btn-big" type="button" id="id_button_salvar"><i class="icon mdi mdi-save"></i> Salvar Documento
+				</button>
 			</div>
 		</div>
 	</div>
