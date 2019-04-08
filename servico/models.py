@@ -17,22 +17,31 @@ class Servico(models.Model):
     preco = models.CharField('Preço do Serviço', max_length=50, null=True, blank=True)
     tempo = models.CharField('Tempo do Serviço (em minutos)', max_length=5, null=True, blank=True)
 
-    valor1 = models.CharField('Valor 1', max_length=50, null=True, blank=True)
-    porcentagem1 = models.CharField('Porcentagem 1', max_length=5, null=True, blank=True)
-    quemRealiza1 = models.CharField('Quem Realiza 1 ?', max_length=120, null=True, blank=True)
-    especificar1 = models.CharField('Especificar 1', max_length=120, null=True, blank=True)
-
-    valor2 = models.CharField('Valor', max_length=50, null=True, blank=True)
-    porcentagem2 = models.CharField('Porcentagem 2', max_length=5, null=True, blank=True)
-    quemRealiza2 = models.CharField('Quem Realiza 2 ?', max_length=120, null=True, blank=True)
-    especificar2 = models.CharField('Especificar 2', max_length=120, null=True, blank=True)
-
-    valor3 = models.CharField('Valor 3', max_length=50, null=True, blank=True)
-    porcentagem3 = models.CharField('Porcentagem 3', max_length=5, null=True, blank=True)
-    quemRealiza3 = models.CharField('Quem Realiza 3 ?', max_length=120, null=True, blank=True)
-    especificar3 = models.CharField('Especificar 3', max_length=120, null=True, blank=True)
 
 
+    rateio1 = models.CharField('Rateio 1', max_length=50, null=True, blank=True)
+    titulo1 = models.CharField('Quem Recebe ? 1', max_length=120, null=True, blank=True)
+    tipoRateio1 = models.CharField('Tipo Rateio 1', max_length=5, null=True, blank=True)
+
+    rateio2 = models.CharField('Rateio 2', max_length=50, null=True, blank=True)
+    titulo2 = models.CharField('Quem Recebe ? 2', max_length=120, null=True, blank=True)
+    tipoRateio2 = models.CharField('Tipo Rateio 2', max_length=5, null=True, blank=True)
+
+    rateio3 = models.CharField('Rateio 3', max_length=50, null=True, blank=True)
+    titulo3 = models.CharField('Quem Recebe ? 3', max_length=120, null=True, blank=True)
+    tipoRateio3 = models.CharField('Tipo Rateio 3', max_length=5, null=True, blank=True)
+
+    rateio4 = models.CharField('Rateio 4', max_length=50, null=True, blank=True)
+    titulo4 = models.CharField('Quem Recebe ? 4 ', max_length=120, null=True, blank=True)
+    tipoRateio4 = models.CharField('Tipo Rateio 4', max_length=5, null=True, blank=True)
+
+    rateio5 = models.CharField('Rateio 5', max_length=50, null=True, blank=True)
+    titulo5 = models.CharField('Quem Recebe ? 5', max_length=120, null=True, blank=True)
+    tipoRateio5 = models.CharField('Tipo Rateio 5', max_length=5, null=True, blank=True)
+
+    rateio6 = models.CharField('Rateio 6', max_length=50, null=True, blank=True)
+    titulo6 = models.CharField('Quem Recebe ? 6', max_length=120, null=True, blank=True)
+    tipoRateio6 = models.CharField('Tipo Rateio 6', max_length=5, null=True, blank=True)
 
 
     prazoRetorno = models.CharField('Prazo para retorno (em dias)', max_length=5, null=True, blank=True)
@@ -43,8 +52,12 @@ class Servico(models.Model):
     nomeDocumento2 = models.CharField('Nome Documento 2', max_length=250, null=True, blank=True)
     nomeDocumento3 = models.CharField('Nome Documento 3', max_length=250, null=True, blank=True)
     nomeDocumento4 = models.CharField('Nome Documento 4', max_length=250, null=True, blank=True)
+    nomeDocumento5 = models.CharField('Nome Documento 4', max_length=250, null=True, blank=True)
+    nomeDocumento6 = models.CharField('Nome Documento 4', max_length=250, null=True, blank=True)
 
     codeDocumento1 = models.TextField("Code Documento 1", null=True, blank=True)
     codeDocumento2 = models.TextField("Code Documento 2", null=True, blank=True)
     codeDocumento3 = models.TextField("Code Documento 3", null=True, blank=True)
     codeDocumento4 = models.TextField("Code Documento 4", null=True, blank=True)
+    codeDocumento5 = models.TextField("Code Documento 5", null=True, blank=True)
+    codeDocumento6 = models.TextField("Code Documento 6", null=True, blank=True)

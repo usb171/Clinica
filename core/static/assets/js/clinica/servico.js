@@ -3,38 +3,35 @@ $('#id_list_menu_servico').addClass('active');
 $('#id_item_meusServicos').addClass('active');
 // Seleciona o item de menu //////////////////
 
+$("#id_nome").keyup(function(event){ $(this).val(this.value.toUpperCase())});
 
-$("#id_preco").maskMoney({
-         prefix: "R$ ",
-         decimal: ",",
-         thousands: "."
-});
-
-$("#id_valor1").maskMoney({
-         prefix: "R$ ",
-         decimal: ",",
-         thousands: "."
-});
-
-$("#id_valor2").maskMoney({
-         prefix: "R$ ",
-         decimal: ",",
-         thousands: "."
-});
-
-$("#id_valor3").maskMoney({
-         prefix: "R$ ",
-         decimal: ",",
-         thousands: "."
-});
+$("#id_preco").maskMoney({ prefix: "R$ ", decimal: ",", thousands: "."});
+$("#id_valor1").maskMoney({ prefix: "R$ ", decimal: ",", thousands: "."});
+$("#id_valor2").maskMoney({ prefix: "R$ ", decimal: ",", thousands: "."});
+$("#id_valor3").maskMoney({ prefix: "R$ ", decimal: ",", thousands: "."});
 
 $("#id_porcentagem1").mask("999 %");
 $("#id_porcentagem2").mask("999 %");
 $("#id_porcentagem3").mask("999 %");
 
-$("#id_tempo").mask("999 min");
-$("#id_prazoRetorno").mask("999 d");
-$("#id_prazoValidade").mask("999 d");
+$("#id_tempo").keyup(function( event ) {
+    if (this.value.length > 3) this.value = this.value.slice(0,3);
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value[0] == '0') this.value = parseInt(this.value)
+    if(!this.value) this.value = '0'
+});
+$("#id_prazoRetorno").keyup(function( event ) {
+    if (this.value.length > 3) this.value = this.value.slice(0,3);
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value[0] == '0') this.value = parseInt(this.value)
+    if(!this.value) this.value = '0'
+});
+$("#id_prazoValidade").keyup(function( event ) {
+    if (this.value.length > 3) this.value = this.value.slice(0,3);
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value[0] == '0') this.value = parseInt(this.value)
+    if(!this.value) this.value = '0'
+});
 
 
 
@@ -130,41 +127,63 @@ $('#id_table_novoServico tbody ').on('click', 'tr button', function () {
             $('#id_modal_form_servico form input[id="id_prazoValidade"]').val(data.prazoValidade);
             $('#id_modal_form_servico form input[id="id_servico"]').val(data.id_servico);
 
-            $('#id_modal_form_servico form input[id="id_valor1"]').val(data.valor1);
-            $('#id_modal_form_servico form input[id="id_porcentagem1"]').val(data.porcentagem1);
-            $('#id_modal_form_servico form select[id="id_quemRealiza1"]').val(data.quemRealiza1);
-            $('#id_modal_form_servico form input[id="id_especificar1"]').val(data.especificar1);
+            $('#id_modal_form_servico form input[id="id_rateio_1"]').val(data.rateio_1);
+            $('#id_modal_form_servico form input[id="id_rateio_2"]').val(data.rateio_2);
+            $('#id_modal_form_servico form input[id="id_rateio_3"]').val(data.rateio_3);
+            $('#id_modal_form_servico form input[id="id_rateio_4"]').val(data.rateio_4);
+            $('#id_modal_form_servico form input[id="id_rateio_5"]').val(data.rateio_5);
+            $('#id_modal_form_servico form input[id="id_rateio_6"]').val(data.rateio_6);
 
-            $('#id_modal_form_servico form input[id="id_valor2"]').val(data.valor2);
-            $('#id_modal_form_servico form input[id="id_porcentagem2"]').val(data.porcentagem2);
-            $('#id_modal_form_servico form select[id="id_quemRealiza2"]').val(data.quemRealiza2);
-            $('#id_modal_form_servico form input[id="id_especificar2"]').val(data.especificar2);
+            $('#id_modal_form_servico form input[id="id_tipoRateio_1"]').val(data.tipoRateio_1);
+            $('#id_modal_form_servico form input[id="id_tipoRateio_2"]').val(data.tipoRateio_2);
+            $('#id_modal_form_servico form input[id="id_tipoRateio_3"]').val(data.tipoRateio_3);
+            $('#id_modal_form_servico form input[id="id_tipoRateio_4"]').val(data.tipoRateio_4);
+            $('#id_modal_form_servico form input[id="id_tipoRateio_5"]').val(data.tipoRateio_5);
+            $('#id_modal_form_servico form input[id="id_tipoRateio_6"]').val(data.tipoRateio_6);
 
-             $('#id_modal_form_servico form input[id="id_valor3"]').val(data.valor3);
-            $('#id_modal_form_servico form input[id="id_porcentagem3"]').val(data.porcentagem3);
-            $('#id_modal_form_servico form select[id="id_quemRealiza3"]').val(data.quemRealiza3);
-            $('#id_modal_form_servico form input[id="id_especificar3"]').val(data.especificar3);
-
+            $('#id_modal_form_servico form select[id="id_titulo_1"]').val(data.titulo_1);
+            $('#id_modal_form_servico form select[id="id_titulo_2"]').val(data.titulo_2);
+            $('#id_modal_form_servico form select[id="id_titulo_3"]').val(data.titulo_3);
+            $('#id_modal_form_servico form select[id="id_titulo_4"]').val(data.titulo_4);
+            $('#id_modal_form_servico form select[id="id_titulo_5"]').val(data.titulo_5);
+            $('#id_modal_form_servico form select[id="id_titulo_6"]').val(data.titulo_6);
 
             $('#id_modal_form_servico form input[id="id_nomeDocumento_1"]').val(data.nomeDocumento_1);
             $('#id_modal_form_servico form input[id="id_nomeDocumento_2"]').val(data.nomeDocumento_2);
             $('#id_modal_form_servico form input[id="id_nomeDocumento_3"]').val(data.nomeDocumento_3);
             $('#id_modal_form_servico form input[id="id_nomeDocumento_4"]').val(data.nomeDocumento_4);
+            $('#id_modal_form_servico form input[id="id_nomeDocumento_5"]').val(data.nomeDocumento_5);
+            $('#id_modal_form_servico form input[id="id_nomeDocumento_6"]').val(data.nomeDocumento_6);
 
             $('#id_modal_form_servico form input[id="id_codeDocumento_1"]').val(data.codeDocumento_1);
             $('#id_modal_form_servico form input[id="id_codeDocumento_2"]').val(data.codeDocumento_2);
             $('#id_modal_form_servico form input[id="id_codeDocumento_3"]').val(data.codeDocumento_3);
             $('#id_modal_form_servico form input[id="id_codeDocumento_4"]').val(data.codeDocumento_4);
+            $('#id_modal_form_servico form input[id="id_codeDocumento_5"]').val(data.codeDocumento_5);
+            $('#id_modal_form_servico form input[id="id_codeDocumento_6"]').val(data.codeDocumento_6);
+
 
             $("#id_card_documento_2").attr('hidden','true')
             $("#id_card_documento_3").attr('hidden','true')
             $("#id_card_documento_4").attr('hidden','true')
+            $("#id_card_documento_5").attr('hidden','true')
+            $("#id_card_documento_6").attr('hidden','true')
 
-            for(i = 1; i <=4; i++){
+
+            for(i = 1; i <=6; i++){
                 if($("#id_codeDocumento_"+i).val() != "" || $("#id_nomeDocumento_"+i).val() != ""){
                     $("#id_card_documento_"+i).removeAttr('hidden');
                 }
+                if($("#id_rateio_"+i).val() != ""){
+                    $("#id_card_regra_"+i).removeAttr('hidden');
+                    var tipoRateio = $("#id_tipoRateio_"+i).val()
+                    if(tipoRateio == "%"){
+                        $($($($($("#id_card_regra_"+i).children().children()[1]).children().children()[0]).children().children()[2]).children()[0]).text('%')
+                        $($($($("#id_card_regra_"+i).children().children()[1]).children().children()[0]).children().children()[0]).attr('placeholder','Rateio em Porcentagemm ')
+                    }
+                }
             }
+
         }
     });
 });
@@ -187,6 +206,47 @@ $('#id_form_novo_servico').submit(function(e){
 });
 // Formulários ////////////////////////////////////
 
+
+// Regras //////////////////////////////////////////
+$("#id_rateio_1").maskMoney({ decimal: ",", thousands: "."})
+$("#id_rateio_2").maskMoney({ decimal: ",", thousands: "."})
+$("#id_rateio_3").maskMoney({ decimal: ",", thousands: "."})
+$("#id_rateio_4").maskMoney({ decimal: ",", thousands: "."})
+$("#id_rateio_5").maskMoney({ decimal: ",", thousands: "."})
+$("#id_rateio_6").maskMoney({ decimal: ",", thousands: "."})
+var RepeaterCardRegra = function(){
+    return{
+        desativarCard: function(id){
+             $("#id_card_regra_"+id).attr('hidden','true');
+             $("#id_rateio_"+id).val("");
+        },
+        maisUm: function(){
+            for(i = 2; i <= 6; i++){
+                if($("#id_card_regra_"+i).attr('hidden')){
+                    $("#id_card_regra_"+i).removeAttr('hidden');
+                    break;
+                }
+            }
+        },
+        rateio: function(id, texto){
+            $($($(id).parents()[1]).children()[0]).text(texto)
+            var grupo = $($(id).parents()[2]).children()
+            var rateio = grupo[0]
+            var tipoRateio = grupo[1]
+            if(texto == "R$"){
+                $(rateio).attr('placeholder', 'Rateio em Reais')
+                $(rateio).maskMoney({ decimal: ",", thousands: "."})
+            }
+            else if(texto == "%") $(rateio).attr('placeholder', 'Rateio em Porcentagem')
+
+
+            $(tipoRateio).val(texto)
+        },
+    }
+}
+// Regras /////////////////////////////////////////////////
+
+// Documentos ////////////////////////////////////////////
 var RepeaterCardDocumento = function(){
     return{
         desativarCard: function(id){
@@ -195,7 +255,7 @@ var RepeaterCardDocumento = function(){
              $("#id_codeDocumento_"+id).val("");
         },
         maisUm: function(){
-            for(i = 2; i <= 4; i++){
+            for(i = 2; i <= 6; i++){
                 if($("#id_card_documento_"+i).attr('hidden')){
                     $("#id_card_documento_"+i).removeAttr('hidden');
                     $("#id_nomeDocumento_"+i).val("");
@@ -206,6 +266,8 @@ var RepeaterCardDocumento = function(){
         }
     }
 }
+// Documentos ////////////////////////////////////////////
+
 
 $('#id_button_documento_1').click(function(){
   var id = ($(this).attr('data-id'));
@@ -214,22 +276,31 @@ $('#id_button_documento_1').click(function(){
   $('#summernote').summernote('code', '');
   $('#summernote').summernote('code', $('#id_codeDocumento_'+id).val());
 });
-
 $('#id_button_documento_2').click(function(){
   var id = ($(this).attr('data-id'));
   $('#summernote').summernote('reset');
   $("#id_button_salvar").attr("data-id", id);
   $('#summernote').summernote('code', '');
   $('#summernote').summernote('code', $('#id_codeDocumento_'+id).val());});
-
 $('#id_button_documento_3').click(function(){
   var id = ($(this).attr('data-id'));
   $('#summernote').summernote('reset');
   $("#id_button_salvar").attr("data-id", id);
   $('#summernote').summernote('code', '');
   $('#summernote').summernote('code', $('#id_codeDocumento_'+id).val());});
-
 $('#id_button_documento_4').click(function(){
+  var id = ($(this).attr('data-id'));
+  $('#summernote').summernote('reset');
+  $("#id_button_salvar").attr("data-id", id);
+  $('#summernote').summernote('code', '');
+  $('#summernote').summernote('code', $('#id_codeDocumento_'+id).val());});
+$('#id_button_documento_5').click(function(){
+  var id = ($(this).attr('data-id'));
+  $('#summernote').summernote('reset');
+  $("#id_button_salvar").attr("data-id", id);
+  $('#summernote').summernote('code', '');
+  $('#summernote').summernote('code', $('#id_codeDocumento_'+id).val());});
+$('#id_button_documento_6').click(function(){
   var id = ($(this).attr('data-id'));
   $('#summernote').summernote('reset');
   $("#id_button_salvar").attr("data-id", id);
