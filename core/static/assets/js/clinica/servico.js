@@ -307,6 +307,13 @@ $('#id_button_documento_6').click(function(){
   $('#summernote').summernote('code', '');
   $('#summernote').summernote('code', $('#id_codeDocumento_'+id).val());});
 
+$('#id_nomeDocumento_1').keyup(function(event){ $(this).val(this.value.toUpperCase())});
+$('#id_nomeDocumento_2').keyup(function(event){ $(this).val(this.value.toUpperCase())});
+$('#id_nomeDocumento_3').keyup(function(event){ $(this).val(this.value.toUpperCase())});
+$('#id_nomeDocumento_4').keyup(function(event){ $(this).val(this.value.toUpperCase())});
+$('#id_nomeDocumento_5').keyup(function(event){ $(this).val(this.value.toUpperCase())});
+$('#id_nomeDocumento_6').keyup(function(event){ $(this).val(this.value.toUpperCase())});
+
 
 $('#id_button_salvar').click(function(){
    var dataId = ($(this).attr('data-id'));
