@@ -12808,7 +12808,7 @@ canvas {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  padding-left: 13px;
+  padding-left: 25px;
   position: relative;
 }
 
@@ -26082,13 +26082,13 @@ fieldset[disabled] .full-calendar .fc-button.active {
 .select2.select2-lg + .select2-container--default .select2-selection--single, .select2.input-lg + .select2-container--default .select2-selection--single {
   height: 3.692rem;
   padding: 5px 0;
-  font-weight: 300;
+  font-weight: 400;
   border-radius: 2px;
 }
 
 .select2.select2-lg + .select2-container--default .select2-selection--single .select2-selection__rendered, .select2.input-lg + .select2-container--default .select2-selection--single .select2-selection__rendered {
   height: 4.385rem;
-  font-size: 1.385rem;
+  font-size: 1.1538rem;
 }
 
 .select2.select2-lg + .select2-container--default .select2-selection--single .select2-selection__arrow, .select2.input-lg + .select2-container--default .select2-selection--single .select2-selection__arrow {
@@ -26152,7 +26152,7 @@ fieldset[disabled] .full-calendar .fc-button.active {
 .input-group.input-group-lg .select2-container--default .select2-selection--single {
   height: 4.385rem;
   padding: 5px 0;
-  font-weight: 300;
+  font-weight: 400;
   border-radius: 2px;
 }
 

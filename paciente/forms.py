@@ -4,32 +4,39 @@ from django.contrib.auth.models import User
 
 class PacienteForm(forms.Form):
 
-    nomeCompleto = forms.CharField(required=True)
-    cpf = forms.CharField(required=True)
-    dataNascimento = forms.CharField(required=True)
-    sexo = forms.CharField(required=True)
-    estadoCivil = forms.CharField(required=True)
+    # fotoPerfil = forms.CharField(required=False)
+    # atualizacaoFotoPerfil = forms.CharField(widget=forms.Textarea, required=False)
 
-    profissao = forms.CharField(widget=forms.Textarea, required=True)
+    ativo = forms.CharField(required=True)
+    nomeCompleto = forms.CharField(required=True)
+    cpf = forms.CharField(required=False)
+    dataNascimento = forms.CharField(required=False)
+    idade = forms.CharField(required=False)
+    sexo = forms.CharField(required=False)
+    estadoCivil = forms.CharField(required=False)
+
+    profissao = forms.CharField(widget=forms.Textarea, required=False)
+    origem = forms.CharField(widget=forms.Textarea, required=False)
     observacao = forms.CharField(widget=forms.Textarea, required=False)
 
     telefone = forms.CharField(required=False)
-    celular = forms.CharField(required=True)
-    email = forms.CharField(required=True)
+    celular = forms.CharField(required=False)
+    email = forms.CharField(required=False)
 
     cep = forms.CharField(required=False)
     numero = forms.CharField(required=False)
-    rua = forms.CharField(required=True)
+    rua = forms.CharField(required=False)
     quadra = forms.CharField(required=False)
-    bairro = forms.CharField(required=True)
-    cidade = forms.CharField(required=True)
-    estado = forms.CharField(required=True)
-    complemento = forms.CharField(widget=forms.Textarea, required=True)
+    bairro = forms.CharField(required=False)
+    cidade = forms.CharField(required=False)
+    estado = forms.CharField(required=False)
+    complemento = forms.CharField(widget=forms.Textarea, required=False)
 
-    grupoConvenio = forms.CharField(widget=forms.Textarea)
+    grupoConvenio = forms.CharField(widget=forms.Textarea, required=False)
+    grupoFamiliar = forms.CharField(widget=forms.Textarea, required=False)
 
-    nomeFamiliar = forms.CharField(required=False)
-    grauParentesco = forms.CharField(required=False)
+    #nomeFamiliar = forms.CharField(required=False)
+    #grauParentesco = forms.CharField(required=False)
 
 
     def is_valid_from_form(self):

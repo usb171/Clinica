@@ -13,12 +13,41 @@
 							</ul>
 						</li>
 						<li class="parent" id="id_list_menu_usuario"><a href="#"><i class="icon mdi mdi-chart-donut"></i><span>Usuário</span></a>
-							<ul class="sub-menu" >
+							<ul class="sub-menu">
 								<li id="id_item_meusUsuarios"><a href="{% url 'meusUsuarios' %}">Meus Usuários</a></li>
 							</ul>
-							<ul class="sub-menu" >
-								<li id="id_item_permissao"><a href="#">Permissões</a></li>
+						</li>
+						<li class="parent" id="id_list_menu_servico"><a href="#"><i class="icon mdi mdi-book"></i><span>Serviço</span></a>
+							<ul class="sub-menu">
+								<li id="id_item_meusServicos"><a href="{% url 'meusServicos' %}">Meus Serviços</a></li>
 							</ul>
+						</li>
+						<li class="parent" id="id_list_menu_configuracao"><a href="#"><i class="icon mdi mdi-settings"></i><span>Configurações</span></a>
+
+							{% if perms.core.add_titulo and perms.core.change_titulo %}
+							<ul class="sub-menu">
+								<li id="id_item_titulo"><a href="{% url 'titulos' %}">Títulos de Usuários</a></li>
+							</ul>
+							{% endif %}
+
+							{% if perms.core.add_convenio and perms.core.change_convenio %}
+							<ul class="sub-menu">
+								<li id="id_item_convenio"><a href="{% url 'convenios' %}">Convênios</a></li>
+							</ul>
+							{% endif %}
+
+							{% if perms.core.add_origem and perms.core.change_origem %}
+							<ul class="sub-menu">
+								<li id="id_item_origem"><a href="{% url 'origens' %}">Origens dos Pacientes</a></li>
+							</ul>
+							{% endif %}
+
+							{% if perms.core.change_controlecampo %}
+							<ul class="sub-menu">
+								<li id="id_item_controleCampo"><a href="{% url 'controleCampos' %}">Controle de Campos</a></li>
+							</ul>
+							{% endif %}
+
 						</li>
 					</ul>
 				</div>

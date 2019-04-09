@@ -12,6 +12,8 @@
     background: #333;
     background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
+
+
 </style>
 {% endblock %}
 
@@ -52,7 +54,15 @@
 									<tr class="odd gradeX center">
 										<td class="center">{{ usuario.pk }}</td>
 										<td class="center">{{ usuario.nomeCompleto }}</td>
-										<td class="center">{{ usuario.titulo }}</td>
+										{% if usuario.titulo is not None %}
+											{% if usuario.titulo.status == "ON" %}
+												<td class="center">{{ usuario.titulo.titulo }}</td>
+											{% else %}
+												<td class="center">{{ usuario.titulo.titulo }} (OFF)</td>
+											{% endif %}
+										{% else %}
+											<td class="center"></td>
+										{% endif %}
 										<td class="center">{{ usuario.ativo }}</td>
 										<td class="center">{{ usuario.admin }}</td>
 										<td class="center">{{ usuario.agendaPropria }}</td>
@@ -87,7 +97,7 @@
 </div>
 
 <!--Modal Usuário-->
-<div class="modal fade colored-header colored-header-primary " id="id_modal_form_usuario" role="dialog">
+<div class="modal fade colored-header colored-header-primary" id="id_modal_form_usuario" role="dialog" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog full-width">
 		<div class="modal-content">
 			<div class="modal-header modal-header-colored">
@@ -116,10 +126,10 @@
 						</div>
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_titulo">Título</label>
-							<select id="id_titulo" name="titulo" class="form-control">
-								<option value="MEDICO" selected>MÉDICO</option>
-								<option value="FISIOTERAPEUTA">FISIOTERAPEUTA</option>
-								<option value="ENFERMEIRO">ENFERMEIRO</option>
+							<select id="id_titulo" name="titulo" class="form-control" required>
+								{% for titulo in titulos %}
+									{% if titulo.status != "OFF" %} <option value="{{titulo.titulo}}"> {{titulo.titulo}} </option> {% endif %}
+								{% endfor %}
 							</select>
 						</div>
 					</div>
@@ -290,6 +300,7 @@
 <script src="{% static '/assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js' %}" type="text/javascript"></script>
 <script src="{% static 'assets/lib/jquery.maskedinput/jquery.maskedinput.js' %}" type="text/javascript"></script>
+
 <script src="{% static '/assets/js/app-tables-datatables.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/js/jquery.validate.min.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/js/jquery.validate.msg.pt-br.js' %}" type="text/javascript"></script>

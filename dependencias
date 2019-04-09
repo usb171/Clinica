@@ -1,0 +1,15 @@
+pip install whitenoise
+pip install django-celery
+pip install django-celery-email
+
+
+
+Para configurar servidor de email
+
+sudo apt-get install rabbitmq-server
+
+Execute o celery
+
+celery --app=clinica worker --loglevel=INFO
+
+

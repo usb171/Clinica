@@ -1,0 +1,506 @@
+{% extends 'core/dashboard.html' %}
+{% load static %}
+
+{% block extracss %}
+<link rel="stylesheet" type="text/css" href="{% static '/assets/lib/datatables/datatables.net-bs4/css/dataTables.bootstrap4.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static '/assets/lib/datatables/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static '/assets/lib/summernote/summernote-bs4.css' %}"/>
+
+<style>
+ hr.style-one {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+
+
+
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="be-content">
+
+	<div class="row" id="id_div_button" hidden>
+		<div class="col-sm-6">
+			{% if perms.servico.add_servico%}
+			<button class="btn btn-space btn-primary col-sm-12" data-toggle="modal" id="id_button_modal_novoServico" type="button">Novo Serviço</button>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="main-content container-fluid">
+		<div class="card card-border-color card-border-color-primary">
+			<div class="card-header card-header-divider">Novo Serviço<span class="card-subtitle">Adicione um novo serviço</span></div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card card-table">
+							<div class="card-body">
+								<table class="table table-striped table-hover table-fw-widget" id="id_table_novoServico">
+									<thead>
+									<tr>
+										<th style="width:5%;" class="center">Código</th>
+										<th style="width:50%;" class="center">Nome</th>
+										<th style="width:10%;" class="center">tempo</th>
+										<th style="width:10%;" class="center">Prazo Retorno</th>
+										<th style="width:10%;" class="center">Prazo Validade</th>
+										<th style="width:10%;" class="center">Ativo ?</th>
+										<th style="width:5%;" class="center">Ação</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for servico in servicos %}
+									<tr class="odd gradeX center">
+										<td class="center">{{ servico.pk }}</td>
+										<td class="center">{{ servico.nome }}</td>
+										<td class="center">{{ servico.tempo }}</td>
+										<td class="center">{{ servico.prazoRetorno }}</td>
+										<td class="center">{{ servico.prazoValidade }}</td>
+										<td class="center">{{ servico.ativo }}</td>
+										<td class="row">
+											{% if perms.servico.change_servico %}
+											<button class="btn btn-space btn-primary" value="{{ servico.pk }}" type="button">Editar Serviço</button>
+											{% else %}
+											<button class="btn btn-space btn-primary" value="{{ servico.pk }}" type="button">Visualizar Serviço</button>
+											{% endif %}
+										</td>
+									</tr>
+									{% empty %}
+									<tr>
+										<td colspan="4"><h2>Você ainda não cadastrou nenhum serviço</h2></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--Modal Serviço-->
+<div class="modal fade colored-header colored-header-primary" id="id_modal_form_servico" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog full-width">
+		<div class="modal-content">
+			<div class="modal-header modal-header-colored">
+				{% if not perms.servico.change_servico %}
+				<h3 class="modal-title">Visualizar Serviço</h3>
+				{% else %}
+				<h3 class="modal-title" id="id_title">Novo Serviço</h3>
+				{% endif %}
+				<button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card card-table">
+							<div class="card-body">
+								<div class="col-12 col-lg-12">
+									<div class="card card-border-color card-border-color-default shadow bg-white">
+										<div class="tab-container">
+											<ul class="nav nav-tabs" role="tablist">
+												<li class="nav-item"><a class="nav-link active show" href="#tablist1" data-toggle="tab" role="tab"
+																		aria-selected="true"><span class="icon mdi mdi-info"></span>Informações Gerais dos
+													Serviços</a></li>
+												<li class="nav-item"><a class="nav-link" href="#tablist2" data-toggle="tab" role="tab"
+																		aria-selected="false"><span class="icon mdi mdi-money"></span>Distribuição
+													financeira</a></li>
+												<li class="nav-item"><a class="nav-link" href="#tablist3" data-toggle="tab" role="tab"
+																		aria-selected="false"><span class="icon mdi mdi-file"></span>Documentos</a></li>
+											</ul>
+											<form method="POST" id="id_form_novo_servico">
+												{% csrf_token %}
+												<div class="tab-content">
+													<div class="tab-pane active show" id="tablist1" role="tabpanel">
+														<div class="card">
+															<div class="card-body">
+																<div class="form-group row">
+																	<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
+																		<h2>Informações Gerais dos Serviços</h2>
+																	</div>
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0" style="padding-top: 2px;">
+																		<label for="id_selectAtivarServico">Ativar Serviço ?</label>
+																		<select id="id_selectAtivarServico" name="ativo" class="form-control">
+																			<option value="ON" selected="">ON</option>
+																			<option value="OFF">OFF</option>
+																		</select>
+																	</div>
+																</div>
+																<div class="form-group row pt-0">
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
+																		<label for="id_nome">Nome do Serviço </label>
+																		<input class="form-control" type="text" id="id_nome" name="nome"
+																			   data-mask="date" required>
+																	</div>
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
+																		<label for="id_preco">Preço </label>
+																		<input class="form-control" type="text" id="id_preco" name="preco"
+																			   data-mask="date" required>
+																	</div>
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
+																		<label for="id_tempo">Tempo do Serviço (Minutos) </label>
+																		<input class="form-control" type="text" id="id_tempo" name="tempo"
+																			   data-mask="date" required>
+																	</div>
+																</div>
+																<div class="form-group row pt-0">
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
+																		<label for="id_prazoRetorno">Prazo de Retorno (Dias)</label>
+																		<input class="form-control" type="text" id="id_prazoRetorno" name="prazoRetorno"
+																			   data-mask="date" required>
+																	</div>
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
+																		<label for="id_nome">Prazo de Validade (Dias)</label>
+																		<input class="form-control" type="text" id="id_prazoValidade" name="prazoValidade"
+																			   data-mask="date" required>
+																	</div>
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
+																		<label for="id_servicos">Serviços </label>
+																		<input class="form-control" type="text" id="id_servicos" name="servicos"
+																			   data-mask="date">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="tab-pane" id="tablist2" role="tabpanel">
+														<div class="card">
+															<div class="card-body">
+																<div class="form-group row">
+																	<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
+																		<h2>Distribuição financeira</h2>
+																	</div>
+																</div>
+
+																<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																	<div class="card-header"><a>Regra 1</a></div>
+																	<div class="card-body ">
+																		<div class="form-group row pt-2">
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_valor1">Valor </label>
+																				<input class="form-control" type="text" id="id_valor1" name="valor1">
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_porcentagem1">Porcentagem </label>
+																				<input class="form-control" type="text" id="id_porcentagem1"
+																					   name="porcentagem1">
+																			</div>
+
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
+																				<label for="id_quemRealiza1">Quem realiza ?</label>
+																				<select id="id_quemRealiza1" name="quemRealiza1" class="form-control">
+																					<option></option>
+
+																					{% for usuario in usuarios %}
+																					{% if usuario.status != "OFF" %}
+																					<option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}}
+																					</option>
+																					{% endif %}
+																					{% endfor %}
+																				</select>
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_especificar1">Especificar </label>
+																				<input class="form-control" type="text" id="id_especificar1"
+																					   name="especificar1">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																	<div class="card-header"><a>Regra 2</a></div>
+																	<div class="card-body">
+																		<div class="form-group row pt-2">
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_valor2">Valor </label>
+																				<input class="form-control" type="text" id="id_valor2" name="valor2">
+
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_porcentagem2">Porcentagem </label>
+																				<input class="form-control" type="text" id="id_porcentagem2"
+																					   name="porcentagem2">
+
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
+																				<label for="id_quemRealiza2">Quem realiza ?</label>
+																				<select id="id_quemRealiza2" name="quemRealiza2" class="form-control">
+																					<option></option>
+
+																					{% for usuario in usuarios %}
+																					{% if usuario.status != "OFF" %}
+																					<option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}}
+																					</option>
+																					{% endif %}
+																					{% endfor %}
+																				</select>
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_especificar2">Especificar </label>
+																				<input class="form-control" type="text" id="id_especificar2"
+																					   name="especificar2">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																	<div class="card-header"><a>Regra 3</a></div>
+																	<div class="card-body ">
+																		<div class="form-group row pt-2">
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_valor3">Valor </label>
+																				<input class="form-control" type="text" id="id_valor3" name="valor3">
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_porcentagem3">Porcentagem </label>
+																				<input class="form-control" type="text" id="id_porcentagem3"
+																					   name="porcentagem3">
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
+																				<label for="id_quemRealiza3">Quem realiza ?</label>
+																				<select id="id_quemRealiza3" name="quemRealiza3" class="form-control">
+																					<option></option>
+																					{% for usuario in usuarios %}
+																					{% if usuario.status != "OFF" %}
+																					<option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}}
+																					</option>
+																					{% endif %}
+																					{% endfor %}
+																				</select>
+																			</div>
+																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
+																				<label for="id_especificar3">Especificar </label>
+																				<input class="form-control" type="text" id="id_especificar3"
+																					   name="especificar3">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+															</div>
+														</div>
+													</div>
+													<div class="tab-pane" id="tablist3" role="tabpanel">
+														<div class="card">
+															<div class="card-body">
+																<div class="form-group row">
+																	<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
+																		<h2>
+																			<button class="btn-primary"
+																					type="button" onclick="RepeaterCardDocumento().maisUm()">Mais Um Documento
+																			</button>
+																		</h2>
+																	</div>
+																</div>
+																<div class="row" id="id_grupo_card_documento">
+																	<div class="col-lg-6 pt-0" id="id_card_documento_1">
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Documento 1</a></div>
+																			<div class="card-body ">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_nomeDocumento_1">Nome do Documento</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_nomeDocumento_1"
+																								   name="nomeDocumento_1" type="text">
+																							<input class="form-control" id="id_codeDocumento_1"
+																								   name="codeDocumento_1" type="text" hidden>
+																							<div class="input-group-append">
+																								<button class="btn btn-primary" type="button"
+																										data-toggle="modal" id="id_button_documento_1"
+																										data-target="#id_modal_documento" data-id="1">Abrir
+																									Documento
+																								</button>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-lg-6 pt-0" id="id_card_documento_2">
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Documento 2</a>
+																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('2')"><span
+																						class="icon mdi mdi-close"></span></div>
+																			</div>
+																			<div class="card-body">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_nomeDocumento_2">Nome do Documento</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_nomeDocumento_2"
+																								   name="nomeDocumento_2" type="text">
+																							<input class="form-control" id="id_codeDocumento_2"
+																								   name="codeDocumento_2" type="text" hidden>
+																							<div class="input-group-append">
+																								<button class="btn btn-primary" type="button"
+																										data-toggle="modal" id="id_button_documento_2"
+																										data-target="#id_modal_documento" data-id="2">Abrir
+																									Documento
+																								</button>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-lg-6 pt-0" id="id_card_documento_3" hidden>
+																		<!--style="filter: blur(2px);"-->
+																		<!--onmouseover="$(this).css({'filter': 'blur(0px)'})"-->
+																		<!--onmouseout="$(this).css({'filter': 'blur(1px)'})">-->
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Documento 3</a>
+																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('3')"><span
+																						class="icon mdi mdi-close"></span></div>
+																			</div>
+																			<div class="card-body">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_nomeDocumento_3">Nome do Documento</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_nomeDocumento_3"
+																								   name="nomeDocumento_3" type="text">
+																							<input class="form-control" id="id_codeDocumento_3"
+																								   name="codeDocumento_3" type="text" hidden>
+																							<div class="input-group-append">
+																								<button class="btn btn-primary" type="button"
+																										data-toggle="modal" id="id_button_documento_3"
+																										data-target="#id_modal_documento" data-id="3">Abrir
+																									Documento
+																								</button>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-lg-6 pt-0" id="id_card_documento_4" hidden>
+																		<!--style="filter: blur(2px);"-->
+																		<!--onmouseover="$(this).css({'filter': 'blur(0px)'})"-->
+																		<!--onmouseout="$(this).css({'filter': 'blur(1px)'})">-->
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Documento 4</a>
+																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('4')"><span
+																						class="icon mdi mdi-close"></span></div>
+																			</div>
+																			<div class="card-body">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_nomeDocumento_4">Nome do Documento</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_nomeDocumento_4"
+																								   name="nomeDocumento_4" type="text">
+																							<input class="form-control" id="id_codeDocumento_4"
+																								   name="codeDocumento_4" type="text" hidden>
+																							<div class="input-group-append">
+																								<button class="btn btn-primary" type="button"
+																										data-toggle="modal" id="id_button_documento_4"
+																										data-target="#id_modal_documento" data-id="4">Abrir
+																									Documento
+																								</button>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="form-group row text-right">
+														<div class="col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">
+															<button class="btn btn-space btn-primary btn-big" type="submit" id="id_button_modal"><i
+																	class="icon mdi mdi-save"></i> Salvar Serviço
+															</button>
+														</div>
+													</div>
+												</div>
+
+												<!--Campo contendo o ID do Serviço a ser editado-->
+												<input id="id_servico" name="id_servico" value="-1" hidden>
+												<!--Campo contendo o ID do Serviço a ser editado-->
+
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade colored-header colored-header-primary" id="id_modal_documento" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog full-width">
+		<div class="modal-content">
+			<div class="modal-header modal-header-colored">
+				<h3 class="modal-title">Documento</h3>
+				<button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true"><span
+						class="mdi mdi-close"></span></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-body">
+								<textarea id="summernote" name="editordata"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">
+				<button class="btn btn-space btn-primary btn-big" type="button" id="id_button_salvar"><i class="icon mdi mdi-save"></i> Salvar Documento
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extrabottomjs %}
+<script src="{% static '/assets/lib/datatables/datatables.net/js/jquery.dataTables.js' %}" type="text/javascript"></script>
+<script src="{% static '/assets/lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js' %}" type="text/javascript"></script>
+<script src="{% static '/assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'assets/lib/jquery.maskedinput/jquery.maskedinput.js' %}" type="text/javascript"></script>
+<script src="{% static '/assets/js/maskmoney.js' %}" type="text/javascript"></script>
+
+
+<script src="{% static 'assets/lib/summernote/summernote-bs4.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'assets/lib/summernote/summernote-ext-beagle.js' %}" type="text/javascript"></script>
+
+<script src="{% static '/assets/js/app-tables-datatables.js' %}" type="text/javascript"></script>
+<script src="{% static '/assets/js/jquery.validate.min.js' %}" type="text/javascript"></script>
+<script src="{% static '/assets/js/jquery.validate.msg.pt-br.js' %}" type="text/javascript"></script>
+<script src="{% static '/assets/js/clinica/servico.js' %}" type="text/javascript"></script>
+
+<script>
+
+</script>
+
+{% endblock %}
+
+
