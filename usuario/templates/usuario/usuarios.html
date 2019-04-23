@@ -126,7 +126,7 @@
 						</div>
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_titulo">Título</label>
-							<select id="id_titulo" name="titulo" class="form-control" required>
+							<select id="id_titulo" name="titulo" class="form-control">
 								{% for titulo in titulos %}
 									{% if titulo.status != "OFF" %} <option value="{{titulo.titulo}}"> {{titulo.titulo}} </option> {% endif %}
 								{% endfor %}
@@ -141,12 +141,11 @@
 						</div>
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_celular">Celular</label>
-							<input class="form-control" type="text" id="id_celular" name="celular" placeholder="+ 55 (99) 99999-9999" required>
+							<input class="form-control" type="text" id="id_celular" name="celular" placeholder="+ 55 (99) 99999-9999">
 						</div>
 						<div class="col-sm-4 col-lg-4 mb-3 mb-sm-0">
 							<label for="id_enderecoCompleto">End. Completo</label>
-							<input class="form-control" type="text" id="id_enderecoCompleto" name="enderecoCompleto" placeholder="Rua 1 Casa 2 Bairro 3"
-								   required>
+							<input class="form-control" type="text" id="id_enderecoCompleto" name="enderecoCompleto" placeholder="Rua 1 Casa 2 Bairro 3">
 						</div>
 					</div>
 

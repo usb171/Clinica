@@ -8,13 +8,13 @@ class UsuarioForm(forms.Form):
     nomeCompleto = forms.CharField(required=True)
     email = forms.CharField(required=True)
     telefone = forms.CharField(required=False)
-    celular = forms.CharField(required=True)
-    enderecoCompleto = forms.CharField(required=True)
+    celular = forms.CharField(required=False)
+    enderecoCompleto = forms.CharField(required=False)
 
     # Selects
-    titulo = forms.CharField(required=True)
-    controleEstoque = forms.CharField(required=True)
-    controleProntuario = forms.CharField(required=True)
+    titulo = forms.CharField(required=False)
+    controleEstoque = forms.CharField(required=False)
+    controleProntuario = forms.CharField(required=False)
 
     # Flags
     ativo = forms.CharField(required=True)

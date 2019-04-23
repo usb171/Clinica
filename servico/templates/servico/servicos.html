@@ -45,8 +45,9 @@
 									<thead>
 									<tr>
 										<th style="width:5%;" class="center">Código</th>
-										<th style="width:50%;" class="center">Nome</th>
-										<th style="width:10%;" class="center">tempo</th>
+										<th style="width:40%;" class="center">Nome</th>
+										<th style="width:10%;" class="center">Preço</th>
+										<th style="width:10%;" class="center">Tempo</th>
 										<th style="width:10%;" class="center">Prazo Retorno</th>
 										<th style="width:10%;" class="center">Prazo Validade</th>
 										<th style="width:10%;" class="center">Ativo ?</th>
@@ -58,6 +59,7 @@
 									<tr class="odd gradeX center">
 										<td class="center">{{ servico.pk }}</td>
 										<td class="center">{{ servico.nome }}</td>
+										<td class="center">{{ servico.preco }}</td>
 										<td class="center">{{ servico.tempo }}</td>
 										<td class="center">{{ servico.prazoRetorno }}</td>
 										<td class="center">{{ servico.prazoValidade }}</td>
@@ -73,6 +75,7 @@
 									{% empty %}
 									<tr>
 										<td colspan="4"><h2>Você ainda não cadastrou nenhum serviço</h2></td>
+										<td></td>
 										<td></td>
 										<td></td>
 										<td></td>
@@ -132,15 +135,15 @@
 																	<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
 																		<h2>Informações Gerais dos Serviços</h2>
 																	</div>
-																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0" style="padding-top: 2px;">
+																</div>
+																<div class="form-group row pt-0">
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
 																		<label for="id_selectAtivarServico">Ativar Serviço ?</label>
 																		<select id="id_selectAtivarServico" name="ativo" class="form-control">
 																			<option value="ON" selected="">ON</option>
 																			<option value="OFF">OFF</option>
 																		</select>
 																	</div>
-																</div>
-																<div class="form-group row pt-0">
 																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
 																		<label for="id_nome">Nome do Serviço </label>
 																		<input class="form-control" type="text" id="id_nome" name="nome"
@@ -151,146 +154,278 @@
 																		<input class="form-control" type="text" id="id_preco" name="preco"
 																			   data-mask="date" required>
 																	</div>
-																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
-																		<label for="id_tempo">Tempo do Serviço (Minutos) </label>
-																		<input class="form-control" type="text" id="id_tempo" name="tempo"
-																			   data-mask="date" required>
-																	</div>
 																</div>
 																<div class="form-group row pt-0">
 																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
+																		<label for="id_tempo">Tempo do Serviço (Minutos) </label>
+																		<input class="form-control" type="text" id="id_tempo" name="tempo" value="0" required>
+																	</div>
+																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
 																		<label for="id_prazoRetorno">Prazo de Retorno (Dias)</label>
-																		<input class="form-control" type="text" id="id_prazoRetorno" name="prazoRetorno"
-																			   data-mask="date" required>
+																		<input class="form-control" id="id_prazoRetorno" name="prazoRetorno" value="0" required>
 																	</div>
 																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
-																		<label for="id_nome">Prazo de Validade (Dias)</label>
-																		<input class="form-control" type="text" id="id_prazoValidade" name="prazoValidade"
+																		<label for="id_nome">Prazo de Validade (Meses)</label>
+																		<input class="form-control" type="text" id="id_prazoValidade" value="0"
+																			   name="prazoValidade"
 																			   data-mask="date" required>
-																	</div>
-																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
-																		<label for="id_servicos">Serviços </label>
-																		<input class="form-control" type="text" id="id_servicos" name="servicos"
-																			   data-mask="date">
 																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
 													<div class="tab-pane" id="tablist2" role="tabpanel">
+
 														<div class="card">
 															<div class="card-body">
 																<div class="form-group row">
 																	<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
-																		<h2>Distribuição financeira</h2>
+																		<h2>
+																			<button class="btn-primary"
+																					type="button" onclick="RepeaterCardRegra().maisUm()">Adicionar Regra
+																			</button>
+																		</h2>
 																	</div>
 																</div>
-
-																<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
-																	<div class="card-header"><a>Regra 1</a></div>
-																	<div class="card-body ">
-																		<div class="form-group row pt-2">
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
-																				<label for="id_valor1">Valor </label>
-																				<input class="form-control" type="text" id="id_valor1" name="valor1">
+																<div class="row" id="id_grupo_card_regra">
+																	<div class="col-lg-12 pt-0" id="id_card_regra_1">
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Regra 1</a></div>
+																			<div class="card-body ">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-6 col-lg-6 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_rateio_1">Rateio</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_rateio_1" name="rateio_1" type="text" placeholder="Rateio em Reais">
+																							<input class="form-control" id="id_tipoRateio_1" name="tipoRateio_1" type="text" hidden>
+																							<div class="input-group-append be-addon">
+																								<button class="btn btn-primary" data-toggle="dropdown" type="button"> R$ </button>
+																								<div class="dropdown-menu" x-placement="bottom-start"
+																									 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(473px, 48px, 0px);">
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, 'R$')">R$ (Valor)</a>
+																									<div class="dropdown-divider"></div>
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, '%')">% (Porcentagem)</a>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+																						<label for="id_titulo_1">Quem Recebe ?</label>
+																						<select id="id_titulo_1" name="titulo_1" class="form-control">
+																							<option></option>
+																							{% for titulo in titulos %}
+																							{% if titulo.status != "OFF" %}
+																							<option value="{{titulo.titulo}}"> {{titulo.titulo}}
+																							</option>
+																							{% endif %}
+																							{% endfor %}
+																						</select>
+																					</div>
+																				</div>
 																			</div>
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
-																				<label for="id_porcentagem1">Porcentagem </label>
-																				<input class="form-control" type="text" id="id_porcentagem1"
-																					   name="porcentagem1">
+																		</div>
+																	</div>
+																	<div class="col-lg-12 pt-0" id="id_card_regra_2" hidden>
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Regra 2</a>
+																				<div class="tools" onclick="RepeaterCardRegra().desativarCard('2')"><span
+																						class="icon mdi mdi-close"></span></div>
 																			</div>
-
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
-																				<label for="id_quemRealiza1">Quem realiza ?</label>
-																				<select id="id_quemRealiza1" name="quemRealiza1" class="form-control">
-																					<option></option>
-
-																					{% for usuario in usuarios %}
-																					{% if usuario.status != "OFF" %}
-																					<option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}}
-																					</option>
-																					{% endif %}
-																					{% endfor %}
-																				</select>
+																			<div class="card-body ">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-6 col-lg-6 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_rateio_2">Rateio</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_rateio_2" name="rateio_2" type="text" placeholder="Rateio em Reais">
+																							<input class="form-control" id="id_tipoRateio_2" name="tipoRateio_2" type="text" hidden>
+																							<div class="input-group-append be-addon">
+																								<button class="btn btn-primary" data-toggle="dropdown" type="button"> R$ </button>
+																								<div class="dropdown-menu" x-placement="bottom-start"
+																									 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(473px, 48px, 0px);">
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, 'R$')">R$ (Valor)</a>
+																									<div class="dropdown-divider"></div>
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, '%')">% (Porcentagem)</a>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+																						<label for="id_titulo_2">Quem Recebe ?</label>
+																						<select id="id_titulo_2" name="titulo_2" class="form-control">
+																							<option></option>
+																							{% for titulo in titulos %}
+																							{% if titulo.status != "OFF" %}
+																							<option value="{{titulo.titulo}}"> {{titulo.titulo}}
+																							</option>
+																							{% endif %}
+																							{% endfor %}
+																						</select>
+																					</div>
+																				</div>
 																			</div>
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
-																				<label for="id_especificar1">Especificar </label>
-																				<input class="form-control" type="text" id="id_especificar1"
-																					   name="especificar1">
+																		</div>
+																	</div>
+																	<div class="col-lg-12 pt-0" id="id_card_regra_3" hidden>
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Regra 3</a>
+																				<div class="tools" onclick="RepeaterCardRegra().desativarCard('3')"><span
+																						class="icon mdi mdi-close"></span></div>
+																			</div>
+																			<div class="card-body ">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-6 col-lg-6 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_rateio_3">Rateio</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_rateio_3" name="rateio_3" type="text" placeholder="Rateio em Reais">
+																							<input class="form-control" id="id_tipoRateio_3" name="tipoRateio_3" type="text" hidden>
+																							<div class="input-group-append be-addon">
+																								<button class="btn btn-primary" data-toggle="dropdown" type="button"> R$ </button>
+																								<div class="dropdown-menu" x-placement="bottom-start"
+																									 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(473px, 48px, 0px);">
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, 'R$')">R$ (Valor)</a>
+																									<div class="dropdown-divider"></div>
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, '%')">% (Porcentagem)</a>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+																						<label for="id_titulo_3">Quem Recebe ?</label>
+																						<select id="id_titulo_3" name="titulo_3" class="form-control">
+																							<option></option>
+																							{% for titulo in titulos %}
+																							{% if titulo.status != "OFF" %}
+																							<option value="{{titulo.titulo}}"> {{titulo.titulo}}
+																							</option>
+																							{% endif %}
+																							{% endfor %}
+																						</select>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-lg-12 pt-0" id="id_card_regra_4" hidden>
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Regra 4</a>
+																				<div class="tools" onclick="RepeaterCardRegra().desativarCard('4')"><span
+																						class="icon mdi mdi-close"></span></div>
+																			</div>
+																			<div class="card-body ">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-6 col-lg-6 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_rateio_4">Rateio</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_rateio_4" name="rateio_4" type="text" placeholder="Rateio em Reais">
+																							<input class="form-control" id="id_tipoRateio_4" name="tipoRateio_4" type="text" hidden>
+																							<div class="input-group-append be-addon">
+																								<button class="btn btn-primary" data-toggle="dropdown" type="button"> R$ </button>
+																								<div class="dropdown-menu" x-placement="bottom-start"
+																									 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(473px, 48px, 0px);">
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, 'R$')">R$ (Valor)</a>
+																									<div class="dropdown-divider"></div>
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, '%')">% (Porcentagem)</a>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+																						<label for="id_titulo_4">Quem Recebe ?</label>
+																						<select id="id_titulo_4" name="titulo_4" class="form-control">
+																							<option></option>
+																							{% for titulo in titulos %}
+																							{% if titulo.status != "OFF" %}
+																							<option value="{{titulo.titulo}}"> {{titulo.titulo}}
+																							</option>
+																							{% endif %}
+																							{% endfor %}
+																						</select>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-lg-12 pt-0" id="id_card_regra_5" hidden>
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Regra 5</a>
+																				<div class="tools" onclick="RepeaterCardRegra().desativarCard('5')"><span
+																						class="icon mdi mdi-close"></span></div>
+																			</div>
+																			<div class="card-body ">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-6 col-lg-6 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_rateio_5">Rateio</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_rateio_5" name="rateio_5" type="text" placeholder="Rateio em Reais">
+																							<input class="form-control" id="id_tipoRateio_5" name="tipoRateio_5" type="text" hidden>
+																							<div class="input-group-append be-addon">
+																								<button class="btn btn-primary" data-toggle="dropdown" type="button"> R$ </button>
+																								<div class="dropdown-menu" x-placement="bottom-start"
+																									 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(473px, 48px, 0px);">
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, 'R$')">R$ (Valor)</a>
+																									<div class="dropdown-divider"></div>
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, '%')">% (Porcentagem)</a>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+																						<label for="id_titulo_5">Quem Recebe ?</label>
+																						<select id="id_titulo_5" name="titulo_5" class="form-control">
+																							<option></option>
+																							{% for titulo in titulos %}
+																							{% if titulo.status != "OFF" %}
+																							<option value="{{titulo.titulo}}"> {{titulo.titulo}}
+																							</option>
+																							{% endif %}
+																							{% endfor %}
+																						</select>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-lg-12 pt-0" id="id_card_regra_6" hidden>
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Regra 6</a>
+																				<div class="tools" onclick="RepeaterCardRegra().desativarCard('6')"><span
+																						class="icon mdi mdi-close"></span></div>
+																			</div>
+																			<div class="card-body ">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-6 col-lg-6 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_rateio_6">Rateio</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_rateio_6" name="rateio_6" type="text" placeholder="Rateio em Reais">
+																							<input class="form-control" id="id_tipoRateio_6" name="tipoRateio_6" type="text" hidden>
+																							<div class="input-group-append be-addon">
+																								<button class="btn btn-primary" data-toggle="dropdown" type="button"> R$ </button>
+																								<div class="dropdown-menu" x-placement="bottom-start"
+																									 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(473px, 48px, 0px);">
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, 'R$')">R$ (Valor)</a>
+																									<div class="dropdown-divider"></div>
+																									<a class="dropdown-item" onclick="RepeaterCardRegra().rateio(this, '%')">% (Porcentagem)</a>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0">
+																						<label for="id_titulo_6">Quem Recebe ?</label>
+																						<select id="id_titulo_6" name="titulo_6" class="form-control">
+																							<option></option>
+																							{% for titulo in titulos %}
+																							{% if titulo.status != "OFF" %}
+																							<option value="{{titulo.titulo}}"> {{titulo.titulo}}
+																							</option>
+																							{% endif %}
+																							{% endfor %}
+																						</select>
+																					</div>
+																				</div>
 																			</div>
 																		</div>
 																	</div>
 																</div>
-																<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
-																	<div class="card-header"><a>Regra 2</a></div>
-																	<div class="card-body">
-																		<div class="form-group row pt-2">
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
-																				<label for="id_valor2">Valor </label>
-																				<input class="form-control" type="text" id="id_valor2" name="valor2">
-
-																			</div>
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
-																				<label for="id_porcentagem2">Porcentagem </label>
-																				<input class="form-control" type="text" id="id_porcentagem2"
-																					   name="porcentagem2">
-
-																			</div>
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
-																				<label for="id_quemRealiza2">Quem realiza ?</label>
-																				<select id="id_quemRealiza2" name="quemRealiza2" class="form-control">
-																					<option></option>
-
-																					{% for usuario in usuarios %}
-																					{% if usuario.status != "OFF" %}
-																					<option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}}
-																					</option>
-																					{% endif %}
-																					{% endfor %}
-																				</select>
-																			</div>
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
-																				<label for="id_especificar2">Especificar </label>
-																				<input class="form-control" type="text" id="id_especificar2"
-																					   name="especificar2">
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
-																	<div class="card-header"><a>Regra 3</a></div>
-																	<div class="card-body ">
-																		<div class="form-group row pt-2">
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
-																				<label for="id_valor3">Valor </label>
-																				<input class="form-control" type="text" id="id_valor3" name="valor3">
-																			</div>
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
-																				<label for="id_porcentagem3">Porcentagem </label>
-																				<input class="form-control" type="text" id="id_porcentagem3"
-																					   name="porcentagem3">
-																			</div>
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0">
-																				<label for="id_quemRealiza3">Quem realiza ?</label>
-																				<select id="id_quemRealiza3" name="quemRealiza3" class="form-control">
-																					<option></option>
-																					{% for usuario in usuarios %}
-																					{% if usuario.status != "OFF" %}
-																					<option value="{{usuario.nomeCompleto}}"> {{usuario.nomeCompleto}}
-																					</option>
-																					{% endif %}
-																					{% endfor %}
-																				</select>
-																			</div>
-																			<div class="col-sm-3 col-lg-3 mb-3 mb-sm-0 pt-0">
-																				<label for="id_especificar3">Especificar </label>
-																				<input class="form-control" type="text" id="id_especificar3"
-																					   name="especificar3">
-																			</div>
-																		</div>
-																	</div>
-																</div>
-
 															</div>
 														</div>
 													</div>
@@ -301,7 +436,7 @@
 																	<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
 																		<h2>
 																			<button class="btn-primary"
-																					type="button" onclick="RepeaterCardDocumento().maisUm()">Mais Um Documento
+																					type="button" onclick="RepeaterCardDocumento().maisUm()">Adicionar Documento
 																			</button>
 																		</h2>
 																	</div>
@@ -332,7 +467,7 @@
 																			</div>
 																		</div>
 																	</div>
-																	<div class="col-lg-6 pt-0" id="id_card_documento_2">
+																	<div class="col-lg-6 pt-0" id="id_card_documento_2" hidden>
 																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
 																			<div class="card-header"><a>Documento 2</a>
 																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('2')"><span
@@ -361,9 +496,6 @@
 																		</div>
 																	</div>
 																	<div class="col-lg-6 pt-0" id="id_card_documento_3" hidden>
-																		<!--style="filter: blur(2px);"-->
-																		<!--onmouseover="$(this).css({'filter': 'blur(0px)'})"-->
-																		<!--onmouseout="$(this).css({'filter': 'blur(1px)'})">-->
 																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
 																			<div class="card-header"><a>Documento 3</a>
 																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('3')"><span
@@ -392,9 +524,6 @@
 																		</div>
 																	</div>
 																	<div class="col-lg-6 pt-0" id="id_card_documento_4" hidden>
-																		<!--style="filter: blur(2px);"-->
-																		<!--onmouseover="$(this).css({'filter': 'blur(0px)'})"-->
-																		<!--onmouseout="$(this).css({'filter': 'blur(1px)'})">-->
 																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
 																			<div class="card-header"><a>Documento 4</a>
 																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('4')"><span
@@ -413,6 +542,62 @@
 																								<button class="btn btn-primary" type="button"
 																										data-toggle="modal" id="id_button_documento_4"
 																										data-target="#id_modal_documento" data-id="4">Abrir
+																									Documento
+																								</button>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-lg-6 pt-0" id="id_card_documento_5" hidden>
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Documento 5</a>
+																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('5')"><span
+																						class="icon mdi mdi-close"></span></div>
+																			</div>
+																			<div class="card-body">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_nomeDocumento_4">Nome do Documento</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_nomeDocumento_5"
+																								   name="nomeDocumento_5" type="text">
+																							<input class="form-control" id="id_codeDocumento_5"
+																								   name="codeDocumento_5" type="text" hidden>
+																							<div class="input-group-append">
+																								<button class="btn btn-primary" type="button"
+																										data-toggle="modal" id="id_button_documento_5"
+																										data-target="#id_modal_documento" data-id="5">Abrir
+																									Documento
+																								</button>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-lg-6 pt-0" id="id_card_documento_6" hidden>
+																		<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">
+																			<div class="card-header"><a>Documento 6</a>
+																				<div class="tools" onclick="RepeaterCardDocumento().desativarCard('6')"><span
+																						class="icon mdi mdi-close"></span></div>
+																			</div>
+																			<div class="card-body">
+																				<div class="form-group row pt-2">
+																					<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">
+																						<label for="id_nomeDocumento_6">Nome do Documento</label>
+																						<div class="input-group mb-3">
+																							<input class="form-control" id="id_nomeDocumento_6"
+																								   name="nomeDocumento_6" type="text">
+																							<input class="form-control" id="id_codeDocumento_6"
+																								   name="codeDocumento_6" type="text" hidden>
+																							<div class="input-group-append">
+																								<button class="btn btn-primary" type="button"
+																										data-toggle="modal" id="id_button_documento_6"
+																										data-target="#id_modal_documento" data-id="6">Abrir
 																									Documento
 																								</button>
 																							</div>

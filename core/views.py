@@ -28,7 +28,7 @@ def login(request):
 
                     request.session['senhaPadraoAlterada'] = usuario.senhaPadraoAlterada
                     request.session['senhaPadrao'] = usuario.clinica.senhaPadrao
-                    request.session['logo'] = "/static/media/" + str(usuario.clinica.logo)
+                    request.session['logo'] = "/core/static/media/" + str(usuario.clinica.logo)
 
 
                     if usuario.senhaPadraoAlterada:

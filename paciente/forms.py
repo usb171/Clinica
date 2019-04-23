@@ -4,9 +4,7 @@ from django.contrib.auth.models import User
 
 class PacienteForm(forms.Form):
 
-    # fotoPerfil = forms.CharField(required=False)
-    # atualizacaoFotoPerfil = forms.CharField(widget=forms.Textarea, required=False)
-
+    #fotoPerfil = forms.CharField(required=False)
     ativo = forms.CharField(required=True)
     nomeCompleto = forms.CharField(required=True)
     cpf = forms.CharField(required=False)
@@ -32,11 +30,31 @@ class PacienteForm(forms.Form):
     estado = forms.CharField(required=False)
     complemento = forms.CharField(widget=forms.Textarea, required=False)
 
+    convenio1 = forms.CharField(required=False)
+    convenio2 = forms.CharField(required=False)
+    convenio3 = forms.CharField(required=False)
+    convenio4 = forms.CharField(required=False)
+    numeroCarteira1 = forms.CharField(required=False)
+    numeroCarteira2 = forms.CharField(required=False)
+    numeroCarteira3 = forms.CharField(required=False)
+    numeroCarteira4 = forms.CharField(required=False)
+    convenioValidade1 = forms.CharField(required=False)
+    convenioValidade2 = forms.CharField(required=False)
+    convenioValidade3 = forms.CharField(required=False)
+    convenioValidade4 = forms.CharField(required=False)
+
+    grau1 = forms.CharField(required=False)
+    grau2 = forms.CharField(required=False)
+    grau3 = forms.CharField(required=False)
+    grau4 = forms.CharField(required=False)
+    nomeFamiliar1 = forms.CharField(required=False)
+    nomeFamiliar2 = forms.CharField(required=False)
+    nomeFamiliar3 = forms.CharField(required=False)
+    nomeFamiliar4 = forms.CharField(required=False)
+
     grupoConvenio = forms.CharField(widget=forms.Textarea, required=False)
     grupoFamiliar = forms.CharField(widget=forms.Textarea, required=False)
 
-    #nomeFamiliar = forms.CharField(required=False)
-    #grauParentesco = forms.CharField(required=False)
 
 
     def is_valid_from_form(self):

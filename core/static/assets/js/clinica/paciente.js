@@ -56,6 +56,8 @@ $("#id_cpf").mask("000.000.000-00").keyup(function(event){
 validarData("#id_dataNascimento", "dataNascimento");
 validarData("#id_convenioValidade_1", "convenioValidade");
 validarData("#id_convenioValidade_2", "convenioValidade");
+validarData("#id_convenioValidade_3", "convenioValidade");
+validarData("#id_convenioValidade_4", "convenioValidade");
 
 function validarData(id, campo){
     $(id).mask("99/99/9999", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
@@ -192,6 +194,19 @@ $('#id_button_modal_novoPaciente').click(function(){
     $('#id_modal_form_paciente form[id="id_form_editar_paciente"]').prop('id', 'id_form_novo_paciente'); // volta para o id original do formulário
     $('#id_modal_form_paciente button[id="id_button_modal"]').html('<i class="icon mdi mdi-save"></i> Salvar Paciente'); // Volta para o nome original do button do formulário
 
+    for(i = 1; i <= 4; i++){
+        $("#id_convenio_"+i).val("").trigger('change');
+        $("#id_convenioCarteira_"+i).val("")
+        $("#id_convenioValidade_"+i).val("")
+        $("#id_nomeFamiliar_"+i).val("").trigger('change');
+        $("#id_grau_"+i).val("").trigger('change');
+        if(i != 1){
+            $("#id_card_convenio_"+i).attr('hidden','hidden');
+            $("#id_card_familiar_"+i).attr('hidden','hidden');
+        }
+    }
+
+
 });
 
 $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
@@ -201,6 +216,18 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
     $('#id_modal_form_paciente  h3[id="id_title"]').text('Editar Paciente'); // Troca o título do modal
     $('#id_modal_form_paciente  form[id="id_form_novo_paciente"]').prop('id', 'id_form_editar_paciente'); // Troca o id do formulário
     $('#id_modal_form_paciente  button[id="id_button_modal"]').html('<i class="icon mdi mdi-save"></i> Editar Paciente'); // Muda o nome do button do formulário
+
+     for(i = 1; i <= 4; i++){
+        $("#id_convenio_"+i).val("").trigger('change');
+        $("#id_convenioCarteira_"+i).val("")
+        $("#id_convenioValidade_"+i).val("")
+        $("#id_nomeFamiliar_"+i).val("").trigger('change');
+        $("#id_grau_"+i).val("").trigger('change');
+        if(i != 1){
+            $("#id_card_convenio_"+i).attr('hidden','hidden');
+            $("#id_card_familiar_"+i).attr('hidden','hidden');
+        }
+     }
 
     // Busca as informações do paciente apartir da tabela passando como parâmetro o valor do button (Id do usuário)
     $.ajax({
@@ -236,17 +263,49 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
             $('#id_modal_form_paciente form input[id="id_dataNascimento"]').val(data.dataNascimento);
             $('#id_modal_form_paciente form input[id="id_idade"]').val(data.idade);
 
-//            $('#id_modal_form_paciente form input[id="id_fotoPerfil"]').val(data.fotoPerfil);
-//            $('#id_modal_form_paciente form input[id="id_atualizacaoFotoPerfil"]').val(data.atualizacaoFotoPerfil);
-
-
             $("#id_nomeFamiliar").val(data.nomeFamiliar).trigger('change');
             $("#id_grauParentesco").val(data.grauParentesco).trigger('change');
 
             $('#id_modal_form_paciente form input[id="id_paciente"]').val(data.id_paciente);
 
-            path = data.image_path;
-            //imageObj.src = path.replace('core','');
+            $("#id_convenio_1").val(data.convenio1).trigger('change');
+            $("#id_convenio_2").val(data.convenio2).trigger('change');
+            $("#id_convenio_3").val(data.convenio3).trigger('change');
+            $("#id_convenio_4").val(data.convenio4).trigger('change');
+
+            $("#id_convenioCarteira_1").val(data.numeroCarteira1)
+            $("#id_convenioCarteira_2").val(data.numeroCarteira2)
+            $("#id_convenioCarteira_3").val(data.numeroCarteira3)
+            $("#id_convenioCarteira_4").val(data.numeroCarteira4)
+
+            $("#id_convenioValidade_1").val(data.convenioValidade1)
+            $("#id_convenioValidade_2").val(data.convenioValidade2)
+            $("#id_convenioValidade_3").val(data.convenioValidade3)
+            $("#id_convenioValidade_4").val(data.convenioValidade4)
+
+            $("#id_nomeFamiliar_1").val(data.nomeFamiliar1).trigger('change');
+            $("#id_nomeFamiliar_2").val(data.nomeFamiliar2).trigger('change');
+            $("#id_nomeFamiliar_3").val(data.nomeFamiliar3).trigger('change');
+            $("#id_nomeFamiliar_4").val(data.nomeFamiliar4).trigger('change');
+
+            $("#id_grau_1").val(data.grau1).trigger('change');
+            $("#id_grau_2").val(data.grau2).trigger('change');
+            $("#id_grau_3").val(data.grau3).trigger('change');
+            $("#id_grau_4").val(data.grau4).trigger('change');
+
+
+            for(i = 1; i <=4; i++){
+                if($("#id_convenio_"+i).val() != "" || $("#id_convenioCarteira_"+i).val() != ""){
+                    $("#id_card_convenio_"+i).removeAttr('hidden');
+                }
+            }
+
+            for(i = 1; i <=4; i++){
+                if($("#id_nomeFamiliar_"+i).val() != "" || $("#id_grau_"+i).val() != ""){
+                    $("#id_card_familiar_"+i).removeAttr('hidden');
+                }
+            }
+
 
             var RegExp = /["|']/g;
             convenioGrupos = JSON.parse(data.grupoConvenio);
@@ -491,7 +550,7 @@ function get_options_select_familiar(){ // Retorna os options do select familiar
 $('#id_form_novo_paciente').submit(function(e){
     $("#id_grupo_convenio").val(get_json_convenio());
     $("#id_grupo_familiar").val(get_json_familiar());
-    $("#id_imagem_paciente").val(canvas.toDataURL());
+//    $("#id_imagem_paciente").val(canvas.toDataURL());
     $("#id_profissao_input").val($("#id_profissao").select2("val"));
     $("#id_origem_input").val($("#id_origem").select2("val"));
     $("button").prop("disabled",true);
@@ -538,145 +597,77 @@ function controleDeCampo(){
 
 
 
-
-
-
-
-
-
+// Convênio ////////////////////////////////////////////
 var RepeaterCardConvenio = function(){
     return{
-        criarCard: function(obj){
-            var count = Number($(obj).attr('count')) + 1;
-            var $grupo = $("#id_grupo_card_convenio");
-            var $card = $.parseHTML(
-            '<div class="col-lg-6 pt-0" id="id_card_convenio_'+count+'" count="'+count+'" onclick="RepeaterCardConvenio().ativaCard(this)" style="filter: blur(2px);">' +
-                '<div class="card card-border-color card-border-color-default shadow p-2 mb-2 bg-white">' +
-                    '<div class="card-header"> Convênio ' + count + '<div class="tools"> <span class="icon mdi mdi-close"></span></div></div>' +
-                    '<div class="card-body">' +
-                        '<div class="form-group row pt-0">' +
-                            '<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">' +
-                                '<label for="id_convenio_'+count+'">Convênio </label>' +
-                                '<select id="id_convenio_'+count+'" name="convenio" class="form-control select2 select2-lg">' +
-                                    get_options_select_convenio() +
-                                '</select>' +
-                            '</div>' +
-                            '<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">' +
-                                '<label for="id_convenioCarteira_'+count+'">Número Carteira </label>' +
-                                '<input class="form-control" type="number" id="id_convenioCarteira_'+count+'" name="numeroCarteira">' +
-                            '</div>' +
-                            '<div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-2">' +
-                                '<label for="id_convenioValidade_'+count+'">Validade </label>' +
-                                '<input class="form-control" type="text" id="id_convenioValidade_'+count+'" name="convenioValidade">' +
-                            '</div>' +
-                            '<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-2">' +
-                                '<label for="id_nomeFoto_'+count+'">Path Imagem</label>' +
-                                '<div class="input-group mb-3">' +
-                                    '<input class="form-control" id="id_nomeFoto_'+count+'" type="text" readonly>' +
-                                    '<div class="input-group-append">' +
-                                        '<button class="btn btn-primary" type="button" data-toggle="modal" id="id_button_foto" data-id="'+count+'" data-target="#id_modal_camera">Abrir Câmera</button>'+
-                                    '</div>' +
-                               '</div>' +
-                            '</div>'+
-                        '</div>' +
-                    '</div>' +
-                '</div>' +
-            '</div>'
-            );
-
-            $($card).attr('onmouseover',"$(this).css({'filter': 'blur(0px)'})").attr('onmouseout',"$(this).css({'filter': 'blur(1px)'})");
-            $grupo.append($card);
-
-            $(".select2").select2({ width: '100%'}); // Init Select2
-            $(".tags").select2({tags: true, width: '100%'}); //Select2 tags
-            validarData("#id_convenioValidade_"+count, "convenioValidade");
-
-
+        desativarCard: function(id){
+             $("#id_card_convenio_"+id).attr('hidden','true');
+             $("#id_convenio_"+id).val("").change();
+             $("#id_convenioCarteira_"+id).val("");
+             $("#id_convenioValidade_"+id).val("");
         },
-        ativaCard: function(obj){
-            $(obj).attr('onmouseout','').attr('onclick','');
-            //countCard = $(obj).attr('count');
-            //$($(obj).find('span')[0]).attr('onclick', "$('#"+obj.id+"').attr('hidden','true')");
-            $($(obj).find('span')[0]).attr('onclick', "RepeaterCardConvenio().excluirCard("+ obj.id +")");
-            //else console.log($($(obj).find('span')[0]).attr('hidden','true'));
-            this.criarCard(obj);
-        },
-        excluirCard: function(obj){
-            countCard = $(obj).attr('count');
-            if(countCard >= 1) $(obj).remove();
-        },
-    }
-}
-
-RepeaterCardConvenio();
-
-
-class Camera {
-    constructor() {
-        this.video = document.getElementById('video');
-        this.canvas = document.getElementById('canvas');
-        this.context = canvas.getContext('2d');
-        this.errorMsgElement = document.querySelector('span#errorMsg');
-        this.imageObj = new Image();
-        this.stream = null;
-        this.constraints = {
-            audio: false,
-            video: { width: 2500, height: 2500 }
-        };
-        this.imageObj.onload = function() {
-            this.context.drawImage(this.imageObj, 5, 5, 250 + 50, 150);
-        };
-    }
-
-    async iniciar(){
-        try {
-            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.stream = await navigator.mediaDevices.getUserMedia(this.constraints);
-            window.stream = this.stream;
-            this.video.srcObject = this.stream;
-        } catch (e) {
-            this.errorMsgElement.innerHTML = 'navigator.getUserMedia error:${e.toString()}';
+        maisUm: function(){
+            for(i = 2; i <= 4; i++){
+                if($("#id_card_convenio_"+i).attr('hidden')){
+                    $("#id_card_convenio_"+i).removeAttr('hidden');
+                    $("#id_convenio_"+id).val("").change();
+                    $("#id_convenioCarteira_"+id).val("");
+                    $("#id_convenioValidade_"+id).val("");
+                    break;
+                }
+            }
         }
     }
+}
+// Convênio /////////////////////////////////////////////////////////////////////////
 
-    desativar(){
-        this.stream.getTracks()[0].stop();
-        this.context.restore();
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
 
-    capturar(idFoto, idAtualizacao){
-        this.context.restore();
-        this.context.drawImage(this.video, 5, 5, 240 + 50, 140);
-        $(""+idFoto+"").val(this.canvas.toDataURL());
-        $(""+idAtualizacao+"").val("04/08/1993 12:21:20"); // OBS setar a data hora
-        console.log(idFoto + " " + idAtualizacao);
-    }
-
-    carregarImagem(strDataURI) {
-        "use strict";
-        var img = new window.Image();
-        img.addEventListener("load", function () {
-            document.getElementById('canvas').getContext("2d").drawImage(img, 5, 5, 250 + 50, 150);
-        });
-        img.setAttribute("src", strDataURI);
+// Familiar ////////////////////////////////////////////
+var RepeaterCardFamiliar = function(){
+    return{
+        desativarCard: function(id){
+             $("#id_card_familiar_"+id).attr('hidden','true');
+             $("#id_nomeFamiliar_"+id).val("").change();
+             $("#id_grau_"+id).val("").change();
+        },
+        maisUm: function(){
+            for(i = 2; i <= 4; i++){
+                if($("#id_card_familiar_"+i).attr('hidden')){
+                    $("#id_card_familiar_"+i).removeAttr('hidden');
+                    $("#id_nomeFamiliar_"+id).val("").change();
+                    $("#id_grau_"+id).val("").change();
+                    break;
+                }
+            }
+        }
     }
 }
+// Familiar /////////////////////////////////////////////////////////////////////////
 
+
+// Câmera /////////////////////////////////////////////////////////////////////////////
 const camera = new Camera();
 
-$(document).on("click", "#id_button_foto", function () {
-     camera.iniciar();
-     var idFoto = "#" + $(this).data('foto');
-     var idAtualizacao = "#" + $(this).data('atualizacao');
-     $("#id_button_capturar").attr("onclick", "camera.capturar('"+idFoto+"','"+idAtualizacao+"')");
-     $("#id_button_deletar_foto").attr("onclick", "$('"+idFoto+"').val('')");
-     camera.carregarImagem($(idFoto).val());
+$("#id_button_foto").click(function() {
+  camera.iniciar();
+  $("#id_button_capturar").attr('data-id', $(this).data('id'))
 });
 
+$("#id_button_capturar").click(function() {
+  camera.capturar($(this).data('id'));
+  $("#id_div_video").attr('hidden','hidden')
+  $("#id_div_canvas").removeAttr('hidden')
+});
+
+$("#id_button_deletar_foto").click(function() {
+  alert("Deletando foto");
+});
 
 $('#id_modal_camera').on('hidden.bs.modal', function () {
     $('#id_modal_form_paciente').css({'padding':'0 !important', 'overflow-x':'hidden', 'overflow-y':'auto'});
+    $("#id_div_canvas").attr('hidden','hidden')
+    $("#id_div_video").removeAttr('hidden')
     camera.desativar();
 })
+// Câmera /////////////////////////////////////////////////////////////////////////////
 

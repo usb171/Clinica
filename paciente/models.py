@@ -53,34 +53,31 @@ class Paciente(models.Model):
     grupoFamiliar = models.TextField("Familiares", null=True, blank=True)
 
     # fotoPerfil = models.TextField("Foto Perfil", null=True, blank=True)
-    # atualizacaoFotoPerfil = models.CharField('Atualização Foto Perfil', max_length=240, null=True, blank=True)
 
+    convenio1 = models.CharField('Convênio 1', max_length=240, null=True, blank=True)
+    convenio2 = models.CharField('Convênio 2', max_length=240, null=True, blank=True)
+    convenio3 = models.CharField('Convênio 3', max_length=240, null=True, blank=True)
+    convenio4 = models.CharField('Convênio 4', max_length=240, null=True, blank=True)
 
-    # fotoConvenio1A = models.TextField("Foto Convênio 1A", null=True, blank=True)
-    # atualizacaoConvenio1A = models.CharField('Atualização Foto Convênio 1A', max_length=240, null=True, blank=True)
-    # fotoConvenio1B = models.TextField("Foto Convênio 1B", null=True, blank=True)
-    # atualizacaoConvenio1B = models.CharField('Atualização Foto Convênio 1B', max_length=240, null=True, blank=True)
-    #
-    # fotoConvenio2A = models.TextField("Foto Convênio 2A", null=True, blank=True)
-    # atualizacaoConvenio2A = models.CharField('Atualização Foto Convênio 2A', max_length=240, null=True, blank=True)
-    # fotoConvenio2B = models.TextField("Foto Convênio 2B", null=True, blank=True)
-    # atualizacaoConvenio2B = models.CharField('Atualização Foto Convênio 2B', max_length=240, null=True, blank=True)
-    #
-    # fotoConvenio3A = models.TextField("Foto Convênio 3A", null=True, blank=True)
-    # atualizacaoConvenio3A = models.CharField('Atualização Foto Convênio 3A', max_length=240, null=True, blank=True)
-    # fotoConvenio3B = models.TextField("Foto Convênio 3B", null=True, blank=True)
-    # atualizacaoConvenio3B = models.CharField('Atualização Foto Convênio 3B', max_length=240, null=True, blank=True)
-    #
-    # fotoConvenio4A = models.TextField("Foto Convênio 4A", null=True, blank=True)
-    # atualizacaoConvenio4A = models.CharField('Atualização Foto Convênio 4A', max_length=240, null=True, blank=True)
-    # fotoConvenio4B = models.TextField("Foto Convênio 4B", null=True, blank=True)
-    # atualizacaoConvenio4B = models.CharField('Atualização Foto Convênio 4B', max_length=240, null=True, blank=True)
+    numeroCarteira1 = models.CharField('Número Carteira 1', max_length=50, null=True, blank=True)
+    numeroCarteira2 = models.CharField('Número Carteira 2', max_length=50, null=True, blank=True)
+    numeroCarteira3 = models.CharField('Número Carteira 3', max_length=50, null=True, blank=True)
+    numeroCarteira4 = models.CharField('Número Carteira 4', max_length=50, null=True, blank=True)
 
+    convenioValidade1 = models.CharField('Validade do Convênio 1', max_length=20, null=True, blank=True)
+    convenioValidade2 = models.CharField('Validade do Convênio 2', max_length=20, null=True, blank=True)
+    convenioValidade3 = models.CharField('Validade do Convênio 3', max_length=20, null=True, blank=True)
+    convenioValidade4 = models.CharField('Validade do Convênio 4', max_length=20, null=True, blank=True)
 
+    nomeFamiliar1 = models.CharField('Nome do Familiar 4', max_length=120, null=True, blank=True)
+    nomeFamiliar2 = models.CharField('Nome do Familiar 4', max_length=120, null=True, blank=True)
+    nomeFamiliar3 = models.CharField('Nome do Familiar 4', max_length=120, null=True, blank=True)
+    nomeFamiliar4 = models.CharField('Nome do Familiar 4', max_length=120, null=True, blank=True)
 
-
-    # nomeFamiliar = models.CharField('Nome do Familiar', max_length=120, null=True, blank=True)
-    # grauParentesco = models.CharField('Grau de Parentesco', max_length=120, null=True, blank=True)
+    grau1 = models.CharField('Grau do Familiar 1', max_length=20, null=True, blank=True)
+    grau2 = models.CharField('Grau do Familiar 2', max_length=20, null=True, blank=True)
+    grau3 = models.CharField('Grau do Familiar 3', max_length=20, null=True, blank=True)
+    grau4 = models.CharField('Grau do Familiar 4', max_length=20, null=True, blank=True)
 
 
 
