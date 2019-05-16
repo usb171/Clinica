@@ -6,7 +6,7 @@ from .models import HistoricoAcesso, Titulo, Convenio, Origem, ControleCampo
 from django.utils.timezone import localtime
 from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
-import datetime,time
+import datetime, time
 import json
 
 def login(request):
@@ -32,7 +32,7 @@ def login(request):
 
 
                     if usuario.senhaPadraoAlterada:
-                        return redirect('dashboard')
+                        return redirect('agenda')
                     else:
                         return redirect('conta')
             except IndexError:
