@@ -36,12 +36,14 @@ var App = (function () {
     -----------------------------------------------------------------*/
 
     $('#calendar').fullCalendar({
+
       header: {
-        left: 'title',
-        center: '',
-        right: 'month,agendaWeek,agendaDay, today, prev,next',
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay',
       },
       defaultDate: '2016-06-12',
+      lang: 'pt-br',
       editable: true,
       eventLimit: true,
       droppable: true, // this allows things to be dropped onto the calendar
