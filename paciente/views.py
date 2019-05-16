@@ -100,8 +100,8 @@ def paciente(request):
             return render(request, 'paciente/pacientes.html', contexto)
         elif request.method == 'POST':
 
-            #for key in request.POST.keys():
-                #print(key, " ", request.POST[key])
+            '''for key in request.POST.keys():
+                print(key, " ", request.POST[key])'''
 
 
             form = PacienteForm(request.POST)

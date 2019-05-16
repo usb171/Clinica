@@ -139,8 +139,8 @@ def convenio(request):
             contexto = {'convenios': Convenio.objects.filter(clinica=clinica)}
             return render(request, 'convenio/convenio.html', contexto)
         elif request.method == 'POST':
-            for key in request.POST.keys():
-                print(key, " ", request.POST[key])
+            '''for key in request.POST.keys():
+                print(key, " ", request.POST[key])'''
             nome = request.POST['nome']
             status = request.POST['status']
             id_convenio = request.POST['id_convenio']
@@ -195,8 +195,8 @@ def origem(request):
             contexto = {'origens': Origem.objects.filter(clinica=clinica)}
             return render(request, 'origem/origem.html', contexto)
         elif request.method == 'POST':
-            for key in request.POST.keys():
-                print(key, " ", request.POST[key])
+            '''for key in request.POST.keys():
+                print(key, " ", request.POST[key])'''
             nome = request.POST['nome']
             status = request.POST['status']
             id_origem = request.POST['id_origem']
@@ -252,8 +252,8 @@ def controleCampo(request):
             contexto = {'controleCampo': controleCampo_obj[0]}
             return render(request, 'controleCampo/controleCampo.html', contexto)
         elif request.method == 'POST':
-            for key in request.POST.keys():
-                print(key, " ", request.POST[key])
+            '''for key in request.POST.keys():
+                print(key, " ", request.POST[key])'''
 
             paciente_cpf = request.POST['cpf']
             paciente_rua = request.POST['rua']
