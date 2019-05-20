@@ -43,14 +43,15 @@ $("#id_cep").mask("99999-999").keyup(function(event){
     $("#id_cep").removeClass("is-valid").addClass("is-invalid");}});
 $("#id_cpf").mask("000.000.000-00").keyup(function(event){
   var strCPF = $(this).val().replace(/\D+/g,'');/*console.log(strCPF)*/;var Soma;var Resto;Soma = 0;if (strCPF == "00000000000"){
-  $("#id_cpf").removeClass("is-valid").addClass("is-invalid");return;}
+  $("#id_cpf").removeClass("is-valid").addClass("is-invalid"); $(this)[0].setCustomValidity('CPF Inválido'); return;}
   for (i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);Resto = (Soma * 10) % 11;
   if ((Resto == 10) || (Resto == 11))  Resto = 0;if (Resto != parseInt(strCPF.substring(9, 10)) ){
-  $("#id_cpf").removeClass("is-valid").addClass("is-invalid");return;} Soma = 0;
+  $("#id_cpf").removeClass("is-valid").addClass("is-invalid"); $(this)[0].setCustomValidity('CPF Inválido');
+  if(!strCPF.length){$("#id_cpf").removeClass("is-invalid"); $(this)[0].setCustomValidity('');}  return;} Soma = 0;
   for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);Resto = (Soma * 10) % 11;
   if ((Resto == 10) || (Resto == 11))  Resto = 0;if (Resto != parseInt(strCPF.substring(10, 11) ) ){
-  $("#id_cpf").removeClass("is-valid").addClass("is-invalid");return;}
-  else{$("#id_cpf").removeClass("is-invalid").addClass("is-valid");}
+  $("#id_cpf").removeClass("is-valid").addClass("is-invalid"); $(this)[0].setCustomValidity('CPF Inválido'); return;}
+  else{$("#id_cpf").removeClass("is-invalid").addClass("is-valid"); $(this)[0].setCustomValidity('');}
 });
 
 validarData("#id_dataNascimento", "dataNascimento");
@@ -63,7 +64,7 @@ function validarData(id, campo){
     $(id).mask("99/99/9999", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
         var dia = data.split('/')[0], mes = data.split('/')[1], ano = data.split('/')[2]
         //console.log(data + " " + id);
-        $("#id_idade").val("...");
+        $("#id_idade").val("");
         if(data.length >= 2)
             if(dia > 31)
                 $(id).val('31/');
@@ -122,7 +123,8 @@ function validarData(id, campo){
                 }
             }
 
-        } else{
+        }
+        else if(data.length){
             $(id).removeClass("is-valid").addClass("is-invalid");
 //          $("#id_idade").removeClass("is-valid").addClass("is-invalid");
             $(id)[0].setCustomValidity("Data inválida");
