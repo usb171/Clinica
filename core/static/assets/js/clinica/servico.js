@@ -24,7 +24,7 @@ $("#id_prazoRetorno").keyup(function( event ) {
     if (this.value.length > 3) this.value = this.value.slice(0,3);
     this.value = this.value.replace(/[^0-9]/g, '');
     if(this.value[0] == '0') this.value = parseInt(this.value)
-    if(!this.value) this.value = '0'
+    if(!this.value) this.value = '0';
 });
 $("#id_prazoValidade").keyup(function( event ) {
     if (this.value.length > 3) this.value = this.value.slice(0,3);

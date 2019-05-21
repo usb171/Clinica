@@ -7,23 +7,17 @@
 					<ul class="sidebar-elements">
 						<li class="divider">Clínica</li>
 
-						<li id="id_list_menu_agenda" ><a href="{% url 'agenda' %}"><i class="icon mdi mdi-calendar-alt"></i><span>Agenda</span></a>
-
+						<li id="id_list_menu_agenda">
+							<a href="{% url 'agenda' %}"><i class="icon mdi mdi-calendar-alt"></i><span>Agenda</span></a>
 						</li>
-						<li class="parent" id="id_list_menu_paciente"><a href="#"><i class="icon mdi mdi-face"></i><span>Paciente</span></a>
-							<ul class="sub-menu">
-								<li id="id_item_meusPacientes"><a href="{% url 'meusPacientes' %}">Meus Pacientes</a></li>
-							</ul>
+						<li id="id_list_menu_paciente">
+							<a href="{% url 'meusPacientes' %}"><i class="icon mdi mdi-face"></i><span>Paciente</span></a>
 						</li>
-						<li class="parent" id="id_list_menu_usuario"><a href="#"><i class="icon mdi mdi-chart-donut"></i><span>Usuário</span></a>
-							<ul class="sub-menu">
-								<li id="id_item_meusUsuarios"><a href="{% url 'meusUsuarios' %}">Meus Usuários</a></li>
-							</ul>
+						<li id="id_list_menu_usuario">
+							<a href="{% url 'meusUsuarios' %}"><i class="icon mdi mdi-chart-donut"></i><span>Usuário</span></a>
 						</li>
-						<li class="parent" id="id_list_menu_servico"><a href="#"><i class="icon mdi mdi-book"></i><span>Serviço</span></a>
-							<ul class="sub-menu">
-								<li id="id_item_meusServicos"><a href="{% url 'meusServicos' %}">Meus Serviços</a></li>
-							</ul>
+						<li id="id_list_menu_servico"><a href="{% url 'meusServicos' %}">
+							<i class="icon mdi mdi-book"></i><span>Serviço</span></a>
 						</li>
 						<li class="parent" id="id_list_menu_configuracao"><a href="#"><i class="icon mdi mdi-settings"></i><span>Configurações</span></a>
 

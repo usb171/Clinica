@@ -47,9 +47,9 @@
 										<th style="width:5%;" class="center">Código</th>
 										<th style="width:40%;" class="center">Nome</th>
 										<th style="width:10%;" class="center">Preço</th>
-										<th style="width:10%;" class="center">Tempo</th>
-										<th style="width:10%;" class="center">Prazo Retorno</th>
-										<th style="width:10%;" class="center">Prazo Validade</th>
+										<th style="width:10%;" class="center">Tempo (Min)</th>
+										<th style="width:10%;" class="center">Prazo Retorno (Dias)</th>
+										<th style="width:10%;" class="center">Prazo Validade (Meses)</th>
 										<th style="width:10%;" class="center">Ativo ?</th>
 										<th style="width:5%;" class="center">Ação</th>
 									</tr>
@@ -60,9 +60,9 @@
 										<td class="center">{{ servico.pk }}</td>
 										<td class="center">{{ servico.nome }}</td>
 										<td class="center">{{ servico.preco }}</td>
-										<td class="center">{{ servico.tempo }}</td>
-										<td class="center">{{ servico.prazoRetorno }}</td>
-										<td class="center">{{ servico.prazoValidade }}</td>
+										<td class="center">{{ servico.tempo }} min</td>
+										<td class="center">{{ servico.prazoRetorno }} d</td>
+										<td class="center">{{ servico.prazoValidade }} m</td>
 										<td class="center">{{ servico.ativo }}</td>
 										<td class="row">
 											{% if perms.servico.change_servico %}
