@@ -14,6 +14,13 @@ $("#id_porcentagem1").mask("999 %");
 $("#id_porcentagem2").mask("999 %");
 $("#id_porcentagem3").mask("999 %");
 
+$("#id_quantSessao").keyup(function( event ) {
+    if (this.value.length > 3) this.value = this.value.slice(0,3);
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if(this.value[0] == '0') this.value = parseInt(this.value)
+    if(!this.value) this.value = '0'
+});
+
 $("#id_tempo").keyup(function( event ) {
     if (this.value.length > 3) this.value = this.value.slice(0,3);
     this.value = this.value.replace(/[^0-9]/g, '');
@@ -121,6 +128,7 @@ $('#id_table_novoServico tbody ').on('click', 'tr button', function () {
             $('#id_modal_form_servico form').trigger("reset");
             $("#id_selectAtivarServico").val(data.ativo).trigger('change');
             $('#id_modal_form_servico form input[id="id_nome"]').val(data.nome);
+            $('#id_modal_form_servico form input[id="id_quantSessao"]').val(data.quantSessao);
             $('#id_modal_form_servico form input[id="id_tempo"]').val(data.tempo);
             $('#id_modal_form_servico form input[id="id_preco"]').val(data.preco);
             $('#id_modal_form_servico form input[id="id_prazoRetorno"]').val(data.prazoRetorno);

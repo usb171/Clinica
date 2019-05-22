@@ -137,12 +137,17 @@
 																	</div>
 																</div>
 																<div class="form-group row pt-0">
-																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
+																	<div class="col-sm-2 col-lg-2 mb-2 mb-sm-0 pt-2">
 																		<label for="id_selectAtivarServico">Ativar Serviço ?</label>
 																		<select id="id_selectAtivarServico" name="ativo" class="form-control">
 																			<option value="ON" selected="">ON</option>
 																			<option value="OFF">OFF</option>
 																		</select>
+																	</div>
+																	<div class="col-sm-2 col-lg-2 mb-2 mb-sm-0 pt-2">
+																		<label for="id_quantSessao">Quantidade de Sessões </label>
+																		<input class="form-control" type="text" id="id_quantSessao" name="quantSessao"
+																			   data-mask="date" required>
 																	</div>
 																	<div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-2">
 																		<label for="id_nome">Nome do Serviço </label>
@@ -179,12 +184,10 @@
 														<div class="card">
 															<div class="card-body">
 																<div class="form-group row">
-																	<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
-																		<h2>
-																			<button class="btn-primary"
-																					type="button" onclick="RepeaterCardRegra().maisUm()">Adicionar Regra
-																			</button>
-																		</h2>
+																	<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0">
+																		<button class="btn btn-space btn-primary btn-big"
+																				type="button" onclick="RepeaterCardRegra().maisUm()">Adicionar Regra
+																		</button>
 																	</div>
 																</div>
 																<div class="row" id="id_grupo_card_regra">
@@ -433,9 +436,8 @@
 														<div class="card">
 															<div class="card-body">
 																<div class="form-group row">
-																	<div class="col-sm-8 col-lg-8 mb-8 mb-sm-0 pt-0">
-																		<h2>
-																			<button class="btn-primary"
+																	<div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0">
+																		<button class="btn btn-space btn-primary btn-big"
 																					type="button" onclick="RepeaterCardDocumento().maisUm()">Adicionar Documento
 																			</button>
 																		</h2>
