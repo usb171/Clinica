@@ -159,7 +159,6 @@ def paciente(request):
 
                 if not dict_dados['email']: del dict_dados['email'] # Não altere o parâmetro email caso ele sejá vazio
 
-
                 if Paciente.objects.filter(id=id_paciente).exists(): # Caso exista o ID passado, edite esse Paciente
                     paciente_obj = Paciente.objects.filter(id=id_paciente)
                     paciente_obj.update(**dict_dados)
@@ -170,6 +169,6 @@ def paciente(request):
 
                 return HttpResponse(json.dumps({'ok': True, 'msg': "Paciente Salvo com Sucesso!", 'erros': {}}), content_type="application/json")
             else:
-                return HttpResponse(json.dumps({'ok': False, 'msg': "Ocorreu um Erro ao Criar um Novo Usuário!", 'erros': {}}), content_type="application/json")
+                return HttpResponse(json.dumps({'ok': False, 'msg': "Ocorreu um erro ao criar um novo Paciente!", 'erros': {}}), content_type="application/json")
     else:
         return redirect('login')
