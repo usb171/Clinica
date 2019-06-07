@@ -10,8 +10,9 @@
 
 <link rel="stylesheet" type="text/css" href="{% static '/assets/lib/jquery.gritter/css/jquery.gritter.css' %}"/>
 
-<link rel="stylesheet" type="text/css"
-      href="{% static '/assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css' %}"/>
+<!--<link rel="stylesheet" type="text/css" href="{% static '/assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css' %}"/>-->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
 
 
 {% endblock %}
@@ -34,12 +35,12 @@
     </div>
 </div>
 
-<div class="modal fade colored-header colored-header-primary" id="id_modal_form_calendario" role="dialog"
-     data-backdrop="static" data-keyboard="false">
+<div class="custom-width modal fade colored-header colored-header-primary" id="id_modal_form_calendario" role="dialog"
+     data-backdrop="static" data-keyboard="false" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Agendamento</h3>
+                <h3 class="modal-title">Carregando...</h3>
                 <button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true">
                     <span class="mdi mdi-close"></span>
                 </button>
@@ -48,31 +49,53 @@
                 <form method="POST" id="id_form_novo_evento">
                     {% csrf_token %}
                     <div class="form-group row pt-0">
-                        <input id="id_data" name="data"  hidden>
+
                         <input id="id_agenda" name="id_agenda" value="-1" hidden>
-                        <div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-0">
-                            <label for="id_hora_inicio">Início</label>
-                            <input id="id_hora_inicio" name="hora_inicio"
-                                   class="form-control form-control-mb timepicker" type="text"
-                                   required style="background-color: #fdfdfd;" onkeydown="event.preventDefault()" required>
+
+                        <div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0 pb-0">
+                            <label for="id_data">Data</label>
+                            <input class="form-control" type="text" id="id_data" name="data" data-mask="date"
+                                   onblur="validarCampos()" autocomplete="off" maxlength="10" placeholder="__/__/____">
                         </div>
-                        <div class="col-sm-6 col-lg-6 mb-6 mb-sm-0 pt-0 pb-0">
+
+                        <div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0 pb-0">
+                            <label for="id_hora_inicio">Início</label>
+                            <input class="form-control form-control-mb" type="time" id="id_hora_inicio"
+                                   name="horaInicio" onblur="validarCampos()" min="8:00" max="18:00" required>
+                        </div>
+
+                        <div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0 pb-0">
                             <label for="id_hora_fim">Fim</label>
-                            <input id="id_hora_fim" name="hora_fim" class="form-control form-control-mb timepicker"
-                                   tyFpe="text" style="background-color: #fdfdfd;" onkeydown="event.preventDefault()" required>
+                            <input class="form-control form-control-mb" type="time" id="id_hora_fim" name="horaFim"
+                                   onblur="validarCampos();" min="8:00" max="18:00" required>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row pt-0">
+                        <div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-0">
+                            <label for="id_profissional">Profissional</label>
+                            <input id="id_profissional_id" name="id_profissional" value="-1" hidden>
+                            <select id="id_profissional" name="profissional" class="form-control select2 select2-lg"
+                                    required>
+<!--                                <option></option>-->
+                                {% for profissional in profissionais %}
+                                {% if profissional.status != "OFF" %}
+                                <option value="{{ profissional.nomeCompleto }}" data-id="{{ profissional.id }}">
+                                    {{ profissional.nomeCompleto }}
+                                </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
 
                     <div class="form-group row pt-0">
                         <div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-0">
                             <label for="id_paciente">Paciente</label>
+                            <input id="id_paciente_id" name="id_paciente" value="-1" hidden>
                             <select id="id_paciente" name="paciente" class="form-control select2 select2-lg" required>
-                                <option></option>
-                                {% for paciente in pacientes %}
-                                {% if paciente.status != "OFF" %}
-                                <option value="{{ paciente.nomeCompleto }}">{{ paciente.nomeCompleto }}</option>
-                                {% endif %}
-                                {% endfor %}
+
                             </select>
                         </div>
                     </div>
@@ -83,7 +106,8 @@
                             <select id="id_servico" class="form-control select2 select2-lg" multiple="" required>
                                 {% for servico in servicos %}
                                 {% if servico.ativo != "OFF" %}
-                                <option value="{{ servico.nome }}">{{ servico.nome }}</option>
+                                <option value="{{ servico.nome }}" data-id="{{ servico.id }}">{{ servico.nome }}
+                                </option>
                                 {% endif %}
                                 {% endfor %}
                             </select>
@@ -121,11 +145,9 @@
 
 <script src="{% static '/assets/js/jquery.mask.js' %}" type="text/javascript"></script>
 <script src="{% static '/assets/lib/select2/js/select2.js' %}" type="text/javascript"></script>
-
 <script src="{% static '/assets/lib/jquery.gritter/js/jquery.gritter.js' %}" type="text/javascript"></script>
-
-<script src="{% static '/assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"
-        type="text/javascript"></script>
+<!--<script src="{% static '/assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>-->
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
 
 <script src="{% static '/assets/js/clinica/agenda.js' %}" type="text/javascript"></script>

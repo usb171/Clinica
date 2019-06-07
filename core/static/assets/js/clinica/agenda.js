@@ -2,10 +2,59 @@
 $('#id_list_menu_agenda').addClass('active');
 // Seleciona o item de menu //////////////////
 
-
 var dataSelectFullcalendar;
 var calendar = null;
 
+function getDataCorrente(){
+    diaSistema = $("#id_dataHora a").text().split('/')[0].split(' ')[0];
+    mesSistema = $("#id_dataHora a").text().split('/')[1].split(' ')[0];
+    anoSistema = $("#id_dataHora a").text().split('/')[2].split(' ')[0];
+    dataCorrente = diaSistema + "/" + mesSistema + "/" + anoSistema;
+    return {'diaSistema':diaSistema, 'mesSistema':mesSistema, 'anoSistema':anoSistema, 'dataCorrente':dataCorrente}
+}
+
+$("#id_data").mask("99/99/9999", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
+    var dia = data.split('/')[0], mes = data.split('/')[1], ano = data.split('/')[2]
+
+    if(data.length >= 2)
+        if(dia > 31)
+            $("#id_data").val('31/');
+        else if(dia == 0)
+            $("#id_data").val('01/');
+    else
+        if(data.length >=5)
+            if(mes > 12)
+                $("#id_data").val(dia+'/12/');
+            else if(mes == 0)
+                $("#id_data").val(dia+'/01/');
+            else if(mes == 2 && dia > 28)
+                $("#id_data").val('28/02');
+
+    if(data.length == 10){
+
+        dataSistema = getDataCorrente()
+
+        diaSistema = dataSistema.diaSistema;
+        mesSistema = dataSistema.mesSistema;
+        anoSistema = dataSistema.anoSistema;
+
+        dataCorrente = dataSistema.dataCorrente;
+
+        if(ano == 0){
+            $("#id_data").val(dia+'/'+mes+'/'+anoSistema);
+            ano=anoSistema;
+        }
+
+        validarCampos();
+
+    }
+    else if(data.length){
+        $("#id_data").removeClass("is-valid").addClass("is-invalid");
+        $("#id_data")[0].setCustomValidity("Data inválida");
+    }
+
+
+}});
 
 // Converte a dataString en para pt-br
 function formatDate(data, formato) {
@@ -33,20 +82,28 @@ document.addEventListener('DOMContentLoaded', function() {
         weekNumbers: false,
         navLinks: true, // can click day/week names to navigate views
         businessHours: true, // display business hours
-        editable: true,
+        editable: false,
         selectable: true,
+        slotDuration: '00:05:00',
+        minTime: '08:00:00',
+        maxTime: '18:00:00',
+
         select: function(date, jsEvent, view) {
             $("#id_modal_form_calendario").modal('show');
             var date = formatDate(date.startStr, 'pt-br');
             dateSelectFullcalendar = date;
             $('.modal-title').text(date);
             $('.timepicker').val('');
-            $("#id_hora_inicio").removeClass("is-valid").removeClass("is-invalid");
-            $("#id_hora_fim").removeClass("is-valid").removeClass("is-invalid");
-            $("#id_hora_inicio")[0].setCustomValidity('');
-            $("#id_hora_fim")[0].setCustomValidity('');
             $("#id_paciente").val("").trigger('change');
             $("#id_servico").val("").trigger('change');
+            $("#id_profissional").val("").trigger('change');
+            $("#id_hora_inicio").val("")
+            $("#id_hora_fim").val("")
+            $('#id_data').val(date);
+            $("#id_agenda").val("-1");
+            $("#id_paciente_id").val("-1");
+            $("#id_profissional_id").val("-1");
+            validarCampos();
         },
 
         eventClick: function(info) {
@@ -57,113 +114,189 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: {'id_agenda': info.event.id},
                 dataType: 'json',
                 success: function (data) {
-                    dateStart = data.agenda.dateStart
-                    dateEnd = data.agenda.dateEnd
-                    $('.modal-title').text(formatDate(dateStart.split('T')[0], 'pt-br'));
-                    $("#id_hora_inicio").val(dateStart.split('T')[1])
-                    $("#id_hora_fim").val(dateEnd.split('T')[1])
-                    $("#id_paciente").val(data.agenda.paciente).trigger('change');
-                    $("#id_servico").val(data.agenda.servico.split(",")).trigger('change');
+                    agenda = data.agenda;
+                    $('.modal-title').text(formatDate(agenda.dataInicio.split('T')[0], 'pt-br'));
+                    $("#id_hora_inicio").val(agenda.horaInicio);
+                    $("#id_hora_fim").val(agenda.horaFim);
+                    $("#id_paciente").val(agenda.paciente).trigger('change');
+                    $("#id_profissional").val(agenda.profissional).trigger('change');
+                    $("#id_servico").val(agenda.servico.split(",")).trigger('change');
+                    $("#id_data").val(formatDate(agenda.dataInicio.split('T')[0], 'pt-br'))
                     $("#id_agenda").val(info.event.id);
+                    validarCampos();
                 }
             })
-
         },
-
         events: [],
-
     });
     calendar.render();
 });
 
-$(".timepicker").datetimepicker({
-    format: 'hh:ii',
-    minuteStep: 15,
-    weekStart: 1,
-    todayBtn:  false,
-    autoclose: true,
-    todayHighlight: true,
-    startView: 1,
-    minView: 0,
-    maxView: 1,
-    forceParse: 0,
-});
+function validarCampos(){
 
-$(".datetimepicker").find('thead th').remove();
-$(".datetimepicker").find('thead').append($('<th class="switch">').text('Hora'));
-$('.switch').css('width','190px');
+    $("#id_hora_inicio").removeClass("is-valid").removeClass("is-invalid");
+    $("#id_hora_fim").removeClass("is-valid").removeClass("is-invalid");
+    $("#id_data").removeClass("is-invalid").removeClass("is-invalid");
+    $("#id_hora_inicio")[0].setCustomValidity('');
+    $("#id_hora_fim")[0].setCustomValidity('');
+    $("#id_data")[0].setCustomValidity('');
 
-$("#id_hora_inicio").on("change", function (e) {
-    var inicial = $(this).val()
-    var final = $("#id_hora_fim").val()
 
-    if(final == "") return;
+    dataSistema = getDataCorrente()
 
-    if( inicial < final ){
-        $(this).removeClass("is-invalid").addClass("is-valid");
-        $("#id_hora_fim").removeClass("is-invalid").addClass("is-valid");
-        $(this)[0].setCustomValidity('');
-    }
-    else if( inicial == final ){
-        $(this).removeClass("is-valid").addClass("is-invalid");
-        $("#id_hora_inicio").removeClass("is-valid").addClass("is-invalid");
-        $(this)[0].setCustomValidity("A data final é igual a inicial");
-        $.gritter.add({
-            title: 'Agenda',
-            text: 'A data final é igual a inicial',
-            class_name: 'color danger'
-        });
+    // Valida a data
+    if(formatDate($("#id_data").val()) >= formatDate(dataSistema.dataCorrente)){
+        if(!$('#id_data').hasClass('is-valid')){
+            $.gritter.add({
+                title: 'Agenda - Data',
+                text: 'Data Válida',
+                class_name: 'color success'
+            });
+        }
+        $("#id_data").removeClass("is-invalid").addClass("is-valid");
+        $("#id_data")[0].setCustomValidity('');
+        $('.modal-title').text($("#id_data").val());
     }
     else{
-        console.log("erro")
-        $(this).removeClass("is-valid").addClass("is-invalid");
-        $("#id_hora_fim").removeClass("is-valid").addClass("is-invalid");
-        $(this)[0].setCustomValidity("A data inicial é maior que a final");
+        $("#id_data").removeClass("is-valid").addClass("is-invalid")
+        $("#id_data")[0].setCustomValidity("A data não pode ser menor do que a data corrente");
         $.gritter.add({
-            title: 'Agenda',
-            text: 'A data inicial é maior que a final',
+            title: 'Agenda - Data',
+            text: 'A data não pode ser menor do que a data corrente',
             class_name: 'color danger'
         });
+        return false;
     }
-});
-$("#id_hora_fim").on("change", function (e) {
-    var final = $(this).val()
+
+    // Validar horário
+    var final = $("#id_hora_fim").val()
     var inicial = $("#id_hora_inicio").val()
 
-    if(inicial == "") return;
-
-    if( inicial < final ){
-        $(this).removeClass("is-invalid").addClass("is-valid");
-        $("#id_hora_inicio").removeClass("is-invalid").addClass("is-valid");
-        $(this)[0].setCustomValidity('');
-    }
-    else if( inicial == final ){
-        $(this).removeClass("is-valid").addClass("is-invalid");
-        $("#id_hora_inicio").removeClass("is-valid").addClass("is-invalid");
-        $(this)[0].setCustomValidity("A data final é igual a inicial");
+    if( inicial < final && inicial.length){
+        $('#id_hora_inicio').addClass("is-valid");
+        $("#id_hora_fim").addClass("is-valid");
         $.gritter.add({
-            title: 'Agenda',
-            text: 'A data final é igual a inicial',
-            class_name: 'color danger'
+            title: 'Agenda - Horário',
+            text: 'Horário Válido',
+            class_name: 'color success'
         });
     }
     else{
-        $(this).removeClass("is-valid").addClass("is-invalid");
-        $("#id_hora_inicio").removeClass("is-valid").addClass("is-invalid");
-        $(this)[0].setCustomValidity("A data final é menor que a inicial");
-        $.gritter.add({
-            title: 'Agenda',
-            text: 'A data final é menor que a inicial',
-            class_name: 'color danger'
-        });
+        $('#id_hora_inicio').addClass("is-invalid");
+        $('#id_hora_fim').addClass("is-invalid");
+        if( inicial == final ){
+            $('#id_hora_inicio')[0].setCustomValidity("Os horários inicial e final são iguais");
+            $('#id_hora_fim')[0].setCustomValidity("Os horários inicial e final são iguais");
+            $.gritter.add({
+                title: 'Agenda - Horário',
+                text: 'Os horários inicial e final são iguais',
+                class_name: 'color danger'
+            });
+
+            return false;
+
+        }else if( final < inicial ){
+            $('#id_hora_fim')[0].setCustomValidity("O horário final é menor do que o inicial");
+            $.gritter.add({
+                title: 'Agenda - Horário',
+                text: 'O horário final é menor do que o inicial',
+                class_name: 'color danger'
+            });
+
+            return false;
+        }
+
     }
-});
+
+    return true;
+
+
+}
+
 //*********************************************** Field Hora ***********************************************************
+
+function atualizarHoraFinal(){
+    ids = [];
+    servicos = $('#id_servico').select2('data');
+    for( i = 0; i < servicos.length; i++) ids.push(servicos[i].element.dataset.id);
+
+    if(ids.length){
+        $.ajax({
+        url: "/servico/buscarInformacaoGeralServicoAjax",
+        data: {'ids': ids.toString()},
+        dataType: 'json',
+        success: function (data) {
+            var somaTempoServicos = 0;
+            var tempoString = '';
+
+            for(i = 0 ; i < data.servicos.length; i++){
+                servico = data.servicos[i];
+                somaTempoServicos += parseInt(servico.tempo);
+            }
+
+            var tempoInicial = $("#id_hora_inicio").val();
+            var tempoInicial_minutos =  parseInt(tempoInicial.split(':')[0]) * 60 + parseInt(tempoInicial.split(':')[1]);
+
+            var totalDeMinutos = tempoInicial_minutos + somaTempoServicos;
+
+            var hora = Math.floor(totalDeMinutos / 60);
+            var minuto = totalDeMinutos % 60;
+            if(hora.toString().length == 1) tempoString += '0' + hora + ':';
+            else tempoString += hora + ':';
+            if(minuto.toString().length == 1) tempoString += '0' + minuto;
+            else tempoString += minuto;
+            $('#id_hora_fim').val(tempoString);
+
+        }
+    });
+    }else{
+        $('#id_hora_fim').val('');
+    }
+}
 
 $('.select2').select2({
     width: '100%',
 });
 
+$('#id_paciente').select2({
+  width: '100%',
+  placeholder: 'NOME, TELEFONE ou CPF',
+  ajax: {
+    url: '/paciente/buscarDadosPaciente2Ajax',
+    dataType: 'json',
+    type: "GET",
+    data:function(params){
+        return {
+            q: params.term,
+        };
+    },
+    processResults:function(data){
+        return {
+            results: $.map(data.paciente, function (paciente) {
+                return {
+                    text: paciente.nomeCompleto,
+                    slug: paciente.telefone,
+                    id: paciente.id
+                }
+            })
+        };
+    }
+  }
+
+});
+
+$("#id_paciente").select2('data', {id: '1', text: 'oi'});
+
+
+$('#id_servico').on('select2:select', function (e) {
+    atualizarHoraFinal();
+    validarCampos();
+});
+
+$('#id_servico').on('select2:unselect', function (e) {
+    atualizarHoraFinal();
+    validarCampos();
+});
 
 //Carrega os eventos do calendário
 $.ajax({
@@ -175,9 +308,8 @@ $.ajax({
         calendar.addEvent({
             id: evento.id,
             title: evento.titulo,
-            start: evento.dateStart,
-            end : evento.dateEnd,
-            //color: 'green'
+            start: evento.dataInicio,
+            end : evento.dataFim,
             textColor:"White"
         })
       }
@@ -190,7 +322,10 @@ $('#id_form_novo_evento').submit(function(e){
     $("#id_button_modal").prop("disabled",true);
     $("#id_data").val( formatDate($('.modal-title').text()));
     $("#id_servico_input").val($("#id_servico").select2("val"));
+    $("#id_paciente_id").val($('#id_paciente').select2('data')[0].element.dataset.id);
+    $("#id_profissional_id").val($('#id_profissional').select2('data')[0].element.dataset.id);
 
+    validarCampos();
 
     e.preventDefault();
     $.post("/agenda/agenda", $(this).serialize(), function(data){

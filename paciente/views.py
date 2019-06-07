@@ -6,11 +6,8 @@ from paciente.models import Paciente
 from core.models import Convenio, Origem, ControleCampo
 from .forms import PacienteForm
 from django.shortcuts import redirect
-import base64
-import os.path
-
+from django.db.models import Q
 import json
-
 
 def buscarEmailAjax(request):
     if request.user.is_authenticated:
@@ -79,6 +76,20 @@ def buscarDadosPacienteAjax(request):
                 'nomeFamiliar4': paciente.nomeFamiliar4,
                }
         return JsonResponse(data)
+    else:
+        return redirect('login')
+
+def buscarDadosPaciente2Ajax(request):
+    if request.user.is_authenticated:
+        q = request.GET.get('q', None)
+        clinica = Usuario.objects.get(user=request.user).clinica
+        if q:
+            paciente = Paciente.objects.filter((Q(nomeCompleto__contains=q) | Q(telefone__contains=q)) & Q(clinica=clinica)).order_by('nomeCompleto')
+            return JsonResponse({'paciente': list(paciente.values('id', 'nomeCompleto', 'telefone'))})
+        else:
+            paciente = Paciente.objects.filter(clinica=clinica)[:1]
+            return JsonResponse({'paciente': list(paciente.values('id', 'nomeCompleto', 'telefone'))})
+
     else:
         return redirect('login')
 

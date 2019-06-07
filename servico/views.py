@@ -17,7 +17,7 @@ def servico(request):
             }
             return render(request, 'servico/servicos.html', contexto)
         elif request.method == 'POST':
-            dict_dados = {'clinica':clinica}
+            dict_dados = {'clinica': clinica}
             for key in request.POST.keys():
                 dict_dados[key] = request.POST[key]
             del dict_dados['csrfmiddlewaretoken']
@@ -37,10 +37,26 @@ def servico(request):
     else:
         return redirect('login')
 
+def buscarInformacaoGeralServicoAjax(request):
+    if request.user.is_authenticated:
+        try:
+            ids = request.GET.get('ids', None).split(',')
+            clinica = Usuario.objects.get(user=request.user).clinica
+            servicos = list(Servico.objects.filter(clinica=clinica, id__in=ids).values('id', 'ativo', 'nome', 'tempo'))
+        except:
+            return redirect('login')
+
+        json = {'servicos': servicos}
+
+        return JsonResponse(json)
+    else:
+        return redirect('login')
+
 def buscarDadosServicoAjax(request):
     if request.user.is_authenticated:
         try:
-            servico = Servico.objects.get(id=request.GET.get('id_servico', None))
+            clinica = Usuario.objects.get(user=request.user).clinica
+            servico = Servico.objects.get(clinica=clinica, id=request.GET.get('id_servico', None))
         except:
             return redirect('login')
         data = {

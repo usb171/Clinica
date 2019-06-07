@@ -4,8 +4,8 @@ $('#id_item_meusPacientes').addClass('active');
 // Seleciona o item de menu //////////////////
 
 // Mascaras //////////////////////////////////
-$("#id_telefone").mask("+ 55 (99) 9999-9999");
-$("#id_celular").mask("+ 55 (99) 99999-9999");
+$("#id_telefone").mask("(99) 9999-9999");
+$("#id_celular").mask("(99) 99999-9999");
 
 // Validar Email /////////////////////////////
 
