@@ -24,8 +24,9 @@ def buscarEmailAjax(request):
 def buscarDadosPacienteAjax(request):
     if request.user.is_authenticated:
         try:
-            paciente = Paciente.objects.get(id=request.GET.get('id_paciente', None))
+            id_paciente = request.GET.get('id_paciente', None)
             clinica = Usuario.objects.get(user=request.user).clinica
+            paciente = Paciente.objects.get(id=id_paciente, clinica=clinica)
         except:
             return redirect('login')
 
@@ -79,17 +80,25 @@ def buscarDadosPacienteAjax(request):
     else:
         return redirect('login')
 
+
 def buscarDadosPaciente2Ajax(request):
     if request.user.is_authenticated:
-        q = request.GET.get('q', None)
-        clinica = Usuario.objects.get(user=request.user).clinica
-        if q:
-            paciente = Paciente.objects.filter((Q(nomeCompleto__contains=q) | Q(telefone__contains=q)) & Q(clinica=clinica)).order_by('nomeCompleto')
-            return JsonResponse({'paciente': list(paciente.values('id', 'nomeCompleto', 'telefone'))})
-        else:
-            paciente = Paciente.objects.filter(clinica=clinica)[:1]
-            return JsonResponse({'paciente': list(paciente.values('id', 'nomeCompleto', 'telefone'))})
+        json = {'paciente': []}
+        try:
+            q = request.GET.get('q', None)
+            clinica = Usuario.objects.get(user=request.user).clinica
+            if q:
+                paciente = Paciente.objects.filter((Q(nomeCompleto__contains=q) | Q(telefone__contains=q)) & Q(clinica=clinica) & Q(ativo='ON')).order_by('nomeCompleto')
+                json['paciente'] = list(paciente.values('id', 'nomeCompleto', 'telefone'))
+                return JsonResponse(json)
+            else:
+                paciente = Paciente.objects.filter(clinica=clinica, ativo='ON').order_by('nomeCompleto')[:10]
+                json['paciente'] = list(paciente.values('id', 'nomeCompleto', 'telefone'))
+                return JsonResponse(json)
 
+        except Exception as e:
+            print(e)
+            return JsonResponse(json)
     else:
         return redirect('login')
 
@@ -165,7 +174,6 @@ def paciente(request):
                     'convenioValidade3': dados['convenioValidade3'],
                     'convenioValidade4': dados['convenioValidade4'],
                 }
-
                 id_paciente = request.POST['id_paciente']
 
                 if not dict_dados['email']: del dict_dados['email'] # Não altere o parâmetro email caso ele sejá vazio

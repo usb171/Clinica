@@ -23,8 +23,7 @@ class Paciente(models.Model):
     ativo = models.CharField('Paciente Ativo ?', max_length=4, choices=_FLAG_CHOICES, default="ON", null=True, blank=True)
 
     clinica = models.ForeignKey(Clinica, on_delete=models.SET_NULL, null=True, blank=True)
-
-    nomeCompleto = models.CharField('Nome Completo', max_length=120, null=True, blank=True)
+    nomeCompleto = models.CharField('Nome Completo', max_length=200, null=True, blank=True)
     cpf = models.CharField('CPF', max_length=20, null=True, blank=True)
     dataNascimento = models.CharField('Data Nascimento', max_length=20, null=True, blank=True)
     idade = models.CharField('Idade', max_length=3, null=True, blank=True)

@@ -65,8 +65,9 @@ function formatDate(data, formato) {
   }
 }
 
-//*********************************************** Field Hora ***********************************************************
+//*********************************************** Calendário ***********************************************************
 document.addEventListener('DOMContentLoaded', function() {
+
     var calendarEl = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarEl, {
         plugins: ['interaction', 'dayGrid', 'timeGrid', 'list' ],
@@ -118,7 +119,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     $('.modal-title').text(formatDate(agenda.dataInicio.split('T')[0], 'pt-br'));
                     $("#id_hora_inicio").val(agenda.horaInicio);
                     $("#id_hora_fim").val(agenda.horaFim);
-                    $("#id_paciente").val(agenda.paciente).trigger('change');
+
+                    var newOption = new Option(agenda.paciente, agenda.paciente_id, true, true);
+                    $("#id_paciente").append(newOption).trigger('change');
+
                     $("#id_profissional").val(agenda.profissional).trigger('change');
                     $("#id_servico").val(agenda.servico.split(",")).trigger('change');
                     $("#id_data").val(formatDate(agenda.dataInicio.split('T')[0], 'pt-br'))
@@ -129,8 +133,49 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         events: [],
     });
+
     calendar.render();
+
+
+
+
 });
+
+//Carrega os eventos do calendário
+var parent = $(".be-loading");
+if( parent.length ){
+    parent.addClass('be-loading-active');
+    $.ajax({
+        url: "/agenda/carregarAgendaAjax",
+        dataType: 'json',
+        success: function (data) {
+            for(i = 0 ; i < data.agenda.length; i++){
+                evento = data.agenda[i];
+                calendar.addEvent({
+                    id: evento.id,
+                    title: evento.titulo,
+                    start: evento.dataInicio,
+                    end : evento.dataFim,
+                    textColor:"White"
+                })
+            }
+
+            $.ajax({
+                url: "/core/getDataHoraAjax",
+                dataType: 'json',
+                success: function (data) {
+                    if(data.dataHora){
+                        setTimeout(function(){
+                            parent.removeClass('be-loading-active');
+                        }, 100);
+                    }
+                }
+            })
+        }
+    })
+}
+
+//*********************************************** Field Hora ***********************************************************
 
 function validarCampos(){
 
@@ -213,8 +258,6 @@ function validarCampos(){
 
 }
 
-//*********************************************** Field Hora ***********************************************************
-
 function atualizarHoraFinal(){
     ids = [];
     servicos = $('#id_servico').select2('data');
@@ -258,34 +301,50 @@ $('.select2').select2({
     width: '100%',
 });
 
-$('#id_paciente').select2({
-  width: '100%',
-  placeholder: 'NOME, TELEFONE ou CPF',
+$("#id_paciente").select2({
   ajax: {
-    url: '/paciente/buscarDadosPaciente2Ajax',
+    url: "/paciente/buscarDadosPaciente2Ajax",
     dataType: 'json',
-    type: "GET",
-    data:function(params){
-        return {
-            q: params.term,
-        };
+    delay: 100,
+    data: function (params) {
+      return {
+        q: params.term,
+      };
     },
     processResults:function(data){
         return {
             results: $.map(data.paciente, function (paciente) {
                 return {
+                    id: paciente.id,
                     text: paciente.nomeCompleto,
-                    slug: paciente.telefone,
-                    id: paciente.id
+                    telefone: paciente.telefone,
                 }
             })
         };
     }
-  }
-
+  },
+  width: '100%',
+  allowClear: true,
+  language: 'pt-BR',
+  placeholder: 'Busque um paciente',
+  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+  templateResult: formatSelect2PacienteResult,
+  templateSelection: formatSelect2PacienteSelection
 });
 
-$("#id_paciente").select2('data', {id: '1', text: 'oi'});
+function formatSelect2PacienteResult(paciente){
+    if (paciente.loading) {return paciente.text;}
+    return "<div>" +
+                "<div>" + paciente.text + " </div>" +
+                "<div>" + paciente.telefone + "</div>" +
+           "</div>";
+}
+
+function formatSelect2PacienteSelection(paciente){return paciente.text;}
+
+
+
+
 
 
 $('#id_servico').on('select2:select', function (e) {
@@ -298,23 +357,7 @@ $('#id_servico').on('select2:unselect', function (e) {
     validarCampos();
 });
 
-//Carrega os eventos do calendário
-$.ajax({
-    url: "/agenda/carregarAgendaAjax",
-    dataType: 'json',
-    success: function (data) {
-      for(i = 0 ; i < data.agenda.length; i++){
-        evento = data.agenda[i];
-        calendar.addEvent({
-            id: evento.id,
-            title: evento.titulo,
-            start: evento.dataInicio,
-            end : evento.dataFim,
-            textColor:"White"
-        })
-      }
-    }
-})
+
 
 // Formulários /////////////////////////////////////
 $('#id_form_novo_evento').submit(function(e){
@@ -322,13 +365,13 @@ $('#id_form_novo_evento').submit(function(e){
     $("#id_button_modal").prop("disabled",true);
     $("#id_data").val( formatDate($('.modal-title').text()));
     $("#id_servico_input").val($("#id_servico").select2("val"));
-    $("#id_paciente_id").val($('#id_paciente').select2('data')[0].element.dataset.id);
+    $("#id_paciente_id").val($('#id_paciente').select2('val'));
     $("#id_profissional_id").val($('#id_profissional').select2('data')[0].element.dataset.id);
 
     validarCampos();
 
     e.preventDefault();
-    $.post("/agenda/agenda", $(this).serialize(), function(data){
+    $.post("/agenda/", $(this).serialize(), function(data){
         if (data.ok){
             console.log("Novo Evento Salvo Com Sucesso!");
             $("#id_button_modal").prop("disabled",false);
@@ -340,3 +383,7 @@ $('#id_form_novo_evento').submit(function(e){
     }, 'json');
 });
 // Formulários ////////////////////////////////////
+
+
+
+

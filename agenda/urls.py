@@ -3,7 +3,7 @@ from .views import agenda, carregarAgendaAjax, buscarAgendaAjax
 
 
 urlpatterns = [
-    path('agenda', agenda, name='agenda'),
+    path('', agenda, name='agenda'),
     path('carregarAgendaAjax', carregarAgendaAjax, name='carregarAgendaAjax'),
     path('buscarAgendaAjax', buscarAgendaAjax, name='buscarAgendaAjax'),
 ]
