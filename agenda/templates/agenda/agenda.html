@@ -81,16 +81,7 @@
                         <div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-0">
                             <label for="id_profissional">Profissional</label>
                             <input id="id_profissional_id" name="id_profissional" value="-1" hidden>
-                            <select id="id_profissional" name="profissional" class="form-control select2 select2-lg"
-                                    required>
-<!--                                <option></option>-->
-                                {% for profissional in profissionais %}
-                                {% if profissional.status != "OFF" %}
-                                <option value="{{ profissional.nomeCompleto }}" data-id="{{ profissional.id }}">
-                                    {{ profissional.nomeCompleto }}
-                                </option>
-                                {% endif %}
-                                {% endfor %}
+                            <select id="id_profissional" name="profissional" class="form-control select2 select2-lg" required>
                             </select>
                         </div>
                     </div>
@@ -100,7 +91,6 @@
                             <label for="id_paciente">Paciente</label>
                             <input id="id_paciente_id" name="id_paciente" value="-1" hidden>
                             <select id="id_paciente" name="paciente" class="form-control select2 select2-lg" required>
-
                             </select>
                         </div>
                     </div>
@@ -109,12 +99,6 @@
                             <label for="id_servico">Serviço</label>
                             <input id="id_servico_input" name="servico" hidden>
                             <select id="id_servico" class="form-control select2 select2-lg" multiple="" required>
-                                {% for servico in servicos %}
-                                {% if servico.ativo != "OFF" %}
-                                <option value="{{ servico.nome }}" data-id="{{ servico.id }}">{{ servico.nome }}
-                                </option>
-                                {% endif %}
-                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -131,7 +115,6 @@
         </div>
     </div>
 </div>
-
 
 
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import usuario, conta, buscarEmailAjax, buscarDadosUsuarioAjax
+from .views import *
 
 
 urlpatterns = [
@@ -8,4 +8,5 @@ urlpatterns = [
     path('meusUsuarios', usuario, name='meusUsuarios'),
     path('buscarEmailAjax', buscarEmailAjax, name='buscarEmailAjax'),
     path('buscarDadosUsuarioAjax', buscarDadosUsuarioAjax, name='buscarDadosUsuarioAjax'),
+    path('buscarDadosUsuario2Ajax', buscarDadosUsuario2Ajax, name='buscarDadosUsuario2Ajax'),
 ]

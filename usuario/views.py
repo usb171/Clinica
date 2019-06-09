@@ -8,6 +8,7 @@ from core.models import Titulo
 from core.util import enviarAtivador
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.db.models import Q
 
 import json
 
@@ -68,6 +69,27 @@ def buscarDadosUsuarioAjax(request):
             'id_user_logado': Usuario.objects.get(user=request.user).id,
         }
         return JsonResponse(data)
+    else:
+        return redirect('login')
+
+def buscarDadosUsuario2Ajax(request):
+    if request.user.is_authenticated:
+        json = {'usuario': []}
+        try:
+            q = request.GET.get('q', None)
+            clinica = Usuario.objects.get(user=request.user).clinica
+            if q:
+                usuario = Usuario.objects.filter((Q(nomeCompleto__contains=q) | Q(email__contains=q)) & Q(clinica=clinica) & Q(ativo='ON')).order_by('nomeCompleto')
+                json['usuario'] = list(usuario.values('id', 'nomeCompleto', 'email'))
+                return JsonResponse(json)
+            else:
+                usuario = Usuario.objects.filter(clinica=clinica, ativo='ON').order_by('nomeCompleto')[:10]
+                json['usuario'] = list(usuario.values('id', 'nomeCompleto', 'email'))
+                return JsonResponse(json)
+
+        except Exception as e:
+            print(e)
+            return JsonResponse(json)
     else:
         return redirect('login')
 

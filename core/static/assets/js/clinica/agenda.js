@@ -109,25 +109,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
         eventClick: function(info) {
 
-            $("#id_modal_form_calendario").modal('show');
             $.ajax({
                 url: "/agenda/buscarAgendaAjax",
                 data: {'id_agenda': info.event.id},
                 dataType: 'json',
                 success: function (data) {
                     agenda = data.agenda;
+                    $("#id_modal_form_calendario").modal('show');
                     $('.modal-title').text(formatDate(agenda.dataInicio.split('T')[0], 'pt-br'));
                     $("#id_hora_inicio").val(agenda.horaInicio);
                     $("#id_hora_fim").val(agenda.horaFim);
 
-                    var newOption = new Option(agenda.paciente, agenda.paciente_id, true, true);
-                    $("#id_paciente").append(newOption).trigger('change');
+                    var pacienteOption = new Option(agenda.paciente, agenda.paciente_id, true, true);
+                    var profissionalOption = new Option(agenda.profissional, agenda.profissional_id, true, true);
 
-                    $("#id_profissional").val(agenda.profissional).trigger('change');
+                    for( i = 0; i < agenda.servicos.length; i++){
+                        var servicoOption = new Option(agenda.servicos[i].nome, agenda.servicos[i].id, true, true);
+                        $("#id_servico").append(servicoOption).trigger('change');
+                    }
+
+                    $("#id_paciente").append(pacienteOption).trigger('change');
+                    $("#id_profissional").append(profissionalOption).trigger('change');
+
                     $("#id_servico").val(agenda.servico.split(",")).trigger('change');
                     $("#id_data").val(formatDate(agenda.dataInicio.split('T')[0], 'pt-br'))
                     $("#id_agenda").val(info.event.id);
                     validarCampos();
+
                 }
             })
         },
@@ -261,7 +269,9 @@ function validarCampos(){
 function atualizarHoraFinal(){
     ids = [];
     servicos = $('#id_servico').select2('data');
-    for( i = 0; i < servicos.length; i++) ids.push(servicos[i].element.dataset.id);
+    for( i = 0; i < servicos.length; i++){
+        ids.push(servicos[i].id);
+    }
 
     if(ids.length){
         $.ajax({
@@ -297,8 +307,33 @@ function atualizarHoraFinal(){
     }
 }
 
-$('.select2').select2({
-    width: '100%',
+$("#id_profissional").select2({
+  ajax: {
+    url: "/usuario/buscarDadosUsuario2Ajax",
+    dataType: 'json',
+    delay: 100,
+    data: function (params) {
+      return {
+        q: params.term,
+      };
+    },
+    processResults:function(data){
+        return {
+            results: $.map(data.usuario, function (usuario) {
+                return {
+                    id: usuario.id,
+                    text: usuario.nomeCompleto,
+                    email: usuario.email,
+                }
+            })
+        };
+    }
+  },
+  width: '100%',
+  language: 'pt-BR',
+  escapeMarkup: function (markup) { return markup; },
+  templateResult: formatSelect2ProfissionalResult,
+  templateSelection: formatSelect2ProfissionalSelection
 });
 
 $("#id_paciente").select2({
@@ -324,13 +359,49 @@ $("#id_paciente").select2({
     }
   },
   width: '100%',
-  allowClear: true,
   language: 'pt-BR',
-  placeholder: 'Busque um paciente',
   escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
   templateResult: formatSelect2PacienteResult,
   templateSelection: formatSelect2PacienteSelection
 });
+
+$("#id_servico").select2({
+  ajax: {
+    url: "/servico/buscarDadosServico2Ajax",
+    dataType: 'json',
+    delay: 100,
+    data: function (params) {
+      return {
+        q: params.term,
+      };
+    },
+    processResults:function(data){
+        return {
+            results: $.map(data.servico, function (servico) {
+                return {
+                    id: servico.id,
+                    text: servico.nome,
+                    tempo: servico.tempo,
+                    preco: servico.preco
+                }
+            })
+        };
+    }
+  },
+  width: '100%',
+  language: 'pt-BR',
+  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+  templateResult: formatSelect2ServicoResult,
+  templateSelection: formatSelect2ServicoSelection
+});
+
+function formatSelect2ProfissionalResult(usuario){
+    if (usuario.loading) {return usuario.text;}
+    return "<div>" +
+                "<div>" + usuario.text + " </div>" +
+                "<div>" + usuario.email + "</div>" +
+           "</div>";
+}
 
 function formatSelect2PacienteResult(paciente){
     if (paciente.loading) {return paciente.text;}
@@ -340,10 +411,20 @@ function formatSelect2PacienteResult(paciente){
            "</div>";
 }
 
+function formatSelect2ServicoResult(servico){
+    if (servico.loading) {return servico.text;}
+    return "<div>" +
+                "<div>" + servico.text + " </div>" +
+                "<div>" + servico.tempo + " Minutos </div>" +
+                "<div>" + servico.preco + " </div>" +
+           "</div>";
+}
+
+function formatSelect2ProfissionalSelection(usuario){return usuario.text;}
+
 function formatSelect2PacienteSelection(paciente){return paciente.text;}
 
-
-
+function formatSelect2ServicoSelection(servico){return servico.text;}
 
 
 
@@ -366,7 +447,7 @@ $('#id_form_novo_evento').submit(function(e){
     $("#id_data").val( formatDate($('.modal-title').text()));
     $("#id_servico_input").val($("#id_servico").select2("val"));
     $("#id_paciente_id").val($('#id_paciente').select2('val'));
-    $("#id_profissional_id").val($('#id_profissional').select2('data')[0].element.dataset.id);
+    $("#id_profissional_id").val($('#id_profissional').select2('val'));
 
     validarCampos();
 

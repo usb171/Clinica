@@ -28,6 +28,7 @@ def agenda(request):
             dict_dados = {'clinica': clinica}
             for key in request.POST.keys():
                 dict_dados[key] = request.POST[key]
+                print(key, " ", dict_dados[key])
             del dict_dados['csrfmiddlewaretoken']
 
             id_agenda = dict_dados.pop('id_agenda')  # Remove e pega o id da agenda
@@ -65,35 +66,46 @@ def carregarAgendaAjax(request):
 def buscarAgendaAjax(request):
     if request.user.is_authenticated:
 
-        json = {'agenda': []}
+        id_agenda = request.GET.get('id_agenda', None)
+        clinica_obj = Usuario.objects.get(user=request.user)
+        agenda_obj = Agenda.objects.filter(clinica=clinica_obj.clinica, id=id_agenda)
+
+        agenda = list(agenda_obj.values('titulo', 'paciente', 'profissional', 'servico', 'horaInicio', 'horaFim', 'dataInicio', 'dataFim'))[0]
+
+        id_usuario = agenda['profissional']
+
+        json = {'agenda': agenda}
 
         try:
-            id_agenda = request.GET.get('id_agenda', None)
-            clinica_obj = Usuario.objects.get(user=request.user)
-            agenda_obj = Agenda.objects.filter(clinica=clinica_obj.clinica, id=id_agenda)
+            usuario_obj = Usuario.objects.get(clinica=clinica_obj.clinica, id=id_usuario, ativo="ON")
+            json['agenda']['profissional_id'] = usuario_obj.id
+            json['agenda']['profissional'] = usuario_obj.nomeCompleto
+        except:
+            json['agenda']['profissional_id'] = ''
+            json['agenda']['profissional'] = ''
 
-            agenda = list(agenda_obj.values('titulo', 'paciente', 'profissional', 'servico', 'horaInicio', 'horaFim', 'dataInicio', 'dataFim'))[0]
 
-            id_usuario = agenda['profissional']
-            usuario_obj = Usuario.objects.get(clinica=clinica_obj.clinica, id=id_usuario)
-
+        try:
             id_paciente = agenda['paciente']
             paciente_obj = Paciente.objects.get(clinica=clinica_obj.clinica, id=id_paciente, ativo="ON")
-
-            json = {'agenda': agenda}
             json['agenda']['paciente_id'] = paciente_obj.id
             json['agenda']['paciente'] = paciente_obj.nomeCompleto
             json['agenda']['paciente_telefone'] = paciente_obj.telefone
+        except:
+            json['agenda']['paciente_id'] = ''
+            json['agenda']['paciente'] = ''
+            json['agenda']['paciente_telefone'] = ''
+
+        try:
+            servicos = Servico.objects.filter(clinica=clinica_obj.clinica, id__in=agenda['servico'].split(','), ativo="ON")
+            json['agenda']['servicos'] = list(servicos.values('id', 'nome'))
+        except:
+            json['agenda']['servicos'] = []
 
 
-            json['agenda']['profissional_id'] = paciente_obj.id
-            json['agenda']['profissional'] = usuario_obj.nomeCompleto
 
 
-            return JsonResponse(json)
+        return JsonResponse(json)
 
-        except Exception as e:
-            print(e)
-            return JsonResponse(json)
     else:
         return redirect('login')

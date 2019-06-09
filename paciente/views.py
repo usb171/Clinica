@@ -80,7 +80,6 @@ def buscarDadosPacienteAjax(request):
     else:
         return redirect('login')
 
-
 def buscarDadosPaciente2Ajax(request):
     if request.user.is_authenticated:
         json = {'paciente': []}

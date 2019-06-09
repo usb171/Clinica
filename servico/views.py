@@ -102,3 +102,24 @@ def buscarDadosServicoAjax(request):
         return JsonResponse(data)
     else:
         return redirect('login')
+
+def buscarDadosServico2Ajax(request):
+    if request.user.is_authenticated:
+        json = {'servico': []}
+        try:
+            q = request.GET.get('q', None)
+            clinica = Usuario.objects.get(user=request.user).clinica
+            if q:
+                servico = Servico.objects.filter(nome__contains=q, ativo='ON', clinica=clinica).order_by('nome')
+                json['servico'] = list(servico.values('id', 'nome', 'tempo', 'preco'))
+                return JsonResponse(json)
+            else:
+                servico = Servico.objects.filter(ativo='ON', clinica=clinica).order_by('nome')[:10]
+                json['servico'] = list(servico.values('id', 'nome', 'tempo', 'preco'))
+                return JsonResponse(json)
+
+        except Exception as e:
+            print(e)
+            return JsonResponse(json)
+    else:
+        return redirect('login')

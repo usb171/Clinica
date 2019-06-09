@@ -79,7 +79,8 @@ class Paciente(models.Model):
     grau4 = models.CharField('Grau do Familiar 4', max_length=20, null=True, blank=True)
 
 
-
+    def __str__(self):
+        return self.nomeCompleto
 
 
 
