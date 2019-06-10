@@ -466,5 +466,135 @@ $('#id_form_novo_evento').submit(function(e){
 // Formulários ////////////////////////////////////
 
 
+$("#id_telefone").mask("(99) 9999-9999");
+$("#id_celular").mask("(99) 99999-9999");
+$("#id_nomeCompleto").keyup(function(event){$("#id_nomeCompleto").val(($('#id_nomeCompleto').val()).toUpperCase());});
+
+$("#id_cpf").mask("000.000.000-00").keyup(function(event){
+  var strCPF = $(this).val().replace(/\D+/g,'');/*console.log(strCPF)*/;var Soma;var Resto;Soma = 0;if (strCPF == "00000000000"){
+  $("#id_cpf").removeClass("is-valid").addClass("is-invalid"); $(this)[0].setCustomValidity('CPF Inválido'); return;}
+  for (i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);Resto = (Soma * 10) % 11;
+  if ((Resto == 10) || (Resto == 11))  Resto = 0;if (Resto != parseInt(strCPF.substring(9, 10)) ){
+  $("#id_cpf").removeClass("is-valid").addClass("is-invalid"); $(this)[0].setCustomValidity('CPF Inválido');
+  if(!strCPF.length){$("#id_cpf").removeClass("is-invalid"); $(this)[0].setCustomValidity('');}  return;} Soma = 0;
+  for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);Resto = (Soma * 10) % 11;
+  if ((Resto == 10) || (Resto == 11))  Resto = 0;if (Resto != parseInt(strCPF.substring(10, 11) ) ){
+  $("#id_cpf").removeClass("is-valid").addClass("is-invalid"); $(this)[0].setCustomValidity('CPF Inválido'); return;}
+  else{$("#id_cpf").removeClass("is-invalid").addClass("is-valid"); $(this)[0].setCustomValidity('');}
+});
+function validarData(id, campo){
+    $(id).mask("99/99/9999", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
+        var dia = data.split('/')[0], mes = data.split('/')[1], ano = data.split('/')[2]
+        //console.log(data + " " + id);
+        $("#id_idade").val("");
+        if(data.length >= 2)
+            if(dia > 31)
+                $(id).val('31/');
+            else if(dia == 0)
+                $(id).val('01/');
+        else
+            if(data.length >=5)
+                if(mes > 12)
+                    $(id).val(dia+'/12/');
+                else if(mes == 0)
+                    $(id).val(dia+'/01/');
+                else if(mes == 2 && dia > 28)
+                    $(id).val('28/02');
+
+        if(data.length == 10){
+
+            diaSistema = $("#id_dataHora a").text().split('/')[0].split(' ')[0];
+            mesSistema = $("#id_dataHora a").text().split('/')[1].split(' ')[0];
+            anoSistema = $("#id_dataHora a").text().split('/')[2].split(' ')[0];
+
+            if(ano == 0){ $(id).val(dia+'/'+mes+'/'+anoSistema); ano=anoSistema;}
+
+            if(campo == "dataNascimento"){
+                if(ano >= 1930 && ano <= anoSistema){
+                    $(id).removeClass("is-invalid").addClass("is-valid");
+                    $("#id_idade").removeClass("is-invalid").addClass("is-valid");
+                    $(id)[0].setCustomValidity('');
+                    if(diaSistema >= dia && mesSistema >= mes)
+                        $("#id_idade").val(anoSistema-ano + " anos");
+                    else
+                        if(ano == anoSistema)
+                            $("#id_idade").val("0 anos");
+                        else
+                            $("#id_idade").val((anoSistema-ano)-1 + " anos");
+                }
+                else{
+                    $(id).removeClass("is-valid").addClass("is-invalid")
+                    if(ano < 1930){
+                        $(id)[0].setCustomValidity("Data de nascimento muito antiga");
+                    }
+                    else{
+                        $(id)[0].setCustomValidity("Data de nascimento não pode ser maior do que o ano corrente");
+                    }
+                }
+            } else if(campo == "convenioValidade"){
+
+                var dataCampo = new Date(mes+'/'+dia+'/'+ano).setHours(0,0,0,0);
+                var dataSistema = new Date(mesSistema+'/'+diaSistema+'/'+anoSistema).setHours(0,0,0,0);
+
+                if (dataCampo < dataSistema) {
+                  $(id).removeClass("is-valid").addClass("is-invalid");
+                  $(id)[0].setCustomValidity("Convênio expirado");
+                }else{
+                  $(id).removeClass("is-invalid").addClass("is-valid");
+                  $(id)[0].setCustomValidity("");
+                }
+            }
+
+        }
+        else if(data.length){
+            $(id).removeClass("is-valid").addClass("is-invalid");
+//          $("#id_idade").removeClass("is-valid").addClass("is-invalid");
+            $(id)[0].setCustomValidity("Data inválida");
+        }
+    }
+    });
+}
+validarData("#id_dataNascimento", "dataNascimento");
+
+$('#id_modal_form_novo_paciente').on('shown.bs.modal', function () {
+    $("#id_modal_form_calendario").attr('hidden', 'true');
+    $('#id_modal_title').text('Cadastro Rápido de Pacientes');
+    $('#id_modal_form_novo_paciente form').trigger("reset"); // reseta todos os campos do formulário
+})
+
+$('#id_modal_form_novo_paciente').on('hide.bs.modal', function () {
+    $("#id_modal_form_calendario").removeAttr('hidden');
+})
+
+$('#id_form_novo_paciente').submit(function(e){
+
+    $("button").prop("disabled",true);
+
+    e.preventDefault();
+    $.post("/paciente/meusPacientes", $(this).serialize(), function(data){
+        if (data.ok){
+            console.log("Novo Paciente Salvo Com Sucesso!");
+            $("button").prop("disabled",false);
+             $.gritter.add({
+                title: 'Paciente',
+                text: 'Paciente Salvo com Sucesso',
+                class_name: 'color success'
+            });
+            var pacienteOption = new Option(data.paciente.nomeCompleto, data.paciente.id, true, true);
+            $("#id_paciente").append(pacienteOption).trigger('change');
+            $("#id_modal_form_novo_paciente").attr('hidden', 'true');
+            $("#id_modal_form_calendario").removeAttr('hidden');
+
+        }else{
+            console.log(data.msg);
+            $("button").prop("disabled",false);
+            $.gritter.add({
+                title: 'Paciente',
+                text: 'Erro ao Salvar o Paciente',
+                class_name: 'color danger'
+            });
+        }
+    }, 'json');
+});
 
 

@@ -116,8 +116,8 @@ def paciente(request):
             return render(request, 'paciente/pacientes.html', contexto)
         elif request.method == 'POST':
 
-            '''for key in request.POST.keys():
-                print(key, " ", request.POST[key])'''
+            # for key in request.POST.keys():
+            #     print(key, " ", request.POST[key])
 
 
             form = PacienteForm(request.POST)
@@ -174,6 +174,7 @@ def paciente(request):
                     'convenioValidade4': dados['convenioValidade4'],
                 }
                 id_paciente = request.POST['id_paciente']
+                nomeCompleto = dados['nomeCompleto']
 
                 if not dict_dados['email']: del dict_dados['email'] # Não altere o parâmetro email caso ele sejá vazio
 
@@ -184,8 +185,10 @@ def paciente(request):
                 else: #Crie um Paciente
                     paciente_obj = Paciente.objects.create(**dict_dados)
                     paciente_obj.save()
+                    id_paciente = paciente_obj.id
 
-                return HttpResponse(json.dumps({'ok': True, 'msg': "Paciente Salvo com Sucesso!", 'erros': {}}), content_type="application/json")
+                return HttpResponse(json.dumps({'ok': True, 'msg': "Paciente Salvo com Sucesso!", 'erros': {},
+                                                'paciente': {'id': id_paciente, 'nomeCompleto': nomeCompleto}}), content_type="application/json")
             else:
                 return HttpResponse(json.dumps({'ok': False, 'msg': "Ocorreu um erro ao criar um novo Paciente!", 'erros': {}}), content_type="application/json")
     else:

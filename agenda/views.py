@@ -69,11 +69,8 @@ def buscarAgendaAjax(request):
         id_agenda = request.GET.get('id_agenda', None)
         clinica_obj = Usuario.objects.get(user=request.user)
         agenda_obj = Agenda.objects.filter(clinica=clinica_obj.clinica, id=id_agenda)
-
         agenda = list(agenda_obj.values('titulo', 'paciente', 'profissional', 'servico', 'horaInicio', 'horaFim', 'dataInicio', 'dataFim'))[0]
-
         id_usuario = agenda['profissional']
-
         json = {'agenda': agenda}
 
         try:
@@ -83,7 +80,6 @@ def buscarAgendaAjax(request):
         except:
             json['agenda']['profissional_id'] = ''
             json['agenda']['profissional'] = ''
-
 
         try:
             id_paciente = agenda['paciente']
@@ -101,9 +97,6 @@ def buscarAgendaAjax(request):
             json['agenda']['servicos'] = list(servicos.values('id', 'nome'))
         except:
             json['agenda']['servicos'] = []
-
-
-
 
         return JsonResponse(json)
 

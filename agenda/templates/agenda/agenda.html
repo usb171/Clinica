@@ -14,7 +14,6 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
 
-
 {% endblock %}
 
 
@@ -29,9 +28,10 @@
                             <div id="calendar"></div>
                         </div>
                         <div class="be-spinner">
-                          <svg width="40px" height="40px" viewBox="0 0 66 66" xmlns="http://-www.w3.org/2000/svg">
-                            <circle class="circle" fill="none" stroke-width="4" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-                          </svg>
+                            <svg width="40px" height="40px" viewBox="0 0 66 66" xmlns="http://-www.w3.org/2000/svg">
+                                <circle class="circle" fill="none" stroke-width="4" stroke-linecap="round" cx="33"
+                                        cy="33" r="30"></circle>
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
 </div>
 
 <div class="custom-width modal fade colored-header colored-header-primary" id="id_modal_form_calendario" role="dialog"
-     data-backdrop="static" data-keyboard="false" >
+     data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -81,7 +81,8 @@
                         <div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-0">
                             <label for="id_profissional">Profissional</label>
                             <input id="id_profissional_id" name="id_profissional" value="-1" hidden>
-                            <select id="id_profissional" name="profissional" class="form-control select2 select2-lg" required>
+                            <select id="id_profissional" name="profissional" class="form-control select2 select2-lg"
+                                    required>
                             </select>
                         </div>
                     </div>
@@ -89,6 +90,10 @@
                     <div class="form-group row pt-0">
                         <div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-0">
                             <label for="id_paciente">Paciente</label>
+                            <button style="margin-left: 575px; margin-right: 0px"
+                                    class="btn btn-space btn-secondary btn-social"
+                                    data-toggle="modal" data-target="#id_modal_form_novo_paciente"
+                                    type="button"><i class="icon mdi mdi-face"></i></button>
                             <input id="id_paciente_id" name="id_paciente" value="-1" hidden>
                             <select id="id_paciente" name="paciente" class="form-control select2 select2-lg" required>
                             </select>
@@ -106,6 +111,70 @@
                         <div class="col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">
 
                             <button class="btn btn-space btn-primary btn-big" type="submit" id="id_button_modal"><i
+                                    class="icon mdi mdi-save"></i> Salvar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="custom-width modal fade colored-header colored-header-primary" id="id_modal_form_novo_paciente"
+     role="dialog"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="id_modal_title">Novo Paciente</h3>
+                <button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true">
+                    <span class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="id_form_novo_paciente">
+                    {% csrf_token %}
+
+                    <input class="form-control" type="text" id="id_ativo" name="ativo" value="ON" hidden>
+                    <input id="id_paciente2" name="id_paciente" value="-1" hidden>
+
+
+                    <div class="form-group row pt-0">
+                        <div class="col-sm-8 col-lg-8 mb-8 mb-sm-0">
+                            <label for="id_nomeCompleto">Nome Completo</label>
+                            <input class="form-control" id="id_nomeCompleto" name="nomeCompleto" required>
+                        </div>
+                        <div class="col-sm-4 col-lg-4 mb-4 mb-sm-0">
+                            <label for="id_cpf">CPF</label>
+                            <input class="form-control " type="text" id="id_cpf" name="cpf"
+                                   placeholder="000.000.000-00">
+                        </div>
+                    </div>
+
+                    <div class="form-group row pt-0">
+                        <div class="col-sm-4 col-lg-4 mb-4 mb-sm-0">
+                            <label for="id_dataNascimento">Data Nascimento </label>
+                            <input class="form-control" type="text" id="id_dataNascimento" name="dataNascimento"
+                                   data-mask="date">
+                        </div>
+                        <div class="col-sm-4 col-lg-4 mb-4 mb-sm-0">
+                            <label for="id_telefone">Telefone 1 </label>
+                            <input class="form-control" type="text" id="id_telefone" name="telefone"
+                                   placeholder="(99) 9999-9999" required>
+                        </div>
+                        <div class="col-sm-4 col-lg-4 mb-4 mb-sm-0">
+                            <label for="id_celular">Telefone 2 </label>
+                            <input class="form-control" type="text" id="id_celular" name="celular"
+                                   placeholder="(99) 99999-9999">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row text-right">
+                        <div class="col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">
+                            <button class="btn btn-space btn-primary btn-big" type="submit"
+                                    id="id_button_novo_paciente_modal"><i
                                     class="icon mdi mdi-save"></i> Salvar
                             </button>
                         </div>
