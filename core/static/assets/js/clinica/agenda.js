@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         plugins: ['interaction', 'dayGrid', 'timeGrid', 'list' ],
         themeSystem: 'bootstrap',
         header: {
-            left: 'prev,next today',
+            left: 'prev,next,today agendar',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
         },
@@ -106,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
             $("#id_profissional_id").val("-1");
             validarCampos();
         },
-
         eventClick: function(info) {
 
             $.ajax({
@@ -140,11 +139,28 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         },
         events: [],
+        customButtons: {
+            agendar: {
+                text: 'Agendar',
+                click: function() {
+                    $("#id_modal_form_calendario").modal('show');
+                    $('.modal-title').text('__/__/__');
+                    $('.timepicker').val('');
+                    $("#id_paciente").val("").trigger('change');
+                    $("#id_servico").val("").trigger('change');
+                    $("#id_profissional").val("").trigger('change');
+                    $("#id_hora_inicio").val("")
+                    $("#id_hora_fim").val("")
+                    $('#id_data').val('');
+                    $("#id_agenda").val("-1");
+                    $("#id_paciente_id").val("-1");
+                    $("#id_profissional_id").val("-1");
+                }
+            }
+        },
     });
 
     calendar.render();
-
-
 
 
 });
@@ -262,8 +278,6 @@ function validarCampos(){
     }
 
     return true;
-
-
 }
 
 function atualizarHoraFinal(){
@@ -466,6 +480,14 @@ $('#id_form_novo_evento').submit(function(e){
 // Formulários ////////////////////////////////////
 
 
+
+
+
+
+
+
+/// Formulário Cadastro Rápido Paciente ///////////////////////////////////////////////////////////////////////////
+
 $("#id_telefone").mask("(99) 9999-9999");
 $("#id_celular").mask("(99) 99999-9999");
 $("#id_nomeCompleto").keyup(function(event){$("#id_nomeCompleto").val(($('#id_nomeCompleto').val()).toUpperCase());});
@@ -597,4 +619,5 @@ $('#id_form_novo_paciente').submit(function(e){
     }, 'json');
 });
 
+/// Formulário Cadastro Rápido Paciente ///////////////////////////////////////////////////////////////////////////
 
