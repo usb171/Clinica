@@ -57,7 +57,7 @@ def agenda(request):
 def carregarAgendaAjax(request):
     if request.user.is_authenticated:
         clinica = Usuario.objects.get(user=request.user).clinica
-        agenda = list(Agenda.objects.filter(clinica=clinica).values('id', 'titulo', 'dataInicio', 'dataFim'))
+        agenda = list(Agenda.objects.filter(clinica=clinica).values('id', 'titulo', 'status', 'descricao', 'dataInicio', 'profissional__nomeCompleto', 'dataFim'))
         return JsonResponse({'agenda': agenda})
     else:
         return redirect('login')
@@ -69,7 +69,7 @@ def buscarAgendaAjax(request):
         id_agenda = request.GET.get('id_agenda', None)
         clinica_obj = Usuario.objects.get(user=request.user)
         agenda_obj = Agenda.objects.filter(clinica=clinica_obj.clinica, id=id_agenda)
-        agenda = list(agenda_obj.values('titulo', 'paciente', 'profissional', 'servico', 'horaInicio', 'horaFim', 'dataInicio', 'dataFim'))[0]
+        agenda = list(agenda_obj.values('titulo', 'paciente', 'status', 'descricao','profissional', 'servico', 'horaInicio', 'horaFim', 'dataInicio', 'dataFim'))[0]
         id_usuario = agenda['profissional']
         json = {'agenda': agenda}
 

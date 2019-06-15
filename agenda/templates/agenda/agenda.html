@@ -46,16 +46,28 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Carregando...</h3>
+
                 <button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true">
                     <span class="mdi mdi-close"></span>
                 </button>
             </div>
             <div class="modal-body">
+                <div class="btn-toolbar pt-0 pb-4">
+                    <div class="btn-group btn-group-justified mb-2" role="group">
+                        <a class="btn btn-secondary" id="id_bt_agendado" href="#">Agendado</a>
+                        <a class="btn btn-secondary" id="id_bt_confirmado" href="#">Confirmado</a>
+                        <a class="btn btn-secondary" id="id_bt_aguardando" href="#">Aguardando</a>
+                        <a class="btn btn-secondary" id="id_bt_em_atendimento" href="#">Em Atendimento</a>
+                        <a class="btn btn-secondary" id="id_bt_atendido" href="#">Atendido</a>
+                        <a class="btn btn-secondary" id="id_bt_nao_atendido" href="#">Não Atendido</a>
+                    </div>
+                </div>
                 <form method="POST" id="id_form_novo_evento">
                     {% csrf_token %}
                     <div class="form-group row pt-0">
 
                         <input id="id_agenda" name="id_agenda" value="-1" hidden>
+                        <input id="id_status" name="status" value="" hidden>
 
                         <div class="col-sm-4 col-lg-4 mb-4 mb-sm-0 pt-0 pb-0">
                             <label for="id_data">Data</label>
@@ -76,7 +88,6 @@
                         </div>
 
                     </div>
-
                     <div class="form-group row pt-0">
                         <div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-0">
                             <label for="id_profissional">Profissional</label>
@@ -86,7 +97,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group row pt-0">
                         <div class="col-sm-12 col-lg-12 mb-12 mb-sm-0 pt-0 pb-0">
                             <label for="id_paciente">Paciente</label>
@@ -107,9 +117,14 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row text-right">
-                        <div class="col-sm-11 col-md-11 col-lg-12 col-xl-12 offset-sm-1 offset-lg-0">
-
+                    <div class="form-group row pt-0">
+                        <div class="col-sm-12 col-lg-12 mb-12 mb-sm-0">
+                            <label for="id_descricao">Descrição</label>
+                            <textarea class="form-control" id="id_descricao" name="descricao"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row pt-0 pb-2">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-0 offset-sm-1 offset-lg-0 pt-0 pb-0 text-right">
                             <button class="btn btn-space btn-primary btn-big" type="submit" id="id_button_modal"><i
                                     class="icon mdi mdi-save"></i> Salvar
                             </button>

@@ -4,6 +4,7 @@ $('#id_list_menu_agenda').addClass('active');
 
 var dataSelectFullcalendar;
 var calendar = null;
+var eventosAgenda = {};
 
 function getDataCorrente(){
     diaSistema = $("#id_dataHora a").text().split('/')[0].split(' ')[0];
@@ -68,14 +69,17 @@ function formatDate(data, formato) {
 //*********************************************** Calendário ***********************************************************
 document.addEventListener('DOMContentLoaded', function() {
 
+    var flag = false;
+
     var calendarEl = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: ['interaction', 'dayGrid', 'timeGrid', 'list' ],
+        plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
         themeSystem: 'bootstrap',
         header: {
             left: 'prev,next,today agendar',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            right: 'listDay,dayGridMonth'
+            //right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
         },
         defaultDate: new Date(),
         locale: 'pt-br',
@@ -88,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
         slotDuration: '00:05:00',
         minTime: '08:00:00',
         maxTime: '18:00:00',
+        defaultView: 'list',
 
         select: function(date, jsEvent, view) {
             $("#id_modal_form_calendario").modal('show');
@@ -95,15 +100,17 @@ document.addEventListener('DOMContentLoaded', function() {
             dateSelectFullcalendar = date;
             $('.modal-title').text(date);
             $('.timepicker').val('');
+            $("#id_descricao").val("");
             $("#id_paciente").val("").trigger('change');
-            $("#id_servico").val("").trigger('change');
+            $("#id_servico").empty().trigger("change");
             $("#id_profissional").val("").trigger('change');
-            $("#id_hora_inicio").val("")
-            $("#id_hora_fim").val("")
+            $("#id_hora_inicio").val("");
+            $("#id_hora_fim").val("");
             $('#id_data').val(date);
             $("#id_agenda").val("-1");
             $("#id_paciente_id").val("-1");
             $("#id_profissional_id").val("-1");
+            $('#id_bt_agendado').click();
             validarCampos();
         },
         eventClick: function(info) {
@@ -114,10 +121,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 dataType: 'json',
                 success: function (data) {
                     agenda = data.agenda;
+                    $("#id_servico").empty().trigger("change");
+
                     $("#id_modal_form_calendario").modal('show');
                     $('.modal-title').text(formatDate(agenda.dataInicio.split('T')[0], 'pt-br'));
                     $("#id_hora_inicio").val(agenda.horaInicio);
                     $("#id_hora_fim").val(agenda.horaFim);
+
+                    $("#id_descricao").val(agenda.descricao);
+
+                    status = agenda.status;
+
+                    if(status == "AGENDADO")
+                        $('#id_bt_agendado').click();
+                    else if (status == "CONFIRMADO")
+                        $('#id_bt_confirmado').click();
+                    else if (status == "AGUARDANDO")
+                        $('#id_bt_aguardando').click();
+                    else if (status == "EM ATENDIMENTO")
+                        $('#id_bt_em_atendimento').click();
+                    else if (status == "ATENDIDO")
+                        $('#id_bt_atendido').click();
+                    else if (status == "NAO ATENDIMENTO")
+                        $('#id_bt_nao_atendido').click();
+
 
                     var pacienteOption = new Option(agenda.paciente, agenda.paciente_id, true, true);
                     var profissionalOption = new Option(agenda.profissional, agenda.profissional_id, true, true);
@@ -155,12 +182,56 @@ document.addEventListener('DOMContentLoaded', function() {
                     $("#id_agenda").val("-1");
                     $("#id_paciente_id").val("-1");
                     $("#id_profissional_id").val("-1");
+                    $('#id_bt_agendado').click();
+
                 }
             }
+        },
+
+        eventPositioned: function(event){
+
+            el = event['el'];
+            className = el.className
+
+            if(className == 'fc-list-item'){
+
+                publicId = event['event']._def.publicId; // ID do evento da Agenda
+
+                // Cabeçalho da lista ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                $('.fc-list-heading').html(
+                    '<td class="fc-widget-header" style="border: 1px solid #dddddd;"><a class="fc-list-heading-main">Horário</a></td>' +
+                    '<td class="fc-widget-header" style="border: 1px solid #dddddd; width:15%;"><a class="fc-list-heading-main">Status</a></td>' +
+                    '<td class="fc-widget-header" style="border: 1px solid #dddddd;"><a class="fc-list-heading-main">Paciente</a></td>' +
+                    '<td class="fc-widget-header" style="border: 1px solid #dddddd;"><a class="fc-list-heading-main">Profissional</a></td>'
+                );
+                // Cabeçalho da lista ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                // Add de grid nas linhas padrão /////////////////////////////////
+                $(el.cells[0]).attr('style', 'border: 1px solid #dddddd;');
+                $(el.cells[1]).attr('style', 'border: 1px solid #dddddd;');
+                $(el.cells[2]).attr('style', 'border: 1px solid #dddddd;');
+                // Add de grid nas linhas padrão /////////////////////////////////
+
+                el.insertCell(); // Cria uma nova célula na linha
+
+                evento = eventosAgenda.agenda.filter(x => x.id === parseInt(publicId))[0]; // Buscado o evento pelo ID do evento
+
+                $(el.cells[1].firstChild).attr('class', '').text(evento.status); // Atualiza o nome do status
+
+                // Atualiza a célula com o nome de pacientes
+                $(el.cells[3]).attr('class', 'fc-list-item-title fc-widget-content')
+                              .attr('style', 'border: 1px solid #dddddd;')
+                              .append("<a>"+evento.profissional__nomeCompleto+"</a>");
+
+
+            }
+
         },
     });
 
     calendar.render();
+
+
 
 
 });
@@ -173,6 +244,7 @@ if( parent.length ){
         url: "/agenda/carregarAgendaAjax",
         dataType: 'json',
         success: function (data) {
+            eventosAgenda = data;
             for(i = 0 ; i < data.agenda.length; i++){
                 evento = data.agenda[i];
                 calendar.addEvent({
@@ -180,7 +252,7 @@ if( parent.length ){
                     title: evento.titulo,
                     start: evento.dataInicio,
                     end : evento.dataFim,
-                    textColor:"White"
+                    textColor:"White",
                 })
             }
 
@@ -620,4 +692,59 @@ $('#id_form_novo_paciente').submit(function(e){
 });
 
 /// Formulário Cadastro Rápido Paciente ///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+function resetBtnStatus(){
+    $('#id_bt_agendado').attr('class', 'btn btn-secondary');
+    $('#id_bt_confirmado').attr('class', 'btn btn-secondary');
+    $('#id_bt_aguardando').attr('class', 'btn btn-secondary');
+    $('#id_bt_em_atendimento').attr('class', 'btn btn-secondary');
+    $('#id_bt_atendido').attr('class', 'btn btn-secondary');
+    $('#id_bt_nao_atendido').attr('class', 'btn btn-secondary');
+}
+
+// Butões do status /////////////////////////////
+$('#id_bt_agendado').on('click', function () {
+    resetBtnStatus();
+    $(this).attr('class', 'btn btn-primary');
+    $("#id_status").val('AGENDADO');
+//    $("#id_statusCor").val('#1079e9');
+})
+
+$('#id_bt_confirmado').on('click', function () {
+    resetBtnStatus();
+    $(this).attr('class', 'btn btn-primary');
+    $("#id_status").val('CONFIRMADO');
+})
+
+$('#id_bt_aguardando').on('click', function () {
+    resetBtnStatus();
+    $(this).attr('class', 'btn btn-primary');
+    $("#id_status").val('AGUARDANDO');
+})
+
+$('#id_bt_em_atendimento').on('click', function () {
+    resetBtnStatus();
+    $(this).attr('class', 'btn btn-primary')
+    $("#id_status").val('EM ATENDIMENTO');
+})
+
+$('#id_bt_atendido').on('click', function () {
+ resetBtnStatus();
+    $(this).attr('class', 'btn btn-primary');
+    $("#id_status").val('ATENDIDO');
+})
+
+$('#id_bt_nao_atendido').on('click', function () {
+    resetBtnStatus();
+    $(this).attr('class', 'btn btn-primary');
+    $("#id_status").val('NAO ATENDIDO');
+})
 
