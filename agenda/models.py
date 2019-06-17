@@ -23,6 +23,8 @@ class Agenda(models.Model):
     horaInicio = models.CharField('Hora Início', max_length=20, null=True, blank=True)
     dataFim = models.CharField('Data Fim', max_length=20, null=True, blank=True)
     horaFim = models.CharField('Hora Fim', max_length=20, null=True, blank=True)
+    horaChegada = models.CharField('Hora de Chegada', max_length=20, null=True, blank=True)
+    horaAtendimento = models.CharField('Hora de Atendimento', max_length=20, null=True, blank=True)
     data = models.CharField('Data', max_length=20, null=True, blank=True)
     paciente = models.ForeignKey(Paciente, on_delete=models.SET_NULL, null=True, blank=True)
     profissional = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)

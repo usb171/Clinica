@@ -10,8 +10,9 @@ function getDataCorrente(){
     diaSistema = $("#id_dataHora a").text().split('/')[0].split(' ')[0];
     mesSistema = $("#id_dataHora a").text().split('/')[1].split(' ')[0];
     anoSistema = $("#id_dataHora a").text().split('/')[2].split(' ')[0];
+    tempoCorrente = $("#id_dataHora a").text().split(' ')[2]
     dataCorrente = diaSistema + "/" + mesSistema + "/" + anoSistema;
-    return {'diaSistema':diaSistema, 'mesSistema':mesSistema, 'anoSistema':anoSistema, 'dataCorrente':dataCorrente}
+    return {'diaSistema':diaSistema, 'mesSistema':mesSistema, 'anoSistema':anoSistema, 'dataCorrente':dataCorrente, 'tempoCorrente': tempoCorrente}
 }
 
 $("#id_data").mask("99/99/9999", {placeholder: "__/__/____", onKeyPress: function(data, e, field, options){
@@ -106,10 +107,13 @@ document.addEventListener('DOMContentLoaded', function() {
             $("#id_profissional").val("").trigger('change');
             $("#id_hora_inicio").val("");
             $("#id_hora_fim").val("");
+            $("#id_hora_chegada").val("");
+            $("#id_hora_atendimento").val("");
             $('#id_data').val(date);
             $("#id_agenda").val("-1");
             $("#id_paciente_id").val("-1");
             $("#id_profissional_id").val("-1");
+            $("#id_descricao").val("");
             $('#id_bt_agendado').click();
             validarCampos();
         },
@@ -131,19 +135,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     $("#id_descricao").val(agenda.descricao);
 
                     status = agenda.status;
-
+                    resetBtnStatus();
                     if(status == "AGENDADO")
-                        $('#id_bt_agendado').click();
+                        $('#id_bt_agendado').attr('class', 'btn btn-primary');
                     else if (status == "CONFIRMADO")
-                        $('#id_bt_confirmado').click();
+                        $('#id_bt_confirmado').attr('class', 'btn btn-primary');
                     else if (status == "AGUARDANDO")
-                        $('#id_bt_aguardando').click();
+                        $('#id_bt_aguardando').attr('class', 'btn btn-primary');
+//                      $('#id_bt_aguardando').trigger('click', {data: agenda.horaChegada});
                     else if (status == "EM ATENDIMENTO")
-                        $('#id_bt_em_atendimento').click();
+                        $('#id_bt_em_atendimento').attr('class', 'btn btn-primary');
+//                      $('#id_bt_em_atendimento').trigger('click', {data: agenda.horaAtendimento});
                     else if (status == "ATENDIDO")
-                        $('#id_bt_atendido').click();
+                        $('#id_bt_atendido').attr('class', 'btn btn-primary');
                     else if (status == "NAO ATENDIMENTO")
-                        $('#id_bt_nao_atendido').click();
+                        $('#id_bt_nao_atendido').attr('class', 'btn btn-primary');
 
 
                     var pacienteOption = new Option(agenda.paciente, agenda.paciente_id, true, true);
@@ -176,12 +182,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     $("#id_paciente").val("").trigger('change');
                     $("#id_servico").val("").trigger('change');
                     $("#id_profissional").val("").trigger('change');
-                    $("#id_hora_inicio").val("")
-                    $("#id_hora_fim").val("")
+                    $("#id_hora_inicio").val("");
+                    $("#id_hora_chegada").val("");
+                    $("#id_hora_atendimento").val("");
+                    $("#id_hora_fim").val("");
                     $('#id_data').val('');
                     $("#id_agenda").val("-1");
                     $("#id_paciente_id").val("-1");
                     $("#id_profissional_id").val("-1");
+                    $("#id_descricao").val("");
                     $('#id_bt_agendado').click();
 
                 }
@@ -199,10 +208,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Cabeçalho da lista ///////////////////////////////////////////////////////////////////////////////////////////////////////////
                 $('.fc-list-heading').html(
-                    '<td class="fc-widget-header" style="border: 1px solid #dddddd;"><a class="fc-list-heading-main">Horário</a></td>' +
+                    '<td class="fc-widget-header" style="border: 1px solid #dddddd;"><a class="fc-list-heading-main">Agendado</a></td>' +
                     '<td class="fc-widget-header" style="border: 1px solid #dddddd; width:15%;"><a class="fc-list-heading-main">Status</a></td>' +
                     '<td class="fc-widget-header" style="border: 1px solid #dddddd;"><a class="fc-list-heading-main">Paciente</a></td>' +
-                    '<td class="fc-widget-header" style="border: 1px solid #dddddd;"><a class="fc-list-heading-main">Profissional</a></td>'
+                    '<td class="fc-widget-header" style="border: 1px solid #dddddd;"><a class="fc-list-heading-main">Profissional</a></td>' +
+                    '<td class="fc-widget-header" style="border: 1px solid #dddddd;width:2%"><a class="fc-list-heading-main">Chegada</a></td>' +
+                    '<td class="fc-widget-header" style="border: 1px solid #dddddd;width:2%"><a class="fc-list-heading-main">Atendido</a></td>'
                 );
                 // Cabeçalho da lista ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -212,16 +223,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 $(el.cells[2]).attr('style', 'border: 1px solid #dddddd;');
                 // Add de grid nas linhas padrão /////////////////////////////////
 
-                el.insertCell(); // Cria uma nova célula na linha
+                el.insertCell(); // Cria uma nova célula na linha, coluna profissional
+                el.insertCell(); // Cria uma nova célula na linha, coluna chegada
+                el.insertCell(); // Cria uma nova célula na linha, coluna atendimento
 
                 evento = eventosAgenda.agenda.filter(x => x.id === parseInt(publicId))[0]; // Buscado o evento pelo ID do evento
 
                 $(el.cells[1].firstChild).attr('class', '').text(evento.status); // Atualiza o nome do status
-
                 // Atualiza a célula com o nome de pacientes
                 $(el.cells[3]).attr('class', 'fc-list-item-title fc-widget-content')
                               .attr('style', 'border: 1px solid #dddddd;')
                               .append("<a>"+evento.profissional__nomeCompleto+"</a>");
+
+                // Atualiza a célula com o tempo de chegada
+                $(el.cells[4]).attr('class', 'fc-list-item-title fc-widget-content')
+                              .attr('style', 'border: 1px solid #dddddd;')
+                              .append("<a>"+evento.horaChegada+"</a>");
+
+                // Atualiza a célula com o tempo de chegada
+                $(el.cells[5]).attr('class', 'fc-list-item-title fc-widget-content')
+                              .attr('style', 'border: 1px solid #dddddd;')
+                              .append("<a>"+evento.horaAtendimento+"</a>");
 
 
             }
@@ -715,25 +737,32 @@ $('#id_bt_agendado').on('click', function () {
     resetBtnStatus();
     $(this).attr('class', 'btn btn-primary');
     $("#id_status").val('AGENDADO');
-//    $("#id_statusCor").val('#1079e9');
+    $("#id_hora_chegada").val("");
+    $("#id_hora_atendimento").val("");
 })
 
 $('#id_bt_confirmado').on('click', function () {
     resetBtnStatus();
     $(this).attr('class', 'btn btn-primary');
     $("#id_status").val('CONFIRMADO');
+    $("#id_hora_chegada").val("");
+    $("#id_hora_atendimento").val("");
 })
 
-$('#id_bt_aguardando').on('click', function () {
+$('#id_bt_aguardando').on('click', function (event, data) {
     resetBtnStatus();
     $(this).attr('class', 'btn btn-primary');
     $("#id_status").val('AGUARDANDO');
+    $("#id_hora_chegada").val(getDataCorrente().tempoCorrente);
+    $("#id_hora_atendimento").val("");
+
 })
 
-$('#id_bt_em_atendimento').on('click', function () {
+$('#id_bt_em_atendimento').on('click', function (event, data) {
     resetBtnStatus();
     $(this).attr('class', 'btn btn-primary')
     $("#id_status").val('EM ATENDIMENTO');
+    $("#id_hora_atendimento").val(getDataCorrente().tempoCorrente);
 })
 
 $('#id_bt_atendido').on('click', function () {
@@ -746,5 +775,6 @@ $('#id_bt_nao_atendido').on('click', function () {
     resetBtnStatus();
     $(this).attr('class', 'btn btn-primary');
     $("#id_status").val('NAO ATENDIDO');
+    $("#id_hora_atendimento").val("");
 })
 
