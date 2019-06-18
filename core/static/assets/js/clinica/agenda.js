@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var date = formatDate(date.startStr, 'pt-br');
             dateSelectFullcalendar = date;
             $('.modal-title').text(date);
-            $('.timepicker').val('');
+            $('.timepicker').val("");
             $("#id_descricao").val("");
             $("#id_paciente").val("").trigger('change');
             $("#id_servico").empty().trigger("change");
@@ -149,8 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     else if (status == "NAO ATENDIDO")
                         $('#id_bt_nao_atendido').attr('class', 'btn btn-primary');
 
-                    $("#id_hora_chegada").val(agenda.horaChegada)
-                    $("#id_hora_atendimento").val(agenda.horaAtendimento)
+                    $("#id_status").val(status);
+                    $("#id_hora_chegada").val(agenda.horaChegada);
+                    $("#id_hora_atendimento").val(agenda.horaAtendimento);
 
                     var pacienteOption = new Option(agenda.paciente, agenda.paciente_id, true, true);
                     var profissionalOption = new Option(agenda.profissional, agenda.profissional_id, true, true);
@@ -192,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     $("#id_profissional_id").val("-1");
                     $("#id_descricao").val("");
                     $('#id_bt_agendado').click();
-
                 }
             }
         },
@@ -314,7 +314,8 @@ function validarCampos(){
             $.gritter.add({
                 title: 'Agenda - Data',
                 text: 'Data Válida',
-                class_name: 'color success'
+                class_name: 'color success',
+                time: 3000,
             });
         }
         $("#id_data").removeClass("is-invalid").addClass("is-valid");
@@ -327,7 +328,9 @@ function validarCampos(){
         $.gritter.add({
             title: 'Agenda - Data',
             text: 'A data não pode ser menor do que a data corrente',
-            class_name: 'color danger'
+            class_name: 'color danger',
+            time: 3000,
+
         });
         return false;
     }
@@ -343,7 +346,8 @@ function validarCampos(){
         $.gritter.add({
             title: 'Agenda - Horário',
             text: 'Horário Válido',
-            class_name: 'color success'
+            class_name: 'color success',
+            time: 3000,
         });
     }
     else{
@@ -355,7 +359,8 @@ function validarCampos(){
             $.gritter.add({
                 title: 'Agenda - Horário',
                 text: 'Os horários inicial e final são iguais',
-                class_name: 'color danger'
+                class_name: 'color danger',
+                time: 3000,
             });
 
             return false;
@@ -365,7 +370,8 @@ function validarCampos(){
             $.gritter.add({
                 title: 'Agenda - Horário',
                 text: 'O horário final é menor do que o inicial',
-                class_name: 'color danger'
+                class_name: 'color danger',
+                time: 3000,
             });
 
             return false;
@@ -703,7 +709,8 @@ $('#id_form_novo_paciente').submit(function(e){
              $.gritter.add({
                 title: 'Paciente',
                 text: 'Paciente Salvo com Sucesso',
-                class_name: 'color success'
+                class_name: 'color success',
+                time: 3000,
             });
             var pacienteOption = new Option(data.paciente.nomeCompleto, data.paciente.id, true, true);
             $("#id_paciente").append(pacienteOption).trigger('change');
@@ -716,7 +723,8 @@ $('#id_form_novo_paciente').submit(function(e){
             $.gritter.add({
                 title: 'Paciente',
                 text: 'Erro ao Salvar o Paciente',
-                class_name: 'color danger'
+                class_name: 'color danger',
+                time: 3000,
             });
         }
     }, 'json');
