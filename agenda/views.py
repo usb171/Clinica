@@ -28,7 +28,7 @@ def agenda(request):
             dict_dados = {'clinica': clinica}
             for key in request.POST.keys():
                 dict_dados[key] = request.POST[key]
-                print(key, " ", dict_dados[key])
+                #print(key, " ", dict_dados[key])
             del dict_dados['csrfmiddlewaretoken']
 
             id_agenda = dict_dados.pop('id_agenda')  # Remove e pega o id da agenda
