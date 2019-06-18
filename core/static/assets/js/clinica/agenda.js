@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
             validarCampos();
         },
         eventClick: function(info) {
-
             $.ajax({
                 url: "/agenda/buscarAgendaAjax",
                 data: {'id_agenda': info.event.id},
@@ -131,26 +130,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     $('.modal-title').text(formatDate(agenda.dataInicio.split('T')[0], 'pt-br'));
                     $("#id_hora_inicio").val(agenda.horaInicio);
                     $("#id_hora_fim").val(agenda.horaFim);
-
                     $("#id_descricao").val(agenda.descricao);
 
                     status = agenda.status;
+
                     resetBtnStatus();
+
                     if(status == "AGENDADO")
                         $('#id_bt_agendado').attr('class', 'btn btn-primary');
                     else if (status == "CONFIRMADO")
                         $('#id_bt_confirmado').attr('class', 'btn btn-primary');
                     else if (status == "AGUARDANDO")
                         $('#id_bt_aguardando').attr('class', 'btn btn-primary');
-//                      $('#id_bt_aguardando').trigger('click', {data: agenda.horaChegada});
                     else if (status == "EM ATENDIMENTO")
                         $('#id_bt_em_atendimento').attr('class', 'btn btn-primary');
-//                      $('#id_bt_em_atendimento').trigger('click', {data: agenda.horaAtendimento});
                     else if (status == "ATENDIDO")
                         $('#id_bt_atendido').attr('class', 'btn btn-primary');
-                    else if (status == "NAO ATENDIMENTO")
+                    else if (status == "NAO ATENDIDO")
                         $('#id_bt_nao_atendido').attr('class', 'btn btn-primary');
 
+                    $("#id_hora_chegada").val(agenda.horaChegada)
+                    $("#id_hora_atendimento").val(agenda.horaAtendimento)
 
                     var pacienteOption = new Option(agenda.paciente, agenda.paciente_id, true, true);
                     var profissionalOption = new Option(agenda.profissional, agenda.profissional_id, true, true);
@@ -297,6 +297,7 @@ if( parent.length ){
 
 function validarCampos(){
 
+
     $("#id_hora_inicio").removeClass("is-valid").removeClass("is-invalid");
     $("#id_hora_fim").removeClass("is-valid").removeClass("is-invalid");
     $("#id_data").removeClass("is-invalid").removeClass("is-invalid");
@@ -332,8 +333,9 @@ function validarCampos(){
     }
 
     // Validar horário
-    var final = $("#id_hora_fim").val()
-    var inicial = $("#id_hora_inicio").val()
+    var final = $("#id_hora_fim").val();
+    var inicial = $("#id_hora_inicio").val();
+
 
     if( inicial < final && inicial.length){
         $('#id_hora_inicio').addClass("is-valid");
@@ -386,33 +388,40 @@ function atualizarHoraFinal(){
         url: "/servico/buscarInformacaoGeralServicoAjax",
         data: {'ids': ids.toString()},
         dataType: 'json',
-        success: function (data) {
-            var somaTempoServicos = 0;
-            var tempoString = '';
+            success: function (data) {
+                var tempoString = '';
+                var somaTempoServicos = 0;
 
-            for(i = 0 ; i < data.servicos.length; i++){
-                servico = data.servicos[i];
-                somaTempoServicos += parseInt(servico.tempo);
+                for(i = 0 ; i < data.servicos.length; i++){
+                    servico = data.servicos[i];
+                    somaTempoServicos += parseInt(servico.tempo);
+                }
+                var tempoInicial = $("#id_hora_inicio").val();
+                var tempoInicial_minutos =  parseInt(tempoInicial.split(':')[0]) * 60 + parseInt(tempoInicial.split(':')[1]);
+
+                var totalDeMinutos = tempoInicial_minutos + somaTempoServicos;
+
+                var hora = Math.floor(totalDeMinutos / 60);
+                var minuto = totalDeMinutos % 60;
+
+                if(hora.toString().length == 1){tempoString += '0' + hora + ':'; }
+                else{tempoString += hora + ':'; }
+
+                if(minuto.toString().length == 1){ tempoString += '0' + minuto; }
+                else { tempoString += minuto; }
+
+                $('#id_hora_fim').val(tempoString);
+
+                validarCampos();
+
             }
-
-            var tempoInicial = $("#id_hora_inicio").val();
-            var tempoInicial_minutos =  parseInt(tempoInicial.split(':')[0]) * 60 + parseInt(tempoInicial.split(':')[1]);
-
-            var totalDeMinutos = tempoInicial_minutos + somaTempoServicos;
-
-            var hora = Math.floor(totalDeMinutos / 60);
-            var minuto = totalDeMinutos % 60;
-            if(hora.toString().length == 1) tempoString += '0' + hora + ':';
-            else tempoString += hora + ':';
-            if(minuto.toString().length == 1) tempoString += '0' + minuto;
-            else tempoString += minuto;
-            $('#id_hora_fim').val(tempoString);
-
-        }
-    });
+        });
     }else{
         $('#id_hora_fim').val('');
+        validarCampos();
+
     }
+
 }
 
 $("#id_profissional").select2({
@@ -538,12 +547,10 @@ function formatSelect2ServicoSelection(servico){return servico.text;}
 
 $('#id_servico').on('select2:select', function (e) {
     atualizarHoraFinal();
-    validarCampos();
 });
 
 $('#id_servico').on('select2:unselect', function (e) {
     atualizarHoraFinal();
-    validarCampos();
 });
 
 
@@ -678,8 +685,10 @@ $('#id_modal_form_novo_paciente').on('shown.bs.modal', function () {
     $('#id_modal_form_novo_paciente form').trigger("reset"); // reseta todos os campos do formulário
 })
 
-$('#id_modal_form_novo_paciente').on('hide.bs.modal', function () {
+$('#id_modal_form_novo_paciente').on('hidden.bs.modal', function () {
     $("#id_modal_form_calendario").removeAttr('hidden');
+    $('#id_modal_form_calendario').css({'padding':'0 !important', 'overflow-x':'hidden', 'overflow-y':'auto'});
+
 })
 
 $('#id_form_novo_paciente').submit(function(e){
@@ -717,12 +726,6 @@ $('#id_form_novo_paciente').submit(function(e){
 
 
 
-
-
-
-
-
-
 function resetBtnStatus(){
     $('#id_bt_agendado').attr('class', 'btn btn-secondary');
     $('#id_bt_confirmado').attr('class', 'btn btn-secondary');
@@ -755,7 +758,6 @@ $('#id_bt_aguardando').on('click', function (event, data) {
     $("#id_status").val('AGUARDANDO');
     $("#id_hora_chegada").val(getDataCorrente().tempoCorrente);
     $("#id_hora_atendimento").val("");
-
 })
 
 $('#id_bt_em_atendimento').on('click', function (event, data) {
