@@ -3,7 +3,7 @@ from .models import Usuario
 
 
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ['nomeCompleto']
+    list_display = ['nomeCompleto', 'cpf']
     #readonly_fields = ['user', 'nomeCompleto']
     search_fields = (
         'nomeCompleto',

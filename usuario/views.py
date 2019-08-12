@@ -54,6 +54,7 @@ def buscarDadosUsuarioAjax(request):
 
         data = {
             'id_user': usuario.pk,
+            'cpf': usuario.cpf,
             'email': usuario.email,
             'ativo': usuario.ativo,
             'admin': usuario.admin,
@@ -116,6 +117,7 @@ def usuario(request):
                 email = dados['email']
                 ativo = dados['ativo']
                 admin = dados['admin']
+                cpf = dados['cpf']
                 titulo = Titulo.objects.get(clinica=clinica, titulo=dados['titulo'])
                 celular = dados['celular']
                 telefone = dados['telefone']
@@ -136,6 +138,7 @@ def usuario(request):
                         usuario_obj.update(email=email,
                                            ativo=ativo,
                                            admin=admin,
+                                           cpf=cpf,
                                            titulo=titulo,
                                            celular=celular,
                                            telefone=telefone,
@@ -162,6 +165,7 @@ def usuario(request):
                                                              email=email,
                                                              ativo=ativo,
                                                              admin=admin,
+                                                             cpf=cpf,
                                                              titulo=titulo,
                                                              celular=celular,
                                                              clinica=clinica,

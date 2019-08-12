@@ -13,6 +13,20 @@ $("#id_nomeCompleto").keyup(function(event){$("#id_nomeCompleto").val(($(this).v
 $("#id_enderecoCompleto").keyup(function(event){$("#id_enderecoCompleto").val(($(this).val()).toUpperCase());});
 // Maiúsculo ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Valida o CPF //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+$("#id_cpf").mask("000.000.000-00").keyup(function(event){
+  var strCPF = $(this).val().replace(/\D+/g,'');/*console.log(strCPF)*/;var Soma;var Resto;Soma = 0;if (strCPF == "00000000000"){
+  $("#id_cpf").removeClass("is-valid").addClass("is-invalid"); $(this)[0].setCustomValidity('CPF Inválido'); return;}
+  for (i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);Resto = (Soma * 10) % 11;
+  if ((Resto == 10) || (Resto == 11))  Resto = 0;if (Resto != parseInt(strCPF.substring(9, 10)) ){
+  $("#id_cpf").removeClass("is-valid").addClass("is-invalid"); $(this)[0].setCustomValidity('CPF Inválido');
+  if(!strCPF.length){$("#id_cpf").removeClass("is-invalid"); $(this)[0].setCustomValidity('');}  return;} Soma = 0;
+  for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);Resto = (Soma * 10) % 11;
+  if ((Resto == 10) || (Resto == 11))  Resto = 0;if (Resto != parseInt(strCPF.substring(10, 11) ) ){
+  $("#id_cpf").removeClass("is-valid").addClass("is-invalid"); $(this)[0].setCustomValidity('CPF Inválido'); return;}
+  else{$("#id_cpf").removeClass("is-invalid").addClass("is-valid"); $(this)[0].setCustomValidity('');}
+});
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Validar Email /////////////////////////////
 $("#id_email").keyup(function( event ) {
@@ -148,6 +162,7 @@ $('#id_table_novoUsuario tbody ').on('click', 'tr button', function () {
 
             $('#id_modal_form_usuario form input[id="id_nomeCompleto"]').val(data.nomeCompleto);
             $('#id_modal_form_usuario form input[id="id_email"]').val(data.email);
+            $('#id_modal_form_usuario form input[id="id_cpf"]').val(data.cpf);
             $('#id_modal_form_usuario form input[id="id_email_original"]').val(data.email);
             $('#id_modal_form_usuario form input[id="id_telefone"]').val(data.telefone);
             $('#id_modal_form_usuario form input[id="id_celular"]').val(data.celular);

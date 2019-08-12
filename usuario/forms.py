@@ -7,12 +7,13 @@ class UsuarioForm(forms.Form):
     #user = forms.OneToOneField(required=True)
     nomeCompleto = forms.CharField(required=True)
     email = forms.CharField(required=True)
+    cpf = forms.CharField(required=False)
     telefone = forms.CharField(required=False)
-    celular = forms.CharField(required=True)
-    enderecoCompleto = forms.CharField(required=True)
+    celular = forms.CharField(required=False)
+    enderecoCompleto = forms.CharField(required=False)
 
     # Selects
-    titulo = forms.CharField(required=True)
+    titulo = forms.CharField(required=False)
     controleEstoque = forms.CharField(required=True)
     controleProntuario = forms.CharField(required=True)
 

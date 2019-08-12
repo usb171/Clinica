@@ -50,6 +50,8 @@ class Usuario(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     nomeCompleto = models.CharField('Nome Completo', max_length=120, null=True, blank=True)
+    cpf = models.CharField('CPF', max_length=20, null=True, blank=True)
+
     email = models.CharField('Email', max_length=120, null=True, blank=True, unique=True)
     telefone = models.CharField('Telefone', max_length=20, null=True, blank=True)
     celular = models.CharField('Celular', max_length=20, null=True, blank=True)

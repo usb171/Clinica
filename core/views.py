@@ -252,8 +252,8 @@ def controleCampo(request):
             contexto = {'controleCampo': controleCampo_obj[0]}
             return render(request, 'controleCampo/controleCampo.html', contexto)
         elif request.method == 'POST':
-            '''for key in request.POST.keys():
-                print(key, " ", request.POST[key])'''
+            for key in request.POST.keys():
+                print(key, " ", request.POST[key])
 
             paciente_cpf = request.POST['cpf']
             paciente_rua = request.POST['rua']
@@ -274,17 +274,18 @@ def controleCampo(request):
             paciente_observacao = request.POST['observacao']
             paciente_estadoCivil = request.POST['estadoCivil']
             paciente_complemento = request.POST['complemento']
-            paciente_nomeCompleto = request.POST['nomeCompleto']
+            paciente_nomeCompleto = 'required'
             paciente_nomeFamiliar = request.POST['nomeFamiliar']
             paciente_dataNascimento = request.POST['dataNascimento']
             paciente_grauParentesco = request.POST['grauParentesco']
             paciente_convenioCarteira = request.POST['convenioCarteira']
 
-            usuario_email = request.POST['usuario_email']
+            usuario_email = 'required'
+            usuario_cpf = request.POST['usuario_cpf']
             usuario_titulo = request.POST['usuario_titulo']
             usuario_celular = request.POST['usuario_celular']
             usuario_telefone = request.POST['usuario_telefone']
-            usuario_nomeCompleto = request.POST['usuario_nomeCompleto']
+            usuario_nomeCompleto = 'required'
             usuario_enderecoCompleto =request.POST['usuario_enderecoCompleto']
 
             controleCampo_obj.update(
@@ -312,6 +313,7 @@ def controleCampo(request):
                                     paciente_dataNascimento=paciente_dataNascimento,
                                     paciente_grauParentesco=paciente_grauParentesco,
                                     paciente_convenioCarteira=paciente_convenioCarteira,
+                                    usuario_cpf=usuario_cpf,
                                     usuario_email=usuario_email,
                                     usuario_titulo=usuario_titulo,
                                     usuario_celular=usuario_celular,

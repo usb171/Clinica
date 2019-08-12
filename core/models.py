@@ -93,7 +93,7 @@ class Origem(models.Model):
 class ControleCampo(models.Model):
 
     clinica = models.ForeignKey(Clinica, on_delete=models.CASCADE, null=True)
-    paciente_nomeCompleto = models.CharField('Paciente Nome Completo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    paciente_nomeCompleto = models.CharField('Paciente Nome Completo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="required", null=True, blank=True)
     paciente_cpf = models.CharField('Paciente CPF', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_sexo = models.CharField('Paciente Sexo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_dataNascimento = models.CharField('Paciente Data de Nascimento', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
@@ -118,8 +118,9 @@ class ControleCampo(models.Model):
     paciente_nomeFamiliar = models.CharField('Paciente Nome Familiar', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_grauParentesco = models.CharField('Paciente Grau Parentesco', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     paciente_origem = models.CharField('Paciente Origem', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
-    usuario_nomeCompleto = models.CharField('Usuário Nome Completo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    usuario_nomeCompleto = models.CharField('Usuário Nome Completo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="required", null=True, blank=True)
     usuario_email = models.CharField('Usuário Email', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
+    usuario_cpf = models.CharField('Usuário CPF', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     usuario_telefone = models.CharField('Usuário Telefone', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     usuario_celular = models.CharField('Usuário Celular', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
     usuario_enderecoCompleto = models.CharField('Usuário Endereço Completo', max_length=25, choices=_FLAG_CONTROLE_PACIENTE, default="no_required", null=True, blank=True)
