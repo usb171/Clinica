@@ -183,9 +183,302 @@ var tabela_novoPaciente = $("#id_table_novoPaciente").DataTable({
         }
     },
 });
+var tabela_historicoPaciente = $("#id_table_historico").DataTable({
+
+    "bSearch": true,
+    "bLengthChange": false,
+    "pageLength": 5,
+    "paging":   true,
+    "responsive": true,
+    "ordering": true,
+    "info":     true,
+    "autoWidth": false,
+
+
+
+    "language": {
+        "sEmptyTable": "Nenhum registro encontrado",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sInfoThousands": ".",
+        "sLengthMenu": "_MENU_ resultados por página",
+        "sLoadingRecords": "Carregando...",
+        "sProcessing": "Processando...",
+        "sZeroRecords": "Nenhum registro encontrado",
+        "sSearch": "Pesquisar",
+        "oPaginate": {
+            "sNext": "Próximo",
+            "sPrevious": "Anterior",
+            "sFirst": "Primeiro",
+            "sLast": "Último"
+        },
+        "oAria": {
+            "sSortAscending": ": Ordenar colunas de forma ascendente",
+            "sSortDescending": ": Ordenar colunas de forma descendente"
+        }
+    },
+
+});
+
 $('.button_novoPaciente').append($('#id_div_button')); // Posiciona o button novoPaciente no cabeçalho da tabela
 $('#id_div_button').removeAttr('hidden'); // Exibe o button novoPaciente no cabeçalho da tabela
+
+
+function format_servicos(d) {
+
+    var tabela_servicos = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:100px;">'+
+            '<tr>'+
+                '<th style="width:20%;" class="center">Nome do Serviço</th>' +
+                '<th style="width:10%;" class="center">Nº Sessão</th>' +
+                '<th style="width:10%;" class="center">Total de Sessões</th>' +
+                '<th style="width:15%;" class="center">Valor</th>' +
+                '<th style="width:15%;" class="center">Desconto</th>' +
+                '<th style="width:15%;" class="center">Valor Final</th>' +
+                '<th style="width:10%;" class="center">Status</th>' +
+            '</tr>'+
+
+            '<tr class="odd gradeX center">' +
+                '<td class="center">AAAAA</td>' +
+                '<td class="center">1</td>' +
+                '<td class="center">2</td>' +
+                '<td class="center">R$ 100,00</td>' +
+                '<td class="center">R$ 10,00</td>' +
+                '<td class="center">R$ 90,00</td>' +
+                '<td class="center">PAGO</td>' +
+            '</tr>'+
+
+            '<tr class="odd gradeX center">' +
+                '<td class="center">BBBBBB</td>' +
+                '<td class="center">3</td>' +
+                '<td class="center">5</td>' +
+                '<td class="center">R$ 1000,00</td>' +
+                '<td class="center">R$ 200,00</td>' +
+                '<td class="center">R$ 800,00</td>' +
+                '<td class="center">PAGO</td>' +
+            '</tr>'+
+
+
+
+    '</table>';
+
+
+    var row = '<div>' +
+                '<div class="row">' +
+                    '<div class="col-12 col-lg-12 mt-2 mb-2">' +
+                        '<h3>Dados dos Serviços</h3>' +
+                          tabela_servicos +
+                         '<hr class="style-one">' +
+                    '</div>' +
+                '</div>' +
+              '</div>';
+
+    return row;
+}
+
+function format_financeiro(d) {
+    // `d` is the original data object for the row
+
+    var tabela_financeira = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+            '<tr>'+
+                '<th style="width:5%;" class="center">Valor</th>' +
+                '<th style="width:5%;" class="center">Desconto</th>' +
+                '<th style="width:5%;" class="center">Valor Total</th>' +
+                '<th style="width:5%;" class="center">Valor do Ticket</th>' +
+                '<th style="width:5%;" class="center">Valor Final do Ticket</th>' +
+                '<th style="width:5%;" class="center">Forma de pagamento</th>' +
+                '<th style="width:5%;" class="center">Status</th>' +
+            '</tr>'+
+
+            '<tr class="odd gradeX center">' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+            '</tr>'+
+    '</table>';
+
+
+    var row = '<div>' +
+                '<div class="row">' +
+                    '<div class="col-12 col-lg-12 mt-2 mb-2">' +
+                        '<h3>Dados Financeiros</h3>' +
+                         tabela_financeira +
+                         '<hr class="style-one">' +
+                    '</div>' +
+                '</div>' +
+              '</div>';
+
+    return row;
+}
+
+
+function format_financeiro(d) {
+    // `d` is the original data object for the row
+
+    var tabela_financeira = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+            '<tr>'+
+                '<th style="width:5%;" class="center">Valor</th>' +
+                '<th style="width:5%;" class="center">Desconto</th>' +
+                '<th style="width:5%;" class="center">Valor Total</th>' +
+                '<th style="width:5%;" class="center">Valor do Ticket</th>' +
+                '<th style="width:5%;" class="center">Valor Final do Ticket</th>' +
+                '<th style="width:5%;" class="center">Forma de pagamento</th>' +
+                '<th style="width:5%;" class="center">Status</th>' +
+            '</tr>'+
+
+            '<tr class="odd gradeX center">' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+             '<td class="center">qqqqqqqqqqqqw</td>' +
+            '</tr>'+
+    '</table>';
+
+
+    var row = '<div>' +
+                '<div class="row">' +
+                    '<div class="col-12 col-lg-12 mt-2 mb-2">' +
+                        '<h3>Dados Financeiros</h3>' +
+                         tabela_financeira +
+                         '<hr class="style-one">' +
+                    '</div>' +
+                '</div>' +
+              '</div>';
+
+    return row;
+}
+
+function format_prontuario(d) {
+
+    var prontuario = '<spam>' +
+        'Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século' +
+        'XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem' +
+        'Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado.' +
+    '</spam>'
+
+    var row = '<div>' +
+                '<div class="row">' +
+                    '<div class="col-12 col-lg-12 mb-5">' +
+                        '<h3>Prontuário</h3>' +
+                         prontuario +
+                         '<hr class="style-one">' +
+                    '</div>' +
+                '</div>' +
+              '</div>';
+
+    return row;
+}
+
+function format_mais_informacoes(d) {
+
+    var observacao = '<spam>' +
+        'Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século' +
+        'XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem' +
+        'Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado.' +
+    '</spam>'
+
+    var row = '<div>' +
+                '<div class="row">' +
+                    '<div class="col-12 col-lg-12 mb-4">' +
+                        '<h3>Observações</h3>' +
+                         observacao +
+                         '<hr class="style-one">' +
+                    '</div>' +
+                '</div>' +
+              '</div>';
+    return row;
+}
+
+
+$('#id_table_historico tbody').on('click', 'td.details-control.servicos', function () {
+//    var tr = $(this).closest('tr');
+//    var row = tabela_historicoPaciente.row( tr );
+//
+//    if ( row.child.isShown() ) {
+//        row.child.hide();
+//        tr.prevObject.removeClass('off').addClass('on')
+//        $(tr[0].cells[5]).removeClass('off').addClass('on');
+//        $(tr[0].cells[6]).removeClass('off').addClass('on');
+//
+//    }
+//    else {
+//        row.child(format_servicos(row.data())).show();
+//        tr.prevObject.removeClass('on').addClass('off');
+//        $(tr[0].cells[5]).removeClass('off').addClass('on');
+//        $(tr[0].cells[6]).removeClass('off').addClass('on');
+//
+//    }
+} );
+
+$('#id_table_historico tbody').on('click', 'td.details-control.financeiro', function () {
+      var tr = $(this).closest('tr');
+        var row = tabela_historicoPaciente.row( tr );
+
+        if ( row.child.isShown() ) {
+            row.child.hide();
+            tr.prevObject.removeClass('off').addClass('on')
+            $(tr[0].cells[5]).removeClass('off').addClass('on');
+            $(tr[0].cells[6]).removeClass('off').addClass('on');
+
+        }
+        else {
+            row.child(format_financeiro(row.data())).show();
+            tr.prevObject.removeClass('on').addClass('off');
+            $(tr[0].cells[5]).removeClass('off').addClass('on');
+            $(tr[0].cells[6]).removeClass('off').addClass('on');
+
+        }
+} );
+
+$('#id_table_historico tbody').on('click', 'td.details-control.prontuario', function () {
+    var tr = $(this).closest('tr');
+    var row = tabela_historicoPaciente.row( tr );
+
+    if ( row.child.isShown() ) {
+        row.child.hide();
+        $(tr[0].cells[4]).removeClass('off').addClass('on');
+        tr.prevObject.removeClass('off').addClass('on');
+        $(tr[0].cells[6]).removeClass('off').addClass('on');
+
+    }
+    else {
+        row.child(format_prontuario(row.data())).show();
+        $(tr[0].cells[4]).removeClass('off').addClass('on');
+        tr.prevObject.removeClass('on').addClass('off');
+        $(tr[0].cells[6]).removeClass('off').addClass('on');
+
+    }
+});
+
+$('#id_table_historico tbody').on('click', 'td.details-control.mais-informacao', function () {
+    var tr = $(this).closest('tr');
+    var row = tabela_historicoPaciente.row( tr );
+
+    if ( row.child.isShown() ) {
+        row.child.hide();
+        $(tr[0].cells[4]).removeClass('off').addClass('on');
+        $(tr[0].cells[5]).removeClass('off').addClass('on');
+        tr.prevObject.removeClass('off').addClass('on')
+
+    }
+    else {
+        row.child(format_mais_informacoes(row.data())).show();
+        $(tr[0].cells[4]).removeClass('off').addClass('on');
+        $(tr[0].cells[5]).removeClass('off').addClass('on');
+        tr.prevObject.removeClass('on').addClass('off');
+    }
+});
 //Tabelas////////////////////////////////////////////////////////////////////
+
+
 
 // Button /////////////////////////////////////////
 $('#id_button_modal_novoPaciente').click(function(){
@@ -215,7 +508,7 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
     // Modifica os campos do formulário de um novo paciente para editar paciente
     $('#id_modal_form_paciente').modal('show'); // Exibe o modal do formulário
     resetar_campos(); // Reseta todos os campos do formulário
-    $('#id_modal_form_paciente  h3[id="id_title"]').text('Editar Paciente'); // Troca o título do modal
+//  $('#id_modal_form_paciente  h3[id="id_title"]').text('Editar Paciente'); // Troca o título do modal
     $('#id_modal_form_paciente  form[id="id_form_novo_paciente"]').prop('id', 'id_form_editar_paciente'); // Troca o id do formulário
     $('#id_modal_form_paciente  button[id="id_button_modal"]').html('<i class="icon mdi mdi-save"></i> Editar Paciente'); // Muda o nome do button do formulário
 
@@ -237,6 +530,9 @@ $('#id_table_novoPaciente tbody ').on('click', 'tr button', function () {
         data: {'id_paciente': $(this).val()}, // Recebe o id do paciente pelo value do button
         dataType: 'json',
         success: function (data) {
+
+            $('#id_modal_form_paciente  h3[id="id_title"]').text(data.nomeCompleto); // Troca o título do modal pelo nome do paciente
+
             $('#id_modal_form_paciente form').trigger("reset");
             $('#id_modal_form_paciente form input[id="id_cpf"]').val(data.cpf);
             $('#id_modal_form_paciente form input[id="id_cep"]').val(data.cep);
