@@ -185,6 +185,10 @@ var tabela_novoPaciente = $("#id_table_novoPaciente").DataTable({
 });
 var tabela_historicoPaciente = $("#id_table_historico").DataTable({
 
+    dom: "<'row be-datatable-header'<'col-sm-6 col-md-6 col-lg-6 col-xl-6' <'group-historico-paciente'>><'col-sm-6'f>>" +
+         "<'row be-datatable-body'<'col-sm-12'tr>>" +
+         "<'row be-datatable-footer'<'col-sm-5'i><'col-sm-7'p>>",
+
     "bSearch": true,
     "bLengthChange": false,
     "pageLength": 5,
@@ -193,8 +197,6 @@ var tabela_historicoPaciente = $("#id_table_historico").DataTable({
     "ordering": true,
     "info":     true,
     "autoWidth": false,
-
-
 
     "language": {
         "sEmptyTable": "Nenhum registro encontrado",
@@ -221,6 +223,31 @@ var tabela_historicoPaciente = $("#id_table_historico").DataTable({
     },
 
 });
+
+var filtros_tabela_historico =
+            '<div class="col-12 col-sm-12 col-lg-12 form-check mt-1">' +
+                '<label class="custom-control custom-radio custom-control-inline">' +
+                  '<input class="custom-control-input" id="id_sem_filtro" type="radio" name="radio-color" checked="">' +
+                  '<span class="custom-control-label custom-control-color">Sem Filtro</span>' +
+                '</label>' +
+                '<label class="custom-control custom-radio custom-control-inline">' +
+                  '<input class="custom-control-input" id="id_indicado" type="radio" name="radio-color">' +
+                  '<span class="custom-control-label custom-control-color">Indicado</span>' +
+                '</label>' +
+                '<button class="btn btn-space btn-outline-primary btn-space"><i class="icon icon-left mdi mdi-assignment-o"></i>Prontuários</button>' +
+            '</div>'
+
+$('.group-historico-paciente').append(filtros_tabela_historico);
+$('.custom-control-input').change(function () {
+     if(this.id == 'id_sem_filtro'){
+        tabela_historicoPaciente.columns(3).search('').draw();
+     }else if (this.id == 'id_indicado'){
+        tabela_historicoPaciente.columns(3).search('indicado').draw();
+     }
+});
+
+
+
 
 $('.button_novoPaciente').append($('#id_div_button')); // Posiciona o button novoPaciente no cabeçalho da tabela
 $('#id_div_button').removeAttr('hidden'); // Exibe o button novoPaciente no cabeçalho da tabela
